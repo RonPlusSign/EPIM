@@ -1,22 +1,26 @@
 DROP DATABASE epim IF EXISTS;
-CREATE DATABASE epim IF NOT EXISTS;
+CREATE DATABASE epim;
 USE epim;
 
 CREATE TABLE Category (
-    category_id INT          PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    name        VARCHAR(128)             NOT NULL
+    category_id INT(10) UNSIGNED PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(128)                 NOT NULL
 );
 
 CREATE TABLE Product (
-    product_id        INT PRIMARY KEY   NOT NULL AUTO_INCREMENT,
-    name              VARCHAR(256)      NOT NULL,
-    description       VARCHAR(4096)     NOT NULL,
-    price             FLOAT             NOT NULL,
-    quantityAvailable INT               NOT NULL,
-    category          INT               NOT NULL FOREIGN KEY REFERENCES Category(category_id) );
+    product_id          INT(10) UNSIGNED PRIMARY KEY   NOT NULL AUTO_INCREMENT,
+    name                VARCHAR(256)                   NOT NULL,
+    description         VARCHAR(4096)                  NOT NULL,
+    price               FLOAT                          NOT NULL,
+    quantityAvailable   INT(10) UNSIGNED               NOT NULL,
+    category            INT(10) UNSIGNED               NOT NULL FOREIGN KEY REFERENCES Category(category_id)
+            ON UPDATE RESTRICT,
+            ON DELETE CASCADE
+);
 
-CREATE TABLE ProductImage(
-    imageFile VARBINARY(MAX) NOT NULL, -- Usare MAX per contenere immagini di più di 8000 byte
-                                       -- TODO: Valutare di salvare soltanto il path dell'immagine
-    product_id INT           NOT NULL FOREIGN KEY REFERENCES Product(product_id)
+CREATE TABLE ProductImage (
+    imagePath VARCHAR(256)      NOT NULL, -- Il path dell'immagine all'interno del file system
+    product_id INT(10) UNSIGNED NOT NULL FOREIGN KEY REFERENCES Product(product_id)
+              ON UPDATE RESTRICT,
+              ON DELETE CASCADE
 );
