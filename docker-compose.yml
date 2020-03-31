@@ -1,0 +1,82 @@
+version: '3'
+
+services:
+  epim-proxy:
+    container_name: epim-proxy
+    image: traefik:v2.1
+    restart: on-failure
+    command:
+      - --api.insecure=true
+      - --providers.docker
+      - --entrypoints.web.address=:80
+      - --entrypoints.websecure.address=:443
+    ports:
+      - "8080:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8001:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - epim-backend
+      - epim-frontend
+
+  epim-db:
+    container_name: epim-db
+    image: mariadb
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: epim
+      MYSQL_DATABASE: epim
+      MYSQL_USER: epim
+      MYSQL_PASSWORD: epim
+      TZ: Europe/Rome
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./database:/sql
+    expose:
+        - 80
+    labels:
+      - "traefik.enable=false"
+
+  epim-pma:
+    container_name: epim-pma
+    image: phpmyadmin/phpmyadmin
+    restart: on-failure
+    environment:
+      PMA_HOST: epim-db
+      PMA_USER: epim
+      PMA_PASSWORD: epim
+    expose:
+      - 80
+    labels:
+      - "traefik.http.routers.router2.rule=Host(`pma.localhost`)"
+      - "traefik.http.routers.router2.entrypoints=web"
+
+  epim-frontend:
+    container_name: epim-frontend
+    build:
+      context: frontend
+    restart: on-failure
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    expose:
+      - 8080
+    labels:
+      - "traefik.http.routers.router0.rule=Host(`localhost`)"
+
+  epim-backend:
+    container_name: epim-backend
+    image: webdevops/php-nginx:alpine
+    restart: on-failure
+    volumes:
+      - ./backend:/app/api
+    expose:
+      - 80
+    labels:
+      - "traefik.http.routers.router1.rule=Host(`localhost`) && PathPrefix(`/api`)"
+
+volumes:
+  db-data:
