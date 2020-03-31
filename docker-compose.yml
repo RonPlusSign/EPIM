@@ -32,9 +32,9 @@ services:
       TZ: Europe/Rome
     volumes:
       - db-data:/var/lib/mysql
-      - ./database:/sql
+      - ./database:/docker-entrypoint-initdb.d
     expose:
-        - 80
+        - 3306
     labels:
       - "traefik.enable=false"
 

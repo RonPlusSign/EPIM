@@ -21,15 +21,13 @@ docker-compose -f "docker-compose.yml" up  --build
 
 <br>
 
-#### After the first launch you should also initialize the database. <br>
+#### After the first launch you should wait a few minutes to let mariadb initialize the database. <br>
 
-If the command doesn't work wait a few minutes to let docker finish initalize the containers.<br>
-Launch the builddb script (the same script should also be valid for linux):
+If you wish to reset (drop) the database launch (the same script should also be valid for linux):
 
 ```cmd
-.\builddb.ps1
+.\rebuilddb.ps1
 ```
-(the same command is also used to rebuild the db from 0). 
 
 <br>
 
