@@ -72,5 +72,3 @@ Optional, can be one of the following:
 
 [conventionalcommits.org](https://www.conventionalcommits.org/en/v1.0.0/) -
 [angular specs](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
-
----
