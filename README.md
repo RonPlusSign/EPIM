@@ -1,7 +1,7 @@
 # E.P.I.M.
-## E-Commerce Platform ITIS Meucci. 
+## E-Commerce Platform ITIS Meucci
 
-Web app of an e-commerce website, with user registation, login, admin and products management. 
+Web app of an e-commerce website, with user registation, login, admin, products and orders management. 
 
 ---
 
@@ -101,6 +101,15 @@ Optional, can be one of the following:
 
 Table name: snake_case, singular, lowercase (es. product_image). <br>
 Column name: snake_case, lowercase (es. postal_code).
+
+Always define foreign and primary keys as CONSTRAINT
+Costraints conventions:
+
+```sql
+CONSTRAINT `this_table_fk_referenced_table` FOREIGN KEY(column) REFERENCES [...];
+CONSTRAINT `this_table_pk` PRIMARY KEY(columns);
+CONSTRAINT `this_table_unique` UNIQUE(columns);    # You can also use `column_name_unique`
+```
 
 <br>
 

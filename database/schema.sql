@@ -6,9 +6,9 @@ USE epim;
 
 -- Always define foreign and primary keys as CONSTRAINT
 -- Costraints name conventions:
--- CONSTRAINT `thistable_fk_referencedtable` FOREIGN KEY(column) REFERENCES [...]
--- CONSTRAINT `thistable_pk` PRIMARY KEY(columns)
--- CONSTRAINT `thistable_unique` UNIQUE(columns)    // you can also use `columnname_unique`
+-- CONSTRAINT `this_table_fk_referenced_table` FOREIGN KEY(column) REFERENCES [...];
+-- CONSTRAINT `this_table_pk` PRIMARY KEY(columns);
+-- CONSTRAINT `this_table_unique` UNIQUE(columns);    # You can also use `column_name_unique`
 
 
 ------------------------- Products -------------------------
