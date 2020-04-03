@@ -1,0 +1,121 @@
+NUTS1;"Codice 
+ripartizione 
+geografica";"Ripartizione geografica
+(Maiuscolo)";Ripartizione geografica;NUTS2 (a);Codice regione;"Regione
+(Maiuscolo)";Regione;Tipologia Regione;NUTS3;"Codice dell'unità territoriale sovracomunale 
+amministrativamente vigente";"Codice dell'unità territoriale sovracomunale 
+valida a fini statistici";Unità territoriale sovracomunale;;Tipologia unità territoriale sovracomunale ;Sigla automobilistica;Codice provincia (Storico)
+NUTS1;COD_RIP ;"DEN_RIP
+(Maiuscolo)";DEN_RIP;NUTS2;COD_REG;"DEN_REG
+(Maiuscolo)";DEN_REG;TIPO_REG;NUTS3;COD_UTS_AM;COD_UTS_ST;DEN_UTS;;TIPO_UTS;Sigla automobilistica;COD_PROV_Storico
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC11;201;201;Torino;(b);Citta metropolitana;TO;001
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC12;002;002;Vercelli;;Provincia;VC;002
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC15;003;003;Novara;;Provincia;NO;003
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC16;004;004;Cuneo;;Provincia;CN;004
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC17;005;005;Asti;;Provincia;AT;005
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC18;006;006;Alessandria;;Provincia;AL;006
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC13;096;096;Biella;;Provincia;BI;096
+ITC;1;NORD-OVEST;Nord-ovest;ITC1;01;PIEMONTE;Piemonte;1;ITC14;103;103;Verbano-Cusio-Ossola;;Provincia;VB;103
+ITC;1;NORD-OVEST;Nord-ovest;ITC2;02;VALLE D'AOSTA/VALLÉE D'AOSTE;Valle d'Aosta/Vallée d'Aoste;2;ITC20;007;007;Valle d'Aosta/Vallée d'Aoste;;Provincia;AO;007
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC41;012;012;Varese;;Provincia;VA;012
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC42;013;013;Como;;Provincia;CO;013
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC44;014;014;Sondrio;;Provincia;SO;014
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC4C;215;215;Milano;(b);Citta metropolitana;MI;015
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC46;016;016;Bergamo;;Provincia;BG;016
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC47;017;017;Brescia;;Provincia;BS;017
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC48;018;018;Pavia;;Provincia;PV;018
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC4A;019;019;Cremona;;Provincia;CR;019
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC4B;020;020;Mantova;;Provincia;MN;020
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC43;097;097;Lecco;;Provincia;LC;097
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC49;098;098;Lodi;;Provincia;LO;098
+ITC;1;NORD-OVEST;Nord-ovest;ITC4;03;LOMBARDIA;Lombardia;1;ITC4D;108;108;Monza e della Brianza;;Provincia;MB;108
+ITH;2;NORD-EST;Nord-est;ITH1;04;TRENTINO-ALTO ADIGE/SÜDTIROL;Trentino-Alto Adige/Südtirol;2;ITH10;021;021;Bolzano/Bozen;;Provincia autonoma;BZ;021
+ITH;2;NORD-EST;Nord-est;ITH2;04;TRENTINO-ALTO ADIGE/SÜDTIROL;Trentino-Alto Adige/Südtirol;2;ITH20;022;022;Trento;;Provincia autonoma;TN;022
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH31;023;023;Verona;;Provincia;VR;023
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH32;024;024;Vicenza;;Provincia;VI;024
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH33;025;025;Belluno;;Provincia;BL;025
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH34;026;026;Treviso;;Provincia;TV;026
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH35;227;227;Venezia;(b);Citta metropolitana;VE;027
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH36;028;028;Padova;;Provincia;PD;028
+ITH;2;NORD-EST;Nord-est;ITH3;05;VENETO;Veneto;1;ITH37;029;029;Rovigo;;Provincia;RO;029
+ITH;2;NORD-EST;Nord-est;ITH4;06;FRIULI-VENEZIA GIULIA;Friuli-Venezia Giulia;2;ITH42;-;030;Udine;(f);Unità non amministrativa;UD;030
+ITH;2;NORD-EST;Nord-est;ITH4;06;FRIULI-VENEZIA GIULIA;Friuli-Venezia Giulia;2;ITH43;-;031;Gorizia;(f);Unità non amministrativa;GO;031
+ITH;2;NORD-EST;Nord-est;ITH4;06;FRIULI-VENEZIA GIULIA;Friuli-Venezia Giulia;2;ITH44;-;032;Trieste;(f);Unità non amministrativa;TS;032
+ITH;2;NORD-EST;Nord-est;ITH4;06;FRIULI-VENEZIA GIULIA;Friuli-Venezia Giulia;2;ITH41;-;093;Pordenone;(f);Unità non amministrativa;PN;093
+ITC;1;NORD-OVEST;Nord-ovest;ITC3;07;LIGURIA;Liguria;1;ITC31;008;008;Imperia;;Provincia;IM;008
+ITC;1;NORD-OVEST;Nord-ovest;ITC3;07;LIGURIA;Liguria;1;ITC32;009;009;Savona;;Provincia;SV;009
+ITC;1;NORD-OVEST;Nord-ovest;ITC3;07;LIGURIA;Liguria;1;ITC33;210;210;Genova;(b);Citta metropolitana;GE;010
+ITC;1;NORD-OVEST;Nord-ovest;ITC3;07;LIGURIA;Liguria;1;ITC34;011;011;La Spezia;;Provincia;SP;011
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH51;033;033;Piacenza;;Provincia;PC;033
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH52;034;034;Parma;;Provincia;PR;034
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH53;035;035;Reggio nell'Emilia;;Provincia;RE;035
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH54;036;036;Modena;;Provincia;MO;036
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH55;237;237;Bologna;(b);Citta metropolitana;BO;037
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH56;038;038;Ferrara;;Provincia;FE;038
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH57;039;039;Ravenna;;Provincia;RA;039
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH58;040;040;Forlì-Cesena;;Provincia;FC;040
+ITH;2;NORD-EST;Nord-est;ITH5;08;EMILIA-ROMAGNA;Emilia-Romagna;1;ITH59;099;099;Rimini;;Provincia;RN;099
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI11;045;045;Massa-Carrara;;Provincia;MS;045
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI12;046;046;Lucca;;Provincia;LU;046
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI13;047;047;Pistoia;;Provincia;PT;047
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI14;248;248;Firenze;(b);Citta metropolitana;FI;048
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI16;049;049;Livorno;;Provincia;LI;049
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI17;050;050;Pisa;;Provincia;PI;050
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI18;051;051;Arezzo;;Provincia;AR;051
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI19;052;052;Siena;;Provincia;SI;052
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI1A;053;053;Grosseto;;Provincia;GR;053
+ITI;3;CENTRO;Centro;ITI1;09;TOSCANA;Toscana;1;ITI15;100;100;Prato;;Provincia;PO;100
+ITI;3;CENTRO;Centro;ITI2;10;UMBRIA;Umbria;1;ITI21;054;054;Perugia;;Provincia;PG;054
+ITI;3;CENTRO;Centro;ITI2;10;UMBRIA;Umbria;1;ITI22;055;055;Terni;;Provincia;TR;055
+ITI;3;CENTRO;Centro;ITI3;11;MARCHE;Marche;1;ITI31;041;041;Pesaro e Urbino;;Provincia;PU;041
+ITI;3;CENTRO;Centro;ITI3;11;MARCHE;Marche;1;ITI32;042;042;Ancona;;Provincia;AN;042
+ITI;3;CENTRO;Centro;ITI3;11;MARCHE;Marche;1;ITI33;043;043;Macerata;;Provincia;MC;043
+ITI;3;CENTRO;Centro;ITI3;11;MARCHE;Marche;1;ITI34;044;044;Ascoli Piceno;;Provincia;AP;044
+ITI;3;CENTRO;Centro;ITI3;11;MARCHE;Marche;1;ITI35;109;109;Fermo;;Provincia;FM;109
+ITI;3;CENTRO;Centro;ITI4;12;LAZIO;Lazio;1;ITI41;056;056;Viterbo;;Provincia;VT;056
+ITI;3;CENTRO;Centro;ITI4;12;LAZIO;Lazio;1;ITI42;057;057;Rieti;;Provincia;RI;057
+ITI;3;CENTRO;Centro;ITI4;12;LAZIO;Lazio;1;ITI43;258;258;Roma;(b);Citta metropolitana;RM;058
+ITI;3;CENTRO;Centro;ITI4;12;LAZIO;Lazio;1;ITI44;059;059;Latina;;Provincia;LT;059
+ITI;3;CENTRO;Centro;ITI4;12;LAZIO;Lazio;1;ITI45;060;060;Frosinone;;Provincia;FR;060
+ITF;4;SUD;Sud;ITF1;13;ABRUZZO;Abruzzo;1;ITF11;066;066;L'Aquila;;Provincia;AQ;066
+ITF;4;SUD;Sud;ITF1;13;ABRUZZO;Abruzzo;1;ITF12;067;067;Teramo;;Provincia;TE;067
+ITF;4;SUD;Sud;ITF1;13;ABRUZZO;Abruzzo;1;ITF13;068;068;Pescara;;Provincia;PE;068
+ITF;4;SUD;Sud;ITF1;13;ABRUZZO;Abruzzo;1;ITF14;069;069;Chieti;;Provincia;CH;069
+ITF;4;SUD;Sud;ITF2;14;MOLISE;Molise;1;ITF22;070;070;Campobasso;;Provincia;CB;070
+ITF;4;SUD;Sud;ITF2;14;MOLISE;Molise;1;ITF21;094;094;Isernia;;Provincia;IS;094
+ITF;4;SUD;Sud;ITF3;15;CAMPANIA;Campania;1;ITF31;061;061;Caserta;;Provincia;CE;061
+ITF;4;SUD;Sud;ITF3;15;CAMPANIA;Campania;1;ITF32;062;062;Benevento;;Provincia;BN;062
+ITF;4;SUD;Sud;ITF3;15;CAMPANIA;Campania;1;ITF33;263;263;Napoli;(b);Citta metropolitana;NA;063
+ITF;4;SUD;Sud;ITF3;15;CAMPANIA;Campania;1;ITF34;064;064;Avellino;;Provincia;AV;064
+ITF;4;SUD;Sud;ITF3;15;CAMPANIA;Campania;1;ITF35;065;065;Salerno;;Provincia;SA;065
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF46;071;071;Foggia;;Provincia;FG;071
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF47;272;272;Bari;(b);Citta metropolitana;BA;072
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF43;073;073;Taranto;;Provincia;TA;073
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF44;074;074;Brindisi;;Provincia;BR;074
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF45;075;075;Lecce;;Provincia;LE;075
+ITF;4;SUD;Sud;ITF4;16;PUGLIA;Puglia;1;ITF48;110;110;Barletta-Andria-Trani;;Provincia;BT;110
+ITF;4;SUD;Sud;ITF5;17;BASILICATA;Basilicata;1;ITF51;076;076;Potenza;;Provincia;PZ;076
+ITF;4;SUD;Sud;ITF5;17;BASILICATA;Basilicata;1;ITF52;077;077;Matera;;Provincia;MT;077
+ITF;4;SUD;Sud;ITF6;18;CALABRIA;Calabria;1;ITF61;078;078;Cosenza;;Provincia;CS;078
+ITF;4;SUD;Sud;ITF6;18;CALABRIA;Calabria;1;ITF63;079;079;Catanzaro;;Provincia;CZ;079
+ITF;4;SUD;Sud;ITF6;18;CALABRIA;Calabria;1;ITF65;280;280;Reggio Calabria;(c);Citta metropolitana;RC;080
+ITF;4;SUD;Sud;ITF6;18;CALABRIA;Calabria;1;ITF62;101;101;Crotone;;Provincia;KR;101
+ITF;4;SUD;Sud;ITF6;18;CALABRIA;Calabria;1;ITF64;102;102;Vibo Valentia;;Provincia;VV;102
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG11;081;081;Trapani;(d);Libero consorzio di comuni;TP;081
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG12;282;282;Palermo;(d);Citta metropolitana;PA;082
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG13;283;283;Messina;(d);Citta metropolitana;ME;083
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG14;084;084;Agrigento;(d);Libero consorzio di comuni;AG;084
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG15;085;085;Caltanissetta;(d);Libero consorzio di comuni;CL;085
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG16;086;086;Enna;(d);Libero consorzio di comuni;EN;086
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG17;287;287;Catania;(d);Citta metropolitana;CT;087
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG18;088;088;Ragusa;(d);Libero consorzio di comuni;RG;088
+ITG;5;ISOLE;Isole;ITG1;19;SICILIA;Sicilia;2;ITG19;089;089;Siracusa;(d);Libero consorzio di comuni;SR;089
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG25;090;090;Sassari;;Provincia;SS;090
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG26;091;091;Nuoro;;Provincia;NU;091
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG27;292;292;Cagliari;(e);Citta metropolitana;CA;092
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG28;095;095;Oristano;;Provincia;OR;095
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG29;-;-;Olbia-Tempio;(e);Provincia soppressa;OT;104
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG2A;-;-;Ogliastra;(e);Provincia soppressa;OG;105
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG2B;-;-;Medio Campidano;(e);Provincia soppressa;VS;106
+ITG;5;ISOLE;Isole;ITG2;20;SARDEGNA;Sardegna;2;ITG2C;-;-;Carbonia-Iglesias;(e);Provincia soppressa;CI;107
+-;5;ISOLE;Isole;-;20;SARDEGNA;Sardegna;2;-;111;111;Sud Sardegna;(e);Provincia;SU;111
