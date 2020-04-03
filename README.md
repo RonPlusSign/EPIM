@@ -38,6 +38,26 @@ Available services in the container:
 
 ---
 
+## PHP Files
+
+At the start of every PHP file should import `Bootstrap.php`:
+
+```php
+require_once __DIR__ . '/../bootstrap.php';
+```
+
+This will automatically set-up production/debug mode and import 'Database.php'.
+
+#### Connecting to the database 
+
+To connect to the db there is already a PDO connection established in 'Database.php' so everything you need to do is get the PDO:
+
+```php
+Database::getPdo();
+```
+
+---
+
 ## Commit format
 
 ```
@@ -72,3 +92,25 @@ Optional, can be one of the following:
 
 [conventionalcommits.org](https://www.conventionalcommits.org/en/v1.0.0/) -
 [angular specs](https://github.com/angular/angular/blob/22b96b9/CONTRIBUTING.md#-commit-message-guidelines)
+
+---
+
+## Code conventions
+
+### SQL
+
+Table name: snake_case, singular, lowercase (es. product_image). <br>
+Column name: snake_case, lowercase (es. postal_code).
+
+<br>
+
+### PHP
+
+Every .php file should have the first letter capitalized.
+
+<br>
+
+### VUE
+
+Every file should be capitalized. Views and components should go in the folder with the same name (/views and /components).
+Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue).

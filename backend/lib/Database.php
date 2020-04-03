@@ -23,7 +23,7 @@ class Database {
         self::$pdo = null;
     }
 
-    public function getPDO() {
+    public static function getPDO() {
         return self::$pdo;
     }
 
