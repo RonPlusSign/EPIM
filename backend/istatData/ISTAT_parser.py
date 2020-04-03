@@ -11,7 +11,7 @@ import sys
 import codecs
 
 
-f = codecs.open("..\..\database\istat_data.sql","w+", "utf-8")
+f = codecs.open("..\..\database\z_istat_data.sql","w+", "utf-8")
 
 f.write("-- province\n")
 
