@@ -160,11 +160,11 @@ CREATE TABLE IF NOT EXISTS user_address
     CONSTRAINT `user_address_pk` PRIMARY KEY (address, user),
     CONSTRAINT `user_address_fk_address`
         FOREIGN KEY (address) REFERENCES address (id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE,
     CONSTRAINT `user_address_fk_user`
         FOREIGN KEY (user) REFERENCES user (id)
-            ON DELETE RESTRICT
+            ON DELETE CASCADE
             ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 
