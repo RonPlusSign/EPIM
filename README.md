@@ -43,7 +43,7 @@ Available services in the container:
 At the start of every PHP file should import `Bootstrap.php`:
 
 ```php
-require_once __DIR__ . '/../lib/bootstrap.php';
+require_once __DIR__ . '/../lib/cd';
 ```
 
 This will automatically set-up production/debug mode and import 'Database.php'.
@@ -53,7 +53,7 @@ This will automatically set-up production/debug mode and import 'Database.php'.
 To connect to the db there is already a PDO connection established in 'Database.php' so everything you need to do is get the PDO:
 
 ```php
-Database::getPdo();
+Database::$pdo;
 ```
 
 ---

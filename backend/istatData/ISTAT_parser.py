@@ -24,7 +24,7 @@ with open('Codici statistici e denominazioni delle ripartizioni sovracomunali .c
     line_count = 0
     for row in csv_reader:
         if line_count > 1:
-            if (row[14] != 'Unità non amministrativa' and row[14] != 'Provincia soppressa'):
+            if (row[14] != 'Provincia soppressa'):
                 # id, name, region (id),
                 regions.append(f'INSERT INTO region VALUES({int(row[5])}, "{row[7]}");\n')
         line_count += 1
@@ -42,7 +42,7 @@ with open('Codici statistici e denominazioni delle ripartizioni sovracomunali .c
     line_count = 0
     for row in csv_reader:
         if line_count > 1:
-            if (row[14] != 'Unità non amministrativa' and row[14] != 'Provincia soppressa'):
+            if (row[14] != 'Provincia soppressa'):
                 # id, name, region (id),
                 f.write(f'INSERT INTO province VALUES("{row[15]}", "{row[12]}", {int(row[5])});\n')
         line_count += 1

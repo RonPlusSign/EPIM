@@ -2,9 +2,9 @@
 
 class Database {
 
-    private static $pdo;
+    public static $pdo;
 
-    function __construct() {
+    static function init() {
         if(self::$pdo == null) {
             $credentials = file_get_contents(__DIR__ . '/../credentials/sql-credentials.json');
             if ($credentials === false) {
@@ -17,14 +17,6 @@ class Database {
             self::$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             self::$pdo->setAttribute(PDO::ATTR_EMULATE_PREPARES, false); // use 'real prepared statements' for security
         }
-    }
-
-    function __destructor() {
-        self::$pdo = null;
-    }
-
-    public static function getPDO() {
-        return self::$pdo;
     }
 
 }

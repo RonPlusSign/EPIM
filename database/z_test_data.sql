@@ -31,3 +31,75 @@ INSERT INTO product (title, description, purchase_price, sell_price, recommended
 VALUES ("test6", "testtesttest", 5, 10, 15, 3, 1, 1);
 INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
 VALUES ("test7", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("keyboard", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("book", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("none", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);
+INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand) 
+VALUES ("hello", "testtesttest", 5, 10, 15, 3, 1, 1);

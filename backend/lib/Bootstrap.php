@@ -22,4 +22,5 @@ ini_set('post_max_size', '10M');
 ini_set('upload_max_filesize', '10M');
 ini_set('max_file_uploads', 1);
 
-require_once __DIR__ . '/lib/Database.php';
+require_once __DIR__ . '/Database.php';
+Database::init(); // initialize connection
