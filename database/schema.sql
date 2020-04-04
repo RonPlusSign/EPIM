@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS product
     CONSTRAINT `product_fk_category`
         FOREIGN KEY (category) REFERENCES category (id)
             ON DELETE RESTRICT
-            ON UPDATE RESTRICT,
+            ON UPDATE CASCADE,
     CONSTRAINT `product_fk_brand`
         FOREIGN KEY (brand) REFERENCES brand (id)
             ON DELETE RESTRICT
-            ON UPDATE RESTRICT
+            ON UPDATE CASCADE
 ) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS product_image
