@@ -3,5 +3,5 @@ echo "DROP DATABASE epim;" | docker exec -i epim-db /usr/bin/mysql -u epim --pas
 cat ./database/schema.sql | docker exec -i epim-db /usr/bin/mysql -u epim --password=epim
 echo "[+] Done"
 echo "[*] Inserting data"
-cat ./database/istat_data.sql | docker exec -i epim-db /usr/bin/mysql -u epim --password=epim
+cat ./database/x_istat_data.sql | docker exec -i epim-db /usr/bin/mysql -u epim --password=epim
 echo "[+] Done" 

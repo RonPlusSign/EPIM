@@ -33,13 +33,15 @@ CREATE TABLE IF NOT EXISTS product
 (
     id                INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     title             VARCHAR(128)     NOT NULL,
-    description       VARCHAR(512)     NOT NULL,
+    description       TEXT             NOT NULL,
     purchase_price    FLOAT            NOT NULL,
     sell_price        FLOAT            NOT NULL,
     recommended_price FLOAT            NOT NULL,
     quantity          INT(10) UNSIGNED NOT NULL DEFAULT 0,
     category          INT(10) UNSIGNED NOT NULL,
     brand             INT(10) UNSIGNED NOT NULL,
+
+    FULLTEXT (title,description),
 
     CONSTRAINT `product_pk` PRIMARY KEY (id),
     CONSTRAINT `product_fk_category`
@@ -176,7 +178,7 @@ CREATE TABLE IF NOT EXISTS order
     id            INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     user          INT(10) UNSIGNED NOT NULL,
     address       INT(10) UNSIGNED NOT NULL,
-    phone_number  VARCHAR(64)      NOT NULL, -- Stored because it could be useful during the shipping
+    phone_number  VARCHAR(64)      NOT NULL, -- Stored because it could be useful during the shipping process
     timestamp     DATETIME         NOT NULL,
     shipping_cost FLOAT            NOT NULL,
     status        VARCHAR(64)      NOT NULL,
@@ -190,7 +192,7 @@ CREATE TABLE IF NOT EXISTS order
         FOREIGN KEY (address) REFERENCES address (id)
             ON DELETE RESTRICT
             ON UPDATE CASCADE
-);
+) ENGINE = InnoDB;
 
 CREATE TABLE IF NOT EXISTS order_detail
 (
@@ -210,4 +212,4 @@ CREATE TABLE IF NOT EXISTS order_detail
         FOREIGN KEY (product) REFERENCES product (id)
             ON DELETE SET NULL
             ON UPDATE CASCADE
-);
+) ENGINE = InnoDB;
