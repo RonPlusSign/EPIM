@@ -89,8 +89,14 @@ switch ($requestMethod) {
         // Set product's quantity
         if (isset($_GET['set-quantity']) && isset($_GET['id'])) {
             $json = json_decode(file_get_contents('php://input'));
-            //$ph->setQuantity($_GET['id'], $json->quantity);
+            echo json_encode(
+                array(
+                    "affectedRows" => $ph->setQuantity($_GET['id'], $json->quantity)
+                )
+            );
         }
+
+        break;
 
 
     default:

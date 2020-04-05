@@ -190,17 +190,29 @@ class ProductsHandler
      * 
      * @return Array the product
      */
-    public function getProduct($id) {
-        $stm = Database::$pdo->prepare("SELECT product.*, brand.name as brand, category.name as category FROM product
-                                        INNER JOIN category ON product.category=category.id
-                                        INNER JOIN brand ON product.brand=brand.id
-                                        WHERE id=:id");
-        $stm->bindParam(':id', $id);
-        $stm->execute();
-        return $stm->fetch(PDO::FETCH_ASSOC);
+    public function getProduct($id)
+    {
+        try {
+            $stm = Database::$pdo->prepare("SELECT product.*, brand.name as brand, category.name as category FROM product
+                                            INNER JOIN category ON product.category=category.id
+                                            INNER JOIN brand ON product.brand=brand.id
+                                            WHERE product.id=:id");
+            $stm->bindParam(':id', $id);
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            echo $e;
+        }
     }
 
-    public function setProductQuantity($id, $quantity) {
 
+
+    public function setQuantity($id, $quantity)
+    {
+        $stm = Database::$pdo->prepare("UPDATE product SET quantity=:quantity WHERE id=:id");
+        $stm->bindParam(':id', $id);
+        $stm->bindParam(':quantity', $quantity);
+        $stm->execute();
+        return $stm->rowCount();
     }
 }
