@@ -21,28 +21,28 @@ export default {
   },
   methods: {
     fetchProducts() {
-      Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-        params: { q: this.$route.query.q }
-      })
-        .then(response => {
-          console.log();
-          this.products = response.data.data;
+      if (this.$route.query.q) {
+        Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+          params: { q: this.$route.query.q }
         })
-        .catch(error => {
-          console.error(error);
-        });
+          .then(response => {
+            console.log();
+            this.products = response.data.data;
+          })
+          .catch(error => {
+            console.error(error);
+          });
+      }
     }
   },
   watch: {
     $route() {
-      if (this.$route.query.q) {
-        this.fetchProducts();
-      }
+      console.log("$routed changed");
+      this.fetchProducts();
     }
+  },
+  created() {
+    this.fetchProducts();
   }
-
-  // created() {
-  //
-  // }
 };
 </script>
