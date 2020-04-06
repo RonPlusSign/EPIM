@@ -1,36 +1,29 @@
 <template>
-  <products-list :products="products"></products-list>
+  <EProductsList :products="products" />
 </template>
 
 <script>
 import Axios from "axios";
-import EProductsList from "../components/EProductsList";
+import EProductsList from "@/components/EProductsList";
 
 export default {
   name: "Products",
-
-  props: ["title"],
-
+  components: {
+    EProductsList
+  },
   data() {
     return {
       products: [],
-      title: "?q=''"
+      title: "?q=hello"
     };
   },
-
-  components: {
-    "products-list": EProductsList
-  },
-
-  created: function() {
-    Axios.get(process.env.VUE_APP_API_URL + `products.php` + title)
-      .then(function(response) {
-        // console.log(response);
-        products = JSON.parse(response);
+  created() {
+    Axios.get(process.env.VUE_APP_API_URL + `products.php` + this.title)
+      .then((response) => {
+        this.products = response.data.data;
       })
-      .catch(function(error) {
-        // handle error
-        console.log(error);
+      .catch((error) =>{
+        console.error(error);
       });
   }
 };
