@@ -3,7 +3,7 @@
     <template v-if="!isEmpty">
       <EProductListItem v-for="product in products" :product="product" :key="product.id" />
     </template>
-    <h2 class="text-center">Nessun prodotto trovato!</h2>
+    <h2 class="text-center" v-else>Nessun prodotto trovato!</h2>
   </div>
 </template>
 

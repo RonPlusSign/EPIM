@@ -1,24 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Products from '../views/Products.vue'
-import ProductDetail from '../views/ProductDetail.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: { name: 'Products' }  // Better if default is "Categories"
+    redirect: { name: 'products' }  // Better if default is "Categories"
   },
   {
     path: '/prodotti',
-    name: 'Products',
+    name: 'products',
     component: Products
   },
   {
     path: '/prodotti/:id',
-    name: 'ProductDetail',
-    component: ProductDetail
+    name: 'productDetail',
+    component: () => import( /* webpackChunkName: "product" */ "../views/ProductDetail.vue")
   }
 ]
 

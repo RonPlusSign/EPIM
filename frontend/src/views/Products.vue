@@ -1,5 +1,8 @@
 <template>
-  <EProductsList :products="products" />
+  <EProductsList :products="products" v-if="$route.query.q" />
+  <div class="text-center pt-3" v-else>
+    <h1>BEST SELLER...</h1>
+  </div>
 </template>
 
 <script>
@@ -13,17 +16,33 @@ export default {
   },
   data() {
     return {
-      products: [],
+      products: []
     };
   },
-  created() {
-    Axios.get(process.env.VUE_APP_API_URL + `products.php`)
-      .then((response) => {
-        this.products = response.data.data;
+  methods: {
+    fetchProducts() {
+      Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+        params: { q: this.$route.query.q }
       })
-      .catch((error) =>{
-        console.error(error);
-      });
+        .then(response => {
+          console.log();
+          this.products = response.data.data;
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  },
+  watch: {
+    $route() {
+      if (this.$route.query.q) {
+        this.fetchProducts();
+      }
+    }
   }
+
+  // created() {
+  //
+  // }
 };
 </script>

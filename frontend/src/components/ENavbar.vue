@@ -21,17 +21,20 @@
     <!--------------------->
     <!---- Search bar ----->
     <!--------------------->
-
-    <v-text-field align="center"
+    <v-text-field
+      align="center"
       light
-      v-model="title"
+      v-model="productSearchQuery"
       label="Cerca un prodotto..."
       outlined
       rounded
       solo
-      clearable
-    ></v-text-field> <!-- append-icon="search" -->
-      
+      hide-details
+      dense
+      append-icon="mdi-magnify"
+      @click:append="searchProduct"
+      @keyup.enter.native="searchProduct"
+    ></v-text-field>
 
     <v-spacer></v-spacer>
 
@@ -42,7 +45,6 @@
       <span class="mr-2">Benvenuto, {{ user.name }}</span>
     </v-btn>
     <div v-else>
-      <v-btn href target="_blank" text>Registrati</v-btn>
       <v-btn href target="_blank" text>Login</v-btn>
     </div>
   </v-app-bar>
@@ -53,19 +55,37 @@
 <script>
 export default {
   name: "ENavbar",
-
   data() {
     return {
       logged: false,
-      user: { // TODO: make a request to login.php to see if the user is logged (and retrieve its data)
+      user: {
+        // TODO: make a request to login.php to see if the user is logged (and retrieve its data)
         name: "",
         id: null
       },
-      title: ""
+      productSearchQuery: ""
     };
+  },
+  methods: {
+    searchProduct() {
+      /**
+       * Block navigation if route is the same (same search) or search is empty string
+       */
+      if (
+        this.productSearchQuery.trim() !== "" &&
+        this.$route.name === "products" &&
+        this.$route.query.q !== this.productSearchQuery
+      ) {
+        this.$router.push({
+          name: "products",
+          query: { q: this.productSearchQuery }
+        });
+      }
+    }
+  },
+  created() {
+    this.productSearchQuery = this.$route.query.q;
   }
 };
 </script>
 
-<style scoped>
-</style>

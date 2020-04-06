@@ -27,3 +27,13 @@ export default {
   })
 };
 </script>
+
+
+<style>
+/*
+  Append icon not centering when v-text-input-field dense
+ */
+.v-text-field.v-input--dense .v-input__icon--append .v-icon {
+  margin-top: 1px !important;
+}
+</style>
