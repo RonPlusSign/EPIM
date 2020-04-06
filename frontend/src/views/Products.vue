@@ -1,22 +1,37 @@
 <template>
-  <div class="Products">
-    <v-row justify="center" align="center">
-      <v-col v-for="i in 20" :key="i" cols="3">
-        <v-card>
-          <v-card-title>
-            Prodotto
-          </v-card-title>
-          <v-card-text>
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-          </v-card-text>
-        </v-card>
-      </v-col>
-    </v-row>
-  </div>
+  <products-list :products="products"></products-list>
 </template>
 
 <script>
+import Axios from "axios";
+import EProductsList from "../components/EProductsList";
+
 export default {
-  name: "Products"
+  name: "Products",
+
+  props: ["title"],
+
+  data() {
+    return {
+      products: [],
+      title: "?q=''"
+    };
+  },
+
+  components: {
+    "products-list": EProductsList
+  },
+
+  created: function() {
+    Axios.get(process.env.VUE_APP_API_URL + `products.php` + title)
+      .then(function(response) {
+        // console.log(response);
+        products = JSON.parse(response);
+      })
+      .catch(function(error) {
+        // handle error
+        console.log(error);
+      });
+  }
 };
 </script>
