@@ -173,43 +173,43 @@ CREATE TABLE IF NOT EXISTS user_address
 
 ------------------------- Orders -------------------------
 
--- CREATE TABLE IF NOT EXISTS order
--- (
---     id            INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
---     user          INT(10) UNSIGNED NOT NULL,
---     address       INT(10) UNSIGNED NOT NULL,
---     phone_number  VARCHAR(64)      NOT NULL, -- Stored because it could be useful during the shipping process
---     timestamp     DATETIME         NOT NULL,
---     shipping_cost FLOAT            NOT NULL,
---     status        VARCHAR(64)      NOT NULL,
+CREATE TABLE IF NOT EXISTS order_history
+(
+    id            INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
+    user          INT(10) UNSIGNED NOT NULL,
+    address       INT(10) UNSIGNED NOT NULL,
+    phone_number  VARCHAR(64)      NOT NULL, -- Stored because it could be useful during the shipping process
+    timestamp     DATETIME         NOT NULL,
+    shipping_cost FLOAT            NOT NULL,
+    status        VARCHAR(64)      NOT NULL,
 
---     CONSTRAINT `order_pk` PRIMARY KEY (id),
---     CONSTRAINT `order_fk_user`
---         FOREIGN KEY (user) REFERENCES user (id)
---             ON DELETE RESTRICT
---             ON UPDATE CASCADE,
---     CONSTRAINT `order_fk_address`
---         FOREIGN KEY (address) REFERENCES address (id)
---             ON DELETE RESTRICT
---             ON UPDATE CASCADE
--- ) ENGINE = InnoDB;
+    CONSTRAINT `order_pk` PRIMARY KEY (id),
+    CONSTRAINT `order_fk_user`
+        FOREIGN KEY (user) REFERENCES user (id)
+            ON DELETE RESTRICT
+            ON UPDATE CASCADE,
+    CONSTRAINT `order_fk_address`
+        FOREIGN KEY (address) REFERENCES address (id)
+            ON DELETE RESTRICT
+            ON UPDATE CASCADE
+) ENGINE = InnoDB;
 
--- CREATE TABLE IF NOT EXISTS order_detail
--- (
---     order         INT(10) UNSIGNED NOT NULL,
---     product       INT(10) UNSIGNED,
---     quantity      INT(10) UNSIGNED NOT NULL,
---     product_title VARCHAR(128)     NOT NULL,
---     product_price FLOAT            NOT NULL,
---     brand_name    VARCHAR(128)     NOT NULL,
+CREATE TABLE IF NOT EXISTS order_detail
+(
+    order         INT(10) UNSIGNED NOT NULL,
+    product       INT(10) UNSIGNED,
+    quantity      INT(10) UNSIGNED NOT NULL,
+    product_title VARCHAR(128)     NOT NULL,
+    product_price FLOAT            NOT NULL,
+    brand_name    VARCHAR(128)     NOT NULL,
 
---     CONSTRAINT `order_detail_pk` PRIMARY KEY (order, product),
---     CONSTRAINT `order_detail_fk_order`
---         FOREIGN KEY (order) REFERENCES order (id)
---             ON DELETE CASCADE
---             ON UPDATE CASCADE,
---     CONSTRAINT `order_detail_fk_product`
---         FOREIGN KEY (product) REFERENCES product (id)
---             ON DELETE SET NULL
---             ON UPDATE CASCADE
--- ) ENGINE = InnoDB;
+    CONSTRAINT `order_detail_pk` PRIMARY KEY (order, product),
+    CONSTRAINT `order_detail_fk_order`
+        FOREIGN KEY (order) REFERENCES order_history (id)
+            ON DELETE CASCADE
+            ON UPDATE CASCADE,
+    CONSTRAINT `order_detail_fk_product`
+        FOREIGN KEY (product) REFERENCES product (id)
+            ON DELETE SET NULL
+            ON UPDATE CASCADE
+) ENGINE = InnoDB;
