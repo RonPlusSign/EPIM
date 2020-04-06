@@ -23,10 +23,10 @@ switch ($requestMethod) {
      *      - by price range    ?ps=x&pe=x  (price start and price end)
      *
      *  Order by:
-     *      - Order flag                    ?sort
+     *      - order by price                ?sort=price
+     *      - order by title                ?sort=title
      *      - Order ASC or DESC             ?asc or ?desc
-     *      - order by pric                 ?s-price
-     *      - order by titl                 ?s-title
+
      *
      *  Pagination: ?p=    (Example ?p=0 page one, it will show an arbitrary amount of products per page)
      * 
@@ -38,12 +38,12 @@ switch ($requestMethod) {
         // Check for sorting settings
         if (isset($_GET['sort'])) {
             $isAsc = true;
-            $orderBy = '';
+            $orderBy = 'title';
 
             if (isset($_GET['desc'])) $isAsc = false;
 
-            if (isset($_GET['s-price'])) $orderBy = 'price';
-            else if (isset($_GET['s-title'])) $orderBy = 'title';
+            if ($_GET['sort'] == 'price') $orderBy = 'price';
+            else if ($_GET['sort'] == 'title') $orderBy = 'title';
 
             $ph->setSortSettings(true, $isAsc, $orderBy);
         }
@@ -77,26 +77,79 @@ switch ($requestMethod) {
         }
         // Get single product
         else if (isset($_GET['id'])) {
-            echo json_encode(
-                $ph->getProduct($_GET['id'])
-            );
+            $product = $ph->getProduct($_GET['id']);
+
+            if (!$product) { echo json_encode( [ "success" => false, "info" => "Product not found" ]); http_response_code(404); }
+            else echo json_encode( $product );
+        } else if (empty($_GET)) {
+            http_response_code(400);
+            echo "Missing queries. Options:\n";
+            echo "\n?q= | ?c= | ?b | ?ps=x&pe=x";
+            echo "\n?sort= | ?asc or ?desc";
+            echo "\n?id= | ?p=";
         }
 
         break;
 
+
+        /**
+         *  POST:
+         * 
+         *  Set quantity of product: ?set-quantity&id=
+         *      - { "quantity": x }
+         * 
+         *  Add new product:
+         *      - Same json as returned in GET, without 'id', brand and category (name).
+         */
     case 'POST':
+        $json = json_decode(file_get_contents('php://input'));
 
         // Set product's quantity
         if (isset($_GET['set-quantity']) && isset($_GET['id'])) {
-            $json = json_decode(file_get_contents('php://input'));
-            echo json_encode(
-                array(
-                    "affectedRows" => $ph->setQuantity($_GET['id'], $json->quantity)
-                )
-            );
+            echo json_encode(array(
+                "success" => $ph->setQuantity($_GET['id'], $json->quantity) == 1 ? true : false
+            ));
+        } else {
+            echo json_encode(array(
+                "success" => $ph->addProduct($json) == 1 ? true : false
+            ));
         }
 
         break;
+
+
+        /**
+         *  Delete product: ?id=
+         */
+    case 'DELETE':
+        $json = json_decode(file_get_contents('php://input'));
+
+        if (isset($_GET['id'])) {
+            echo json_encode(array(
+                "success" => $ph->deleteProduct($_GET['id']) == 1 ? true : false
+            ));
+        }
+
+        break;
+
+
+        /**
+         *  Edit product: ?id
+         *  
+         *  Patch data of selected product. You can post only the desired changed values.
+         *  (same format as in POST)
+         */
+    case 'PATCH':
+        $json = json_decode(file_get_contents('php://input'));
+
+        if (isset($_GET['id'])) {
+            echo json_encode(array(
+                "success" => $ph->editProduct($_GET['id'], $json) == 1 ? true : false
+            ));
+        }
+
+        break;
+
 
 
     default:

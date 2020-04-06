@@ -116,7 +116,7 @@ class ProductsHandler
         if ($countResults) {
             $query = "SELECT count(*) as number_of_products FROM product";
         } else {
-            $query = "SELECT product.*, brand.name as brand, category.name as category FROM product";
+            $query = "SELECT product.*, brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product";
         }
 
         $query .= " INNER JOIN category ON product.category=category.id
@@ -209,10 +209,104 @@ class ProductsHandler
 
     public function setQuantity($id, $quantity)
     {
+        // TODO check login
         $stm = Database::$pdo->prepare("UPDATE product SET quantity=:quantity WHERE id=:id");
         $stm->bindParam(':id', $id);
         $stm->bindParam(':quantity', $quantity);
         $stm->execute();
         return $stm->rowCount();
+    }
+
+
+
+
+    /******************************
+     * ADD DELETE MODIFY Products *
+     ******************************/
+
+    /**
+     * Add a new product
+     * 
+     * @param stdClass $productJson An array containing the JSON with the product
+     */
+    public function addProduct($productJson)
+    {
+        // TODO check login
+        try {
+            $stm = Database::$pdo->prepare("INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand)
+                                            VALUES (:title, :description, :purchase_price, :sell_price, :recommended_price, :quantity, :category, :brand)");
+            $data = [
+                ':title' => $productJson->title,
+                ':description' => $productJson->description,
+                ':purchase_price' => $productJson->purchase_price,
+                ':sell_price' => $productJson->sell_price,
+                ':recommended_price' => $productJson->recommended_price,
+                ':quantity' => $productJson->quantity,
+                ':category' => $productJson->category,
+                ':brand' => $productJson->brand,
+            ];
+            $stm->execute($data);
+            return $stm->rowCount();
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
+    /**
+     * Delete a product
+     * 
+     * @param int $id The product's id
+     * @return int The row count of the query
+     */
+    public function deleteProduct($id)
+    {
+        // TODO check login
+        try {
+            $stm = Database::$pdo->prepare("DELETE FROM product WHERE product.id=:id");
+            $stm->bindParam(':id', $id);
+            $stm->execute();
+            return $stm->rowCount();
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
+    /**
+     * Edit a product.
+     * It will patch every parameter it will receive.
+     * Every other parameter will remain unchanged.
+     * 
+     * @param stdClass $newProductJson An array containing the JSON with the product
+     */
+    public function editProduct($id, $newProductJson)
+    {
+        // TODO check login
+        try {
+            $stm = Database::$pdo->prepare("UPDATE product
+                                            SET title               = COALESCE(:title,title)
+                                              , description         = COALESCE(:description,description)
+                                              , purchase_price      = COALESCE(:purchase_price,purchase_price)
+                                              , sell_price          = COALESCE(:sell_price,sell_price)
+                                              , recommended_price   = COALESCE(:recommended_price,recommended_price)
+                                              , quantity            = COALESCE(:quantity,quantity)
+                                              , category            = COALESCE(:category,category)
+                                              , brand               = COALESCE(:brand,brand)
+                                            WHERE id = :id");
+            $data = [
+                ':title' => $newProductJson->title,
+                ':description' => $newProductJson->description,
+                ':purchase_price' => $newProductJson->purchase_price,
+                ':sell_price' => $newProductJson->sell_price,
+                ':recommended_price' => $newProductJson->recommended_price,
+                ':quantity' => $newProductJson->quantity,
+                ':category' => $newProductJson->category,
+                ':brand' => $newProductJson->brand,
+                ':id' => +$id
+            ];
+            $stm->execute($data);
+            return $stm->rowCount();
+        } catch (\Exception $e) {
+            echo $e;
+        }
     }
 }
