@@ -14,11 +14,10 @@ export default {
   data() {
     return {
       products: [],
-      title: "?q=hello"
     };
   },
   created() {
-    Axios.get(process.env.VUE_APP_API_URL + `products.php` + this.title)
+    Axios.get(process.env.VUE_APP_API_URL + `products.php`)
       .then((response) => {
         this.products = response.data.data;
       })

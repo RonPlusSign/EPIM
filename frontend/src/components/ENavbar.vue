@@ -1,37 +1,69 @@
 <template>
-  <v-app-bar app color="primary" dark>
+  <v-app-bar app color="green darken-1" class="align-content-center" dark>
+    <!--------------->
+    <!---- Logo ----->
+    <!--------------->
     <div class="d-flex align-center">
       <v-img
-        alt="Vuetify Logo"
+        alt="EPIM Logo"
         class="shrink mr-2"
         contain
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+        src="https://www.freepnglogos.com/uploads/letter-e-design-logo-png-27.png"
         transition="scale-transition"
         width="40"
       />
 
-      <v-img
-        alt="Vuetify Name"
-        class="shrink mt-1 hidden-sm-and-down"
-        contain
-        min-width="100"
-        src="https://cdn.vuetifyjs.com/images/logos/vuetify-name-dark.png"
-        width="100"
-      />
+      <h1 class="hidden-sm-and-down">EPIM</h1>
     </div>
 
     <v-spacer></v-spacer>
 
-    <v-btn href="https://github.com/vuetifyjs/vuetify/releases/latest" target="_blank" text>
-      <span class="mr-2">Latest Release</span>
-      <v-icon>mdi-open-in-new</v-icon>
+    <!--------------------->
+    <!---- Search bar ----->
+    <!--------------------->
+
+    <v-text-field align="center"
+      light
+      v-model="title"
+      label="Cerca un prodotto..."
+      outlined
+      rounded
+      solo
+      clearable
+    ></v-text-field> <!-- append-icon="search" -->
+      
+
+    <v-spacer></v-spacer>
+
+    <!--------------------------------------->
+    <!---- User profile / login buttons ----->
+    <!--------------------------------------->
+    <v-btn v-if="logged" href target="_blank" text>
+      <span class="mr-2">Benvenuto, {{ user.name }}</span>
     </v-btn>
+    <div v-else>
+      <v-btn href target="_blank" text>Registrati</v-btn>
+      <v-btn href target="_blank" text>Login</v-btn>
+    </div>
   </v-app-bar>
 </template>
 
+
+
 <script>
 export default {
-    name: "ENavbar",
+  name: "ENavbar",
+
+  data() {
+    return {
+      logged: false,
+      user: { // TODO: make a request to login.php to see if the user is logged (and retrieve its data)
+        name: "",
+        id: null
+      },
+      title: ""
+    };
+  }
 };
 </script>
 

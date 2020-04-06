@@ -1,18 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Products from '../views/Products.vue'
+import ProductDetail from '../views/ProductDetail.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
   {
     path: '/',
-    redirect: { name: 'Products' }
+    redirect: { name: 'Products' }  // Better if default is "Categories"
   },
   {
     path: '/prodotti',
     name: 'Products',
     component: Products
+  },
+  {
+    path: '/prodotti/:id',
+    name: 'ProductDetail',
+    component: ProductDetail
   }
 ]
 
