@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar app color="green darken-1" class="align-content-center" dark>
+  <v-app-bar app color="primary" class="align-content-center" dark>
     <!--------------->
     <!---- Logo ----->
     <!--------------->
