@@ -7,7 +7,7 @@ Vue.use(VueRouter)
 const routes = [
   {
     path: '/',
-    redirect: { name: 'products' }  // Better if default is "Categories"
+    redirect: { name: 'products' }
   },
   {
     path: '/prodotti',
@@ -15,9 +15,24 @@ const routes = [
     component: Products
   },
   {
+    path: '/categorie',
+    name: 'categories',
+    component: () => import( /* webpackChunkName: "product" */ "../views/Categories.vue")
+  },
+  {
     path: '/prodotti/:id',
     name: 'productDetail',
     component: () => import( /* webpackChunkName: "product" */ "../views/ProductDetail.vue")
+  },
+  {
+    path: 'profilo',
+    name: 'profile',
+    component: () => import( /* webpackChunkName: "user" */ "../views/UserProfile.vue")
+  },
+  {
+    path: '/carrello',
+    name: 'cart',
+    component: () => import( /* webpackChunkName: "user" */ "../views/UserCart.vue")
   }
 ]
 

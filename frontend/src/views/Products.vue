@@ -1,7 +1,7 @@
 <template>
   <EProductsList :products="products" v-if="$route.query.q" />
   <div class="text-center pt-3" v-else>
-    <h1>BEST SELLER...</h1>
+    <h1>Prodotti più venduti</h1>
   </div>
 </template>
 
