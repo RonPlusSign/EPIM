@@ -8,26 +8,29 @@
       </v-container>
     </v-content>
 
-    <EFooter />
+    <EFooter class="d-none d-sm-flex" />
+
+    <EBottomNavbar class="d-flex d-sm-none" />
   </v-app>
 </template>
 
 <script>
 import ENavbar from "@/components/ENavbar";
 import EFooter from "@/components/EFooter.vue";
+import EBottomNavbar from "@/components/EBottomNavbar.vue";
 
 export default {
   name: "App",
   components: {
     ENavbar,
-    EFooter
+    EFooter,
+    EBottomNavbar,
   },
   data: () => ({
     //
-  })
+  }),
 };
 </script>
-
 
 <style>
 /*

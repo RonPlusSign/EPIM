@@ -1,5 +1,3 @@
-
-
 <template>
     <v-footer padless class="green darken-3 white--text">
       <v-spacer></v-spacer>
