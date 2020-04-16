@@ -4,23 +4,14 @@
       <!-------------------------------->
       <!---- Drawer button toggler ----->
       <!-------------------------------->
-      <v-btn
-        class="mr-1 hidden-xs-only"
-        icon
-        @click="drawerIsExpanded = !drawerIsExpanded"
-      >
+      <v-btn class="mr-1 hidden-xs-only" icon @click="drawerIsExpanded = !drawerIsExpanded">
         <v-icon large>mdi-menu</v-icon>
       </v-btn>
 
       <!--------------->
       <!---- Logo ----->
       <!--------------->
-      <v-btn
-        @click="$router.push('/').catch((err) => {})"
-        text
-        height="44px"
-        class="px-0"
-      >
+      <v-btn @click="$router.push('/').catch((err) => {})" text height="44px" class="px-0">
         <v-img
           alt="EPIM Logo"
           class="shrink"
@@ -82,8 +73,7 @@
               no-data-text="Nessuna categoria presente"
               prepend-icon="mdi-format-list-bulleted-square"
               label="Categoria"
-            >
-            </v-select>
+            ></v-select>
 
             <!-- Brand -->
             <v-select
@@ -95,8 +85,7 @@
               no-data-text="Nessuna marca presente"
               prepend-icon="mdi-tag"
               label="Marca"
-            >
-            </v-select>
+            ></v-select>
 
             <!-- Price range -->
             <p class="body mt-2 mb-1">Fascia di prezzo</p>
@@ -110,31 +99,24 @@
               class="align-center mt-12"
             >
               <!-- thumb labels value -->
-              <template v-slot:thumb-label="{ value }">
-                {{ value === priceRange.max ? "MAX" : value }}
-              </template>
+              <template
+                v-slot:thumb-label="{ value }"
+              >{{ value === priceRange.max ? "MAX" : value }}</template>
             </v-range-slider>
 
-            <!-- Products order -->
+            <!-- Products sorting method -->
             <v-select
-              clearable
-              v-model="selectedOrder"
-              :items="typesOfOrder"
+              v-model="selectedSortingTypeId"
+              :items="typesOfSorting"
               item-text="name"
-              item-value="type"
+              item-value="id"
               no-data-text="Nessun ordinamento possibile"
               prepend-icon="mdi-sort"
               label="Ordina per..."
-            >
-            </v-select>
+            ></v-select>
 
             <!-- Filters OK button -->
-            <v-btn
-              class="float-right mt-4 mb-3"
-              dark
-              color="blue"
-              @click="searchProducts"
-            >
+            <v-btn class="float-right mt-4 mb-3" dark color="blue" @click="searchProducts">
               Cerca
               <v-icon class="ml-2" dark>mdi-magnify</v-icon>
             </v-btn>
@@ -149,11 +131,7 @@
       <!----------------------------------------------------->
       <div class="hidden-xs-only">
         <div v-if="logged" class="hidden-sm-and-down">
-          <v-btn
-            @click="$router.replace('/profilo').catch((err) => {})"
-            target="_blank"
-            text
-          >
+          <v-btn @click="$router.replace('/profilo').catch((err) => {})" target="_blank" text>
             <span class="mr-2">Profilo di {{ user.name }}</span>
           </v-btn>
         </div>
@@ -179,33 +157,28 @@
     <!--------------------------------->
     <!------ Drawer (side menu) ------->
     <!--------------------------------->
-    <v-navigation-drawer
-      light
-      v-model="drawerIsExpanded"
-      class="hidden-xs-only"
-      app
-    >
-      <v-container width="100%" class="headline">{{
+    <v-navigation-drawer light v-model="drawerIsExpanded" class="hidden-xs-only" app>
+      <v-container width="100%" class="headline">
+        {{
         logged ? "Ciao," + user.name + "!" : "Benvenuto!"
-      }}</v-container>
+        }}
+      </v-container>
       <v-divider></v-divider>
 
       <!-- List of items -->
       <v-list dense nav class="py-0">
         <div v-for="item in drawerItems" :key="item.title">
-          <v-list-item
-            @click="$router.replace(item.route).catch((err) => {})"
-            class="py-1"
-            link
-          >
+          <v-list-item @click="$router.replace(item.route).catch((err) => {})" class="py-1" link>
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
-              <v-list-item-title class="subtitle-1">{{
+              <v-list-item-title class="subtitle-1">
+                {{
                 item.title
-              }}</v-list-item-title>
+                }}
+              </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
           <v-divider></v-divider>
@@ -216,6 +189,8 @@
 </template>
 
 <script>
+import Axios from "axios";
+
 export default {
   name: "ENavbar",
   data() {
@@ -228,106 +203,93 @@ export default {
         {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
-          route: "/categorie",
+          route: "/categorie"
         },
         { title: "Il tuo profilo", icon: "mdi-account", route: "/profilo" },
-        { title: "Logout", icon: "mdi-logout", route: "/logout" },
+        { title: "Logout", icon: "mdi-logout", route: "/logout" }
       ],
       // User values
       logged: false,
       user: {
         // TODO: make a request to login.php to see if the user is logged (and retrieve its data)
         name: "",
-        id: null,
+        id: null
       },
 
       // ----- Filters attributes -----
+      filtersChanged: false,
       // Title
       productSearchQuery: "",
       // Categories
-      categories: [
-        // { id: 5, name: "Phon" },
-        // { id: 6, name: "Auricolari" },
-        // { id: 7, name: "TV" },
-      ],
+      categories: [],
       selectedCategory: null,
       // Brands
-      brands: [
-        // { id: 1, name: "Samsung" },
-        // { id: 2, name: "Apple" },
-        // { id: 3, name: "Xiaomi" },
-      ],
+      brands: [],
       selectedBrand: null,
       // Price range
       priceRange: {
         min: 0,
         max: 500,
         interval: 25,
-        selectedRange: [0, 500],
+        selectedRange: [0, 500]
       },
       // Order types
-      typesOfOrder: [
-        // TODO: Add order types filter
+      typesOfSorting: [
+        {
+          id: 1,
+          name: "Migliore corrispondenza",
+          type: null,
+          sortMethod: null
+        },
+        { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
+        {
+          id: 3,
+          name: "Titolo (decrescente)",
+          type: "title",
+          sortMethod: "desc"
+        },
+        { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
+        {
+          id: 5,
+          name: "Prezzo (decrescente)",
+          type: "price",
+          sortMethod: "desc"
+        }
       ],
-      selectedOrder: null,
+      selectedSortingTypeId: 1
     };
   },
+  computed: {
+    selectedOrder() {
+      return this.typesOfSorting.filter(
+        element => element.id === this.selectedSortingTypeId
+      )[0];
+    }
+  },
   methods: {
-    filtersChanged() {
-      let changed =
-        // Title
-        (this.productSearchQuery !== "" &&
-          this.$route.query.q !== this.productSearchQuery.trim()) ||
-        // Category
-        (this.selectedCategory !== null &&
-          this.$route.query.c !== this.selectedCategory) ||
-        // Brand
-        (this.selectedBrand !== null &&
-          this.$route.query.b !== this.selectedBrand);
-
-      // console.log("1: ", changed);
-      if (changed) return changed;
-
-      // Price range
-      // min
-      changed =
-        (this.priceRange.selectedRange[0] !== this.priceRange.min &&
-          this.$route.query.ps === undefined) ||
-        this.priceRange.selectedRange[0] == this.$route.query.ps;
-
-      // console.log("2: ", changed);
-      if (changed) return changed;
-
-      // max
-      changed =
-        (this.priceRange.selectedRange[1] !== this.priceRange.max &&
-          this.$route.query.pe === undefined) ||
-        this.priceRange.selectedRange[1] == this.$route.query.pe;
-
-      // console.log("3: ", changed);
-      return changed;
-      // Order type
-    },
-
     searchProducts() {
       /**
        * Block navigation if route is the same (same search)
        * Also redirects to /prodotti when using searchbar
        */
-      if (this.filtersChanged()) {
+      if (this.filtersChanged) {
         var parameters = {};
 
+        // Title
         if (this.productSearchQuery.trim() !== "")
           parameters.q = this.productSearchQuery.trim();
 
+        // Category
         if (this.selectedCategory !== null) {
           parameters.c = this.selectedCategory;
         }
 
+        // Brand
         if (this.selectedBrand !== null) {
           parameters.b = this.selectedBrand;
         }
 
+        // Price range
         if (this.priceRange.selectedRange[0] !== this.priceRange.min) {
           parameters.ps = this.priceRange.selectedRange[0];
         }
@@ -336,17 +298,53 @@ export default {
           parameters.pe = this.priceRange.selectedRange[1];
         }
 
+        // Type of sorting
+        if (this.selectedOrder.type) {
+          parameters.sort = this.selectedOrder.type;
+        }
+
+        switch (this.selectedOrder.sortMethod) {
+          case "asc":
+            parameters.asc = null;
+            break;
+
+          case "desc":
+            parameters.desc = null;
+            break;
+
+          default:
+            break;
+        }
+
         this.$router.push({
           name: "products",
-          query: parameters,
+          query: parameters
         });
         console.log(this.$router.history.current.fullPath);
       }
-    },
+      this.filtersChanged = false;
+    }
   },
   created() {
-    // TODO: query to get all categories (to fill filters)
-    // TODO: query to get all brands (to fill filters)
+    // query to get all categories (to fill filters)
+    Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
+      .then(response => {
+        this.categories = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    // query to get all brands (to fill filters)
+    Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
+      .then(response => {
+        this.brands = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    // fill the selected filters values depending on the current query string
     if (this.$route.query.q !== undefined)
       this.productSearchQuery = this.$route.query.q;
     if (this.$route.query.ps !== undefined)
@@ -362,11 +360,29 @@ export default {
     if (this.$route.query.b !== undefined)
       this.selectedBrand = this.$route.query.b;
   },
+
+  watch: {
+    productSearchQuery() {
+      this.filtersChanged = true;
+    },
+    selectedCategory() {
+      this.filtersChanged = true;
+    },
+    selectedBrand() {
+      this.filtersChanged = true;
+    },
+
+    selectedSortingTypeId() {
+      this.filtersChanged = true;
+    },
+
+    priceRange: {
+      deep: true,
+      handler() {
+        this.filtersChanged = true;
+      }
+    }
+  }
 };
 </script>
 
-<style>
-.v-slider {
-  width: 300px;
-}
-</style>
