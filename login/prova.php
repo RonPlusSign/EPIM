@@ -1,6 +1,0 @@
-<?php 
-    /*
-        Author: daniel
-    */
-
-?>
