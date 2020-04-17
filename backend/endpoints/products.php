@@ -59,7 +59,7 @@ switch ($requestMethod) {
         }
 
         // Price range filter
-        if (isset($_GET['ps']) && isset($_GET['pe'])) {
+        if (isset($_GET['ps']) && isset($_GET['pe'])) { // -------------- TODO: make possible to receive only one of the values -------------- //
             $ph->setPriceRangeFilter(true, $_GET['ps'], $_GET['pe']);
         }
 
@@ -81,7 +81,7 @@ switch ($requestMethod) {
 
             if (!$product) { echo json_encode( [ "success" => false, "info" => "Product not found" ]); http_response_code(404); }
             else echo json_encode( $product );
-        } else if (empty($_GET)) {
+        } else if (empty($_GET)) {  // -------------- TODO: in case there isn't any filter, return the "best seller" items -------------- //
             http_response_code(400);
             echo "Missing queries. Options:\n";
             echo "\n?q= | ?c= | ?b | ?ps=x&pe=x";

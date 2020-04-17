@@ -12,36 +12,34 @@ import EProductsList from "@/components/EProductsList";
 export default {
   name: "Products",
   components: {
-    EProductsList,
+    EProductsList
   },
   data() {
     return {
-      products: [],
+      products: []
     };
   },
   methods: {
     fetchProducts() {
-      if (this.$route.query.q) {
-        Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-          params: { q: this.$route.query.q },
+      console.log(this.$route.query);
+      Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+        params: this.$route.query
+      })
+        .then(response => {
+          this.products = response.data.data;
         })
-          .then((response) => {
-            this.products = response.data.data;
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      }
-    },
+        .catch(error => {
+          console.error(error);
+        });
+    }
   },
   watch: {
     $route() {
-      // console.log("$routed changed");
       this.fetchProducts();
-    },
+    }
   },
   created() {
     this.fetchProducts();
-  },
+  }
 };
 </script>
