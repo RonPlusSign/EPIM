@@ -1,5 +1,5 @@
 <template>
-  <EProductsList :products="products" v-if="$route.query.q" />
+  <EProductsList class="Products" :products="products" v-if="$route.query.q" />
   <div class="text-center pt-3" v-else>
     <h1>Prodotti più venduti</h1>
   </div>
@@ -21,7 +21,6 @@ export default {
   },
   methods: {
     fetchProducts() {
-      console.log(this.$route.query);
       Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
         params: this.$route.query
       })

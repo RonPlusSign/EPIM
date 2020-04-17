@@ -1,0 +1,72 @@
+<!-- Cards grid view to show categories and brands list -->
+<!--
+  Prop "elements" must have this structure:
+[
+    {
+      "id": Number,
+      "name": String,
+      "type": "category" | "brand", // Used to redirect to the right products search
+      "imageUrl": "/url/to/image" // URL to an image of one product of this type
+    },
+    // ... // Other objects
+]
+-->
+
+<template>
+  <v-container fluid>
+    <v-layout cols="12" row wrap>
+      <v-flex class="mt-5 mb-3" xs12 sm6 md6 lg4 xl3 v-for="item in elements" :key="item.id">
+        <v-card class="mx-auto" max-width="330">
+          <v-img class="white--text align-end" :src="item.imageUrl ? item.imageUrl : ''"></v-img>
+          <v-card-title class="pt-3 pb-1">
+            <v-spacer></v-spacer>
+            {{item.name}}
+            <v-spacer></v-spacer>
+          </v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              class="mr-2 mb-2"
+              outlined
+              color="orange darken-3"
+              @click="routeToProductsWithFilter(item)"
+              target="_blank"
+            >
+              Esplora
+              <v-icon class="ml-2">mdi-arrow-right</v-icon>
+            </v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-flex>
+    </v-layout>
+  </v-container>
+</template>
+
+<script>
+export default {
+  name: "ECardsGrid",
+
+  props: {
+    elements: {
+      type: Array,
+      required: true
+    }
+  },
+
+  data() {
+    return {
+      //
+    };
+  },
+  methods: {
+    routeToProductsWithFilter(item) {
+      var param = item.type === "category" ? { c: item.id } : { b: item.id };
+      this.$router.push({ path: "/prodotti", query: param }).catch(() => {});
+    }
+  }
+};
+</script>
+
+<style scoped>
+</style>
