@@ -6,24 +6,27 @@ require_once __DIR__ . '/../lib/Bootstrap.php';
 
 switch ($requestMethod) {
     case 'GET':
-        
+        login()
         break;
  
     default:
         header("HTTP/1.0 405 Method Not Allowed");
         break;
 }
-function logged()
+
+function login($id, $name)
 {
-    if(!isset($_SESSION["logged"] ))
-    {
+    session_start();
+    
+    $answer = [
         $_SESSION["logged"] = true;
-    }
-}
+        "user" => [
+            "id" => $id
+            "name" => $name
+        ],
+    ];
 
-function login()
-{
-
+    return $answer;
 }
 
 function logout()
