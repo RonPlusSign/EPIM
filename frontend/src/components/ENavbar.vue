@@ -131,18 +131,23 @@
       <!----------------------------------------------------->
       <div class="hidden-xs-only d-flex">
         <div v-if="logged" class="hidden-sm-and-down">
-          <v-btn @click="$router.replace('/profilo').catch((err) => {})" target="_blank" class="mt-2" text>
+          <v-btn
+            @click="$router.replace('/profilo').catch((err) => {})"
+            target="_blank"
+            class="mt-2"
+            text
+          >
             <span class="mr-2">Profilo di {{ user.name }}</span>
           </v-btn>
         </div>
 
         <div v-else>
-          <v-btn target="_blank" class="px-0 mx-0" text>
+          <v-btn target="_blank" @click="isLoginDialogActive = true" class="px-0 mx-0" text>
             <h4 class="pt-1">Login</h4>
             <v-icon class="ml-2">mdi-account</v-icon>
           </v-btn>
         </div>
-        
+
         <v-btn
           v-if="logged"
           @click="$router.replace('/carrello').catch((err) => {})"
@@ -185,16 +190,24 @@
         </div>
       </v-list>
     </v-navigation-drawer>
+
+    <ELoginDialog
+      :isOpen="isLoginDialogActive"
+      @status-changed="(value) => { this.isLoginDialogActive = value}"
+    />
   </div>
 </template>
 
 <script>
 import Axios from "axios";
+import ELoginDialog from "@/components/ELoginDialog.vue";
 
 export default {
   name: "ENavbar",
+  components: { ELoginDialog },
   data() {
     return {
+      isLoginDialogActive: false,
       // Side menu
       drawerIsExpanded: false,
       drawerItems: [
@@ -218,7 +231,8 @@ export default {
       },
 
       // ----- Filters attributes -----
-      filtersChanged: false,
+      filtersChanged: false, // To make a new search only after some filters changed
+      savedFiltersFromURI: false, // needed to start watching for changes of filters only after fetching them from the URI
       // Title
       productSearchQuery: "",
       // Categories
@@ -360,24 +374,27 @@ export default {
     // TODO: Set the values depending on the current route query string of category and brand (currently not working)
     if (this.$route.query.c !== undefined)
       this.selectedCategory = this.$route.query.c;
+
     // Brand
     if (this.$route.query.b !== undefined)
       this.selectedBrand = this.$route.query.b;
+
+    this.savedFiltersFromURI = true;
   },
 
   watch: {
     productSearchQuery() {
-      this.filtersChanged = true;
+      if (this.savedFiltersFromURI) this.filtersChanged = true;
     },
     selectedCategory() {
-      this.filtersChanged = true;
+      if (this.savedFiltersFromURI) this.filtersChanged = true;
     },
     selectedBrand() {
-      this.filtersChanged = true;
+      if (this.savedFiltersFromURI) this.filtersChanged = true;
     },
 
     selectedSortingTypeId() {
-      this.filtersChanged = true;
+      if (this.savedFiltersFromURI) this.filtersChanged = true;
     },
 
     priceRange: {
