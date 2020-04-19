@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS product_image
 
 CREATE TABLE IF NOT EXISTS user
 (
-    id           INT(10) UNSIGNED NOT NULL,
+    id           INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     email        VARCHAR(128)     NOT NULL,
     name         VARCHAR(128)     NOT NULL,
     surname      VARCHAR(128)     NOT NULL,
