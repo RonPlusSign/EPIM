@@ -12,25 +12,22 @@ class loginHandler
     {
         $json = json_decode(file_get_contents('php://input'), true);
 
-        $passwordHash = password_hash($json["password"], PASSWORD_BCRYPT);
-
         try {
             $stm = Database::$pdo->prepare("SELECT * FROM user
-                                            WHERE user.email = :email
-                                            AND user.password = :userPassword");
+                                            WHERE user.email = :email");
             $stm->bindParam(':email', $json["email"]);
-            $stm->bindParam(':userPassword', $passwordHash);
             $stm->execute();
             $user = $stm->fetch(PDO::FETCH_ASSOC);
-
-            if (!$user) {
-                // User not found
-                http_response_code(403);
-            } else {
+            if(password_verify($json["password"], $user["password"]))
+            {
                 // User found
                 $_SESSION["logged"] = true;
                 $_SESSION["user_id"] = $user["id"];
                 http_response_code(204);
+            }
+            else{
+                // User not found
+                http_response_code(403);
             }
         } catch (\Exception $e) {
             echo $e;
@@ -56,24 +53,23 @@ class loginHandler
     static function checkAdmin()
     {
         $json = json_decode(file_get_contents('php://input'), true);
-        $passwordHash = password_hash($json["password"], PASSWORD_BCRYPT);
         try {
-            $stm = Database::$pdo->prepare("SELECT user.is_admin FROM user
+            $stm = Database::$pdo->prepare("SELECT user.is_admin, user.password FROM user
                                             WHERE user.email = :email
                                             AND user.password = :userPassword");
             $stm->bindParam(':email', $json["email"]);
             $stm->bindParam(':userPassword', $passwordHash);
             $stm->execute();
             $user = $stm->fetch(PDO::FETCH_ASSOC);
-            if($user["is_admin"] == true)
+            if($user["is_admin"] == true && password_verify($json["password"], $user["password"]))
             {
-                return true
+                return true;
             }
     
         } catch (\Exception $e) {
             echo $e;
         }
-        return false
+        return false;
     }
 
     function logout()
