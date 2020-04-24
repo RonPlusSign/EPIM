@@ -11,7 +11,12 @@
       <!--------------->
       <!---- Logo ----->
       <!--------------->
-      <v-btn @click="$router.push('/').catch((err) => {})" text height="44px" class="px-0">
+      <v-btn
+        @click="$router.push('/').catch((err) => {})"
+        text
+        height="44px"
+        class="px-0"
+      >
         <v-img
           alt="EPIM Logo"
           class="shrink"
@@ -99,9 +104,9 @@
               class="align-center mt-12"
             >
               <!-- thumb labels value -->
-              <template
-                v-slot:thumb-label="{ value }"
-              >{{ value === priceRange.max ? "MAX" : value }}</template>
+              <template v-slot:thumb-label="{ value }">{{
+                value === priceRange.max ? "MAX" : value
+              }}</template>
             </v-range-slider>
 
             <!-- Products sorting method -->
@@ -116,7 +121,12 @@
             ></v-select>
 
             <!-- Filters OK button -->
-            <v-btn class="float-right mt-4 mb-3" dark color="blue" @click="searchProducts">
+            <v-btn
+              class="float-right mt-4 mb-3"
+              dark
+              color="blue"
+              @click="searchProducts"
+            >
               Cerca
               <v-icon class="ml-2" dark>mdi-magnify</v-icon>
             </v-btn>
@@ -137,12 +147,17 @@
             class="mt-2"
             text
           >
-            <span class="mr-2">Profilo di {{ user.name }}</span>
+            <span class="mr-2">Profilo di {{ username }}</span>
           </v-btn>
         </div>
 
         <div v-else>
-          <v-btn target="_blank" @click="isLoginDialogActive = true" class="px-0 mx-0" text>
+          <v-btn
+            target="_blank"
+            @click="isLoginDialogActive = true"
+            class="px-0 mx-0"
+            text
+          >
             <h4 class="pt-1">Login</h4>
             <v-icon class="ml-2">mdi-account</v-icon>
           </v-btn>
@@ -164,25 +179,25 @@
     <!--------------------------------->
     <v-navigation-drawer light v-model="drawerIsExpanded" app>
       <v-container width="100%" class="headline">
-        {{
-        logged ? "Ciao," + user.name + "!" : "Benvenuto!"
-        }}
+        {{ logged ? "Ciao," + username + "!" : "Benvenuto!" }}
       </v-container>
       <v-divider></v-divider>
 
       <!-- List of items -->
       <v-list dense nav class="py-0">
         <div v-for="item in drawerItems" :key="item.title">
-          <v-list-item @click="$router.replace(item.route).catch((err) => {})" class="py-1" link>
+          <v-list-item
+            @click="$router.replace(item.route).catch((err) => {})"
+            class="py-1"
+            link
+          >
             <v-list-item-icon>
               <v-icon>{{ item.icon }}</v-icon>
             </v-list-item-icon>
 
             <v-list-item-content>
               <v-list-item-title class="subtitle-1">
-                {{
-                item.title
-                }}
+                {{ item.title }}
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
@@ -193,7 +208,16 @@
 
     <ELoginDialog
       :isOpen="isLoginDialogActive"
-      @status-changed="(value) => { this.isLoginDialogActive = value}"
+      @status-changed="
+        (value) => {
+          this.isLoginDialogActive = value;
+        }
+      "
+      @logged="
+        (value) => {
+          this.logged = value;
+        }
+      "
     />
   </div>
 </template>
@@ -216,19 +240,15 @@ export default {
         {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
-          route: "/categorie"
+          route: "/categorie",
         },
         { title: "Marche", icon: "mdi-tag", route: "/marche" },
         { title: "Il tuo profilo", icon: "mdi-account", route: "/profilo" },
-        { title: "Logout", icon: "mdi-logout", route: "/logout" }
+        { title: "Logout", icon: "mdi-logout", route: "/logout" },
       ],
       // User values
       logged: false,
-      user: {
-        // TODO: make a request to login.php to see if the user is logged (and retrieve its data)
-        name: "",
-        id: null
-      },
+      username: null, // TODO: make a request to user.php to get username
 
       // ----- Filters attributes -----
       filtersChanged: false, // To make a new search only after some filters changed
@@ -246,7 +266,7 @@ export default {
         min: 0,
         max: 500,
         interval: 25,
-        selectedRange: [0, 500]
+        selectedRange: [0, 500],
       },
       // Order types
       typesOfSorting: [
@@ -254,32 +274,32 @@ export default {
           id: 1,
           name: "Migliore corrispondenza",
           type: null,
-          sortMethod: null
+          sortMethod: null,
         },
         { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
         {
           id: 3,
           name: "Titolo (decrescente)",
           type: "title",
-          sortMethod: "desc"
+          sortMethod: "desc",
         },
         { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
         {
           id: 5,
           name: "Prezzo (decrescente)",
           type: "price",
-          sortMethod: "desc"
-        }
+          sortMethod: "desc",
+        },
       ],
-      selectedSortingTypeId: 1
+      selectedSortingTypeId: 1,
     };
   },
   computed: {
     selectedOrder() {
       return this.typesOfSorting.filter(
-        element => element.id === this.selectedSortingTypeId
+        (element) => element.id === this.selectedSortingTypeId
       )[0];
-    }
+    },
   },
   methods: {
     searchProducts() {
@@ -333,7 +353,7 @@ export default {
 
         this.$router.push({
           name: "products",
-          query: parameters
+          query: parameters,
         });
         console.log(
           "Search of products: ",
@@ -341,24 +361,24 @@ export default {
         );
       }
       this.filtersChanged = false;
-    }
+    },
   },
   created() {
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then(response => {
+      .then((response) => {
         this.categories = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then(response => {
+      .then((response) => {
         this.brands = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
@@ -401,9 +421,8 @@ export default {
       deep: true,
       handler() {
         this.filtersChanged = true;
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
-

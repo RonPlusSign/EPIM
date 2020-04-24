@@ -1,6 +1,8 @@
 <!--
 This component requires the "isOpen" prop to get its status.
-There's the needing to handle the custom "status-changed" event.
+There's the needing to handle 2 custom events:
+- "status-changed" (open or closed) event
+"logged" event (user login went ok)
 
 example:
 <ELoginDialog :isOpen="isLoginDialogActive" @status-changed="(value) => { this.isLoginDialogActive = value}" />
@@ -10,12 +12,22 @@ example:
   <!---------------------->
   <!------- Dialog ------->
   <!---------------------->
-  <v-dialog align="center" justify="center" v-model="isDialogActive" width="400">
+  <v-dialog
+    align="center"
+    justify="center"
+    v-model="isDialogActive"
+    width="400"
+  >
     <v-card class="pb-5" :loading="loading">
       <!--------------------->
       <!------- Title ------->
       <!--------------------->
-      <v-card-title class="primary darken-1 white--text mb-3">Effettua il login</v-card-title>
+      <v-card-title class="primary darken-1 white--text mb-3"
+        >Effettua il login
+        <v-spacer />
+        <v-btn @click="isDialogActive = !isDialogActive" icon color="white"><v-icon>mdi-close</v-icon></v-btn>
+        </v-card-title
+      >
       <!-------------------->
       <!------- Body ------->
       <!-------------------->
@@ -41,7 +53,9 @@ example:
             name="password"
             prepend-icon="mdi-lock"
             :rules="[rules.required]"
-            type="password"
+            :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="() => (isPasswordVisible = !isPasswordVisible)"
+            :type="isPasswordVisible ? 'text' : 'password'"
             required
           />
         </v-form>
@@ -67,23 +81,24 @@ import Axios from "axios";
 export default {
   name: "ELoginDialog",
   props: {
-    isOpen: { type: Boolean, required: true }
+    isOpen: { type: Boolean, required: true },
   },
   data() {
     return {
       user: {
         email: "",
-        password: ""
+        password: "",
       },
       loading: false,
       isDialogActive: false,
+      isPasswordVisible: false,
       rules: {
-        required: value => !!value || "Inserisci questo parametro",
-        email: value => {
+        required: (value) => !!value || "Inserisci questo parametro",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "E-mail non valida";
-        }
-      }
+        },
+      },
     };
   },
   watch: {
@@ -92,7 +107,7 @@ export default {
     },
     isDialogActive() {
       this.$emit("status-changed", this.isDialogActive);
-    }
+    },
   },
 
   methods: {
@@ -102,16 +117,24 @@ export default {
 
         Axios.post(process.env.VUE_APP_API_URL + `login.php`, {
           email: this.user.email,
-          password: this.user.password
-        }).then(response => {
-          console.log(response.status);
-        });
-        // TODO: make a POST request to login.php and wait for its response
+          password: this.user.password,
+        })
+          .then((/*response*/) => {
+            // Disable loading effect after the server response
+            this.loading = false;
 
-        // Disable loading effect after the server response
-        // this.loading = false;
+            this.isDialogActive = false;
+
+            this.$emit("logged", true);
+          })
+          .catch((error) => {
+            // Disable loading effect after the server response
+            this.loading = false;
+
+            console.log(error);
+          });
       }
-    }
-  }
+    },
+  },
 };
 </script>

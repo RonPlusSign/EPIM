@@ -14,16 +14,14 @@ class LoginHandler
      */
     function doLogin($email, $password)
     {
-
         try {
             $stm = Database::$pdo->prepare("SELECT * FROM user
                                             WHERE user.email = :email");
             $stm->bindParam(':email', $email);
             $stm->execute();
             $user = $stm->fetch(PDO::FETCH_ASSOC);
-            
-            echo json_encode($user);
 
+            
             if (password_verify(trim($password), $user["password"])) {
                 // User found
                 $_SESSION["logged"] = true;
@@ -47,7 +45,7 @@ class LoginHandler
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             // user is logged
             return true;
-        }
+        } else return false;
     }
 
     /**
