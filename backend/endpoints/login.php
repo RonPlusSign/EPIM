@@ -2,14 +2,35 @@
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 header("Content-Type: application/json");
-require_once __DIR__ . '/../classes/loginHandler.php';
+require_once __DIR__ . '/../classes/LoginHandler.php';
 
 session_start();
-$lh = new loginHandler();
+$lh = new LoginHandler();
 
 switch ($requestMethod) {
     case 'GET':
-        $lh->checkLogin();
+        if (isset($_GET["logout"])) { // Do logout
+            LoginHandler::logout();
+        } else if (isset($_GET["admin"])) {    // Check if the user is an admin
+            try {
+                $answer = [
+                    "logged" => $lh->checkLogin(),
+                    "isAdmin" => false
+                ];
+
+                if ($lh->checkAdmin()) {
+                    $answer["isAdmin"] = true;
+                }
+                echo json_encode($answer);
+            } catch (\Exception $e) {
+            }
+        } else {   // Normal user login
+            $answer = [
+                "logged" => $lh->checkLogin()
+            ];
+            echo json_encode($answer);
+        }
+
         break;
 
     case 'POST': // user is logging on the website
@@ -19,10 +40,15 @@ switch ($requestMethod) {
             "password": "myPassword"
         }
         */
-        $lh->doLogin();
+
+        $json = json_decode(file_get_contents('php://input'), true);
+
+        if ($lh->doLogin($json["email"], $json["password"]))
+            http_response_code(204);
+        else http_response_code(403);
         break;
     default:
-        header("HTTP/1.0 405 Method Not Allowed");
+        http_response_code(405);
         break;
 }
 

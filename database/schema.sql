@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS user
     surname      VARCHAR(128)     NOT NULL,
     phone_number VARCHAR(128)     NOT NULL,
     password     VARCHAR(255)     NOT NULL,
-    is_admin     BOOLEAN          NOT NULL,
+    is_admin     BOOLEAN          NOT NULL DEFAULT FALSE,
 
     CONSTRAINT `user_pk` PRIMARY KEY (id),
     CONSTRAINT `email` UNIQUE (email)

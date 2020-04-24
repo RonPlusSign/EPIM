@@ -133,33 +133,51 @@ Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue
 ## login.php
 
 `login.php GET`
+
 #### Response:
 
 ```jsonc
-{ 
-    "logged": true // if the user is logged
+{
+  "logged": true // if the user is logged
 }
 ```
 
 ---
 
 `login.php?logout GET`
+
 #### Response:
+
 HTTP 200: successful
+
+---
+
+`login.php?admin GET`
+
+#### Response:
+
+```jsonc
+{
+  "logged": true, // TRUE if the user is logged
+  "isAdmin": false // TRUE if the user is an admin AND is logged
+}
+```
 
 ---
 
 `login.php POST`
 
 JSON in post:
+
 ```jsonc
 {
-"email": "pippo@baudo.it",
-"password": "myPassword"
+  "email": "pippo@baudo.it",
+  "password": "myPassword"
 }
 ```
 
 #### Response:
+
 HTTP 200: successful
 
 HTTP 403: error
