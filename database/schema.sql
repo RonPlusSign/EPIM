@@ -5,13 +5,12 @@ USE epim;
 -- Table names and attributes: lowercase and snake_case
 
 -- Always define foreign and primary keys as CONSTRAINT
--- Costraints name conventions:
+-- Constraints name conventions:
 -- CONSTRAINT `this_table_fk_referenced_table` FOREIGN KEY(column) REFERENCES [...];
 -- CONSTRAINT `this_table_pk` PRIMARY KEY(columns);
 -- CONSTRAINT `this_table_unique` UNIQUE(columns);    # You can also use `column_name_unique`
 
-
-------------------------- Products -------------------------
+-- ----------------------- Products ----------------------- --
 
 CREATE TABLE IF NOT EXISTS category
 (
@@ -67,7 +66,7 @@ CREATE TABLE IF NOT EXISTS product_image
 ) ENGINE = InnoDB;
 
 
-------------------------- Users -------------------------
+-- ----------------------- Users ----------------------- --
 
 CREATE TABLE IF NOT EXISTS user
 (
@@ -101,7 +100,7 @@ CREATE TABLE IF NOT EXISTS cart
 ) ENGINE = InnoDB;
 
 
-------------------------- Addresses -------------------------
+-- ----------------------- Addresses ----------------------- --
 
 CREATE TABLE IF NOT EXISTS region
 (
@@ -171,7 +170,7 @@ CREATE TABLE IF NOT EXISTS user_address
 ) ENGINE = InnoDB;
 
 
-------------------------- Orders -------------------------
+-- ----------------------- Orders ----------------------- --
 
 CREATE TABLE IF NOT EXISTS order_history
 (
@@ -196,20 +195,22 @@ CREATE TABLE IF NOT EXISTS order_history
 
 CREATE TABLE IF NOT EXISTS order_detail
 (
-    order         INT(10) UNSIGNED NOT NULL,
-    product       INT(10) UNSIGNED,
+    order_id      INT(10) UNSIGNED NOT NULL,
+    product_id    INT(10) UNSIGNED DEFAULT NULL,
     quantity      INT(10) UNSIGNED NOT NULL,
     product_title VARCHAR(128)     NOT NULL,
     product_price FLOAT            NOT NULL,
     brand_name    VARCHAR(128)     NOT NULL,
 
-    CONSTRAINT `order_detail_pk` PRIMARY KEY (order, product),
+    CONSTRAINT `order_detail_pk` PRIMARY KEY (order_id, product_id),
+
     CONSTRAINT `order_detail_fk_order`
-        FOREIGN KEY (order) REFERENCES order_history (id)
+        FOREIGN KEY (order_id) REFERENCES order_history (id)
             ON DELETE CASCADE
             ON UPDATE CASCADE,
+
     CONSTRAINT `order_detail_fk_product`
-        FOREIGN KEY (product) REFERENCES product (id)
-            ON DELETE SET NULL
+        FOREIGN KEY (product_id) REFERENCES product (id)
             ON UPDATE CASCADE
+            ON DELETE NO ACTION -- It should be SET NULL, but InnoDB seems to refuse it (?)
 ) ENGINE = InnoDB;
