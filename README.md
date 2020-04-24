@@ -181,3 +181,32 @@ JSON in post:
 HTTP 200: successful
 
 HTTP 403: error
+
+## user.php
+
+`user.php POST` = User registration
+
+JSON in post:
+
+```jsonc
+{
+  "name": "Pippo",
+  "surname": "Baudo",
+  "email": "pippo@baudo.it",
+  "phoneNumber": "1231231230", // Can be of 9 or 10 chars
+  "password": "myPassword"
+}
+```
+
+#### Response:
+
+HTTP 200: successful
+
+HTTP 400: general error (Bad Request)
+
+Optional response:
+
+```jsonc
+// Example in case of a registration with an email already taken
+{ "error": "E-mail already in use." }
+```
