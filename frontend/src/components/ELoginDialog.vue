@@ -5,7 +5,7 @@ There's the needing to handle 2 custom events:
 "logged" event (user login went ok)
 
 example:
-<ELoginDialog :isOpen="isLoginDialogActive" @status-changed="(value) => { this.isLoginDialogActive = value}" />
+<ELoginDialog :isOpen="isLoginDialogActive" @logged="(value) => {this.logged = value}" @status-changed="(value) => { this.isLoginDialogActive = value}" />
 -->
 
 <template>
@@ -25,9 +25,10 @@ example:
       <v-card-title class="primary darken-1 white--text mb-3"
         >Effettua il login
         <v-spacer />
-        <v-btn @click="isDialogActive = !isDialogActive" icon color="white"><v-icon>mdi-close</v-icon></v-btn>
-        </v-card-title
-      >
+        <v-btn @click="isDialogActive = !isDialogActive" icon color="white"
+          ><v-icon>mdi-close</v-icon></v-btn
+        >
+      </v-card-title>
       <!-------------------->
       <!------- Body ------->
       <!-------------------->
@@ -59,6 +60,18 @@ example:
             required
           />
         </v-form>
+
+        <v-alert
+          v-model="error"
+          dense
+          prominent
+          dismissible
+          type="error"
+          border="top"
+          color="red darken-1"
+        >
+          Questo account non esiste. Hai inserito i dati correttamente?
+        </v-alert>
       </v-card-text>
       <!----------------------->
       <!------- Buttons ------->
@@ -92,6 +105,7 @@ export default {
       loading: false,
       isDialogActive: false,
       isPasswordVisible: false,
+      error: false,
       rules: {
         required: (value) => !!value || "Inserisci questo parametro",
         email: (value) => {
@@ -122,7 +136,6 @@ export default {
           .then((/*response*/) => {
             // Disable loading effect after the server response
             this.loading = false;
-
             this.isDialogActive = false;
 
             this.$emit("logged", true);
@@ -130,7 +143,7 @@ export default {
           .catch((error) => {
             // Disable loading effect after the server response
             this.loading = false;
-
+            this.error = true;
             console.log(error);
           });
       }

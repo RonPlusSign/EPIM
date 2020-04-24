@@ -179,12 +179,13 @@
     <!--------------------------------->
     <v-navigation-drawer light v-model="drawerIsExpanded" app>
       <v-container width="100%" class="headline">
-        {{ logged ? "Ciao," + username + "!" : "Benvenuto!" }}
+        {{ logged ? `Ciao, ${username}!` : "Benvenuto!" }}
       </v-container>
       <v-divider></v-divider>
 
       <!-- List of items -->
       <v-list dense nav class="py-0">
+        <!-- Dynamic routes (from data()) -->
         <div v-for="item in drawerItems" :key="item.title">
           <v-list-item
             @click="$router.replace(item.route).catch((err) => {})"
@@ -203,6 +204,20 @@
           </v-list-item>
           <v-divider></v-divider>
         </div>
+
+        <!-- Logout list item -->
+        <v-list-item @click="logout()" class="py-1" link>
+          <v-list-item-icon>
+            <v-icon>mdi-logout</v-icon>
+          </v-list-item-icon>
+
+          <v-list-item-content>
+            <v-list-item-title class="subtitle-1">
+              Logout
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider></v-divider>
       </v-list>
     </v-navigation-drawer>
 
@@ -244,7 +259,6 @@ export default {
         },
         { title: "Marche", icon: "mdi-tag", route: "/marche" },
         { title: "Il tuo profilo", icon: "mdi-account", route: "/profilo" },
-        { title: "Logout", icon: "mdi-logout", route: "/logout" },
       ],
       // User values
       logged: false,
@@ -362,6 +376,13 @@ export default {
       }
       this.filtersChanged = false;
     },
+    logout() {
+      Axios.get(process.env.VUE_APP_API_URL + `login.php?logout`).catch((err) =>
+        console.log(err)
+      );
+
+      this.$router.replace("/");
+    },
   },
   created() {
     // query to get all categories (to fill filters)
@@ -421,6 +442,11 @@ export default {
       deep: true,
       handler() {
         this.filtersChanged = true;
+      },
+      logged(newVal) {
+        if (newVal) {
+          // TODO: Make a GET request to user.php to get the username
+        }
       },
     },
   },

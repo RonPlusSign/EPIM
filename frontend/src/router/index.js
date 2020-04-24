@@ -1,50 +1,55 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
-import Products from '../views/Products.vue'
+import Vue from "vue";
+import VueRouter from "vue-router";
+import Products from "../views/Products.vue";
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
-    path: '/',
-    redirect: { name: 'products' }
+    path: "/",
+    redirect: { name: "products" },
   },
   {
-    path: '/prodotti',
-    name: 'products',
-    component: Products
+    path: "/prodotti",
+    name: "products",
+    component: Products,
   },
   {
-    path: '/categorie',
-    name: 'categories',
-    component: () => import( /* webpackChunkName: "product" */ "../views/Categories.vue")
+    path: "/categorie",
+    name: "categories",
+    component: () =>
+      import(/* webpackChunkName: "product" */ "../views/Categories.vue"),
   },
   {
-    path: '/marche',
-    name: 'brands',
-    component: () => import( /* webpackChunkName: "product" */ "../views/Brands.vue")
+    path: "/marche",
+    name: "brands",
+    component: () =>
+      import(/* webpackChunkName: "product" */ "../views/Brands.vue"),
   },
   {
-    path: '/prodotti/:id',
-    name: 'productDetail',
-    component: () => import( /* webpackChunkName: "product" */ "../views/ProductDetail.vue")
+    path: "/prodotti/:id",
+    name: "productDetail",
+    component: () =>
+      import(/* webpackChunkName: "product" */ "../views/ProductDetail.vue"),
   },
   {
-    path: '/profilo',
-    name: 'profile',
-    component: () => import( /* webpackChunkName: "user" */ "../views/UserProfile.vue")
+    path: "/profilo",
+    name: "profile",
+    component: () =>
+      import(/* webpackChunkName: "user" */ "../views/UserProfile.vue"),
   },
   {
-    path: '/carrello',
-    name: 'cart',
-    component: () => import( /* webpackChunkName: "user" */ "../views/UserCart.vue")
-  }
-]
+    path: "/carrello",
+    name: "cart",
+    component: () =>
+      import(/* webpackChunkName: "user" */ "../views/UserCart.vue"),
+  },
+];
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: "history",
   base: process.env.BASE_URL,
-  routes
-})
+  routes,
+});
 
-export default router
+export default router;
