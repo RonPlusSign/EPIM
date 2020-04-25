@@ -10,8 +10,9 @@ $lh = new LoginHandler();
 switch ($requestMethod) {
     case 'GET':
         if (isset($_GET["logout"])) { // Do logout
-            LoginHandler::logout();
-        } else if (isset($_GET["admin"])) {    // Check if the user is an admin
+            $lh->logout();
+        } 
+        else if (isset($_GET["admin"])) {    // Check if the user is an admin
             try {
                 $answer = [
                     "logged" => $lh->checkLogin(),
@@ -21,16 +22,15 @@ switch ($requestMethod) {
                 if ($lh->checkAdmin()) {
                     $answer["isAdmin"] = true;
                 }
-                echo json_encode($answer);
             } catch (\Exception $e) {
             }
-        } else {   // Normal user login
+        } 
+        else {   // Normal user login
             $answer = [
                 "logged" => $lh->checkLogin()
             ];
-            echo json_encode($answer);
         }
-
+        echo json_encode($answer);
         break;
 
     case 'POST': // user is logging on the website
