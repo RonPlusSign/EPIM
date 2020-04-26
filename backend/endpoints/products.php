@@ -79,8 +79,10 @@ switch ($requestMethod) {
         else if (isset($_GET['id'])) {
             $product = $ph->getProduct($_GET['id']);
 
-            if (!$product) { echo json_encode( [ "success" => false, "info" => "Product not found" ]); http_response_code(404); }
-            else echo json_encode( $product );
+            if (!$product) {
+                echo json_encode(["success" => false, "info" => "Product not found"]);
+                http_response_code(404);
+            } else echo json_encode($product);
         } else if (empty($_GET)) {  // -------------- TODO: in case there isn't any filter, return the "best seller" items -------------- //
             http_response_code(400);
             echo "Missing queries. Options:\n";
@@ -125,6 +127,7 @@ switch ($requestMethod) {
         $json = json_decode(file_get_contents('php://input'));
 
         if (isset($_GET['id'])) {
+            // -------------- TODO: Also delete the images of that product -------------- //
             echo json_encode(array(
                 "success" => $ph->deleteProduct($_GET['id']) == 1 ? true : false
             ));
