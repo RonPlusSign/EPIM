@@ -195,14 +195,15 @@ CREATE TABLE IF NOT EXISTS order_history
 
 CREATE TABLE IF NOT EXISTS order_detail
 (
+    id INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
     order_id      INT(10) UNSIGNED NOT NULL,
-    product_id    INT(10) UNSIGNED DEFAULT NULL,
+    product_id    INT(10) UNSIGNED,
     quantity      INT(10) UNSIGNED NOT NULL,
     product_title VARCHAR(128)     NOT NULL,
     product_price FLOAT            NOT NULL,
     brand_name    VARCHAR(128)     NOT NULL,
 
-    CONSTRAINT `order_detail_pk` PRIMARY KEY (order_id, product_id),
+    CONSTRAINT `order_detail_pk` PRIMARY KEY (id),
 
     CONSTRAINT `order_detail_fk_order`
         FOREIGN KEY (order_id) REFERENCES order_history (id)
@@ -211,6 +212,6 @@ CREATE TABLE IF NOT EXISTS order_detail
 
     CONSTRAINT `order_detail_fk_product`
         FOREIGN KEY (product_id) REFERENCES product (id)
+            ON DELETE SET NULL
             ON UPDATE CASCADE
-            ON DELETE NO ACTION -- It should be SET NULL, but InnoDB seems to refuse it (?)
 ) ENGINE = InnoDB;
