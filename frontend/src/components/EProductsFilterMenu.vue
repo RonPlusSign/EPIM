@@ -72,11 +72,19 @@
           label="Ordina per..."
         ></v-select>
 
-        <!-- Filters OK button -->
-        <v-btn class="float-right mt-4 mb-3" dark color="blue" @click="searchProducts">
-          Cerca
-          <v-icon class="ml-2" dark>mdi-magnify</v-icon>
-        </v-btn>
+        <v-row class="mx-1 mb-3 mt-2">
+          <!-- Filters Clear button -->
+          <v-btn color="red lighten-1" dark @click="clearFilters">
+            Cancella filtri
+            <v-icon class="ml-2" dark>mdi-delete</v-icon>
+          </v-btn>
+          <v-spacer />
+          <!-- Filters OK button -->
+          <v-btn dark color="blue" @click="searchProducts">
+            Cerca
+            <v-icon class="ml-2" dark>mdi-magnify</v-icon>
+          </v-btn>
+        </v-row>
       </v-container>
     </v-menu>
   </div>
@@ -234,6 +242,14 @@ export default {
     },
     searchProducts() {
       this.$emit("search");
+    },
+    clearFilters() {
+      this.activeFilters = {
+        selectedCategory: null,
+        selectedBrand: null,
+        priceRange: [0, 500],
+        selectedSortingTypeId: 1
+      };
     }
   }
 };
