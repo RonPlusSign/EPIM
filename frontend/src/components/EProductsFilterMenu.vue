@@ -1,0 +1,240 @@
+<template>
+  <!---------------------------------------->
+  <!---- Filter button & filter inputs ----->
+  <!---------------------------------------->
+  <div class="text-center">
+    <v-menu offset-y :close-on-content-click="false">
+      <!-- filters menu toggler -->
+      <template v-slot:activator="{ on }">
+        <v-btn icon dark v-on="on">
+          <v-icon>mdi-filter</v-icon>
+        </v-btn>
+      </template>
+
+      <!------------------------------->
+      <!----------- filters ----------->
+      <!------------------------------->
+      <v-container class="white">
+        <h3 class="mb-1">Filtri di ricerca</h3>
+        <v-divider></v-divider>
+
+        <!-- Category -->
+        <v-select
+          clearable
+          v-model="activeFilters.selectedCategory"
+          :items="categories"
+          item-text="name"
+          item-value="id"
+          no-data-text="Nessuna categoria presente"
+          prepend-icon="mdi-format-list-bulleted-square"
+          label="Categoria"
+        ></v-select>
+
+        <!-- Brand -->
+        <v-select
+          clearable
+          v-model="activeFilters.selectedBrand"
+          :items="brands"
+          item-text="name"
+          item-value="id"
+          no-data-text="Nessuna marca presente"
+          prepend-icon="mdi-tag"
+          label="Marca"
+        ></v-select>
+
+        <!-- Price range -->
+        <p class="body mt-2 mb-1">Fascia di prezzo</p>
+        <v-range-slider
+          v-model="activeFilters.priceRange"
+          :max="priceRange.max"
+          :min="priceRange.min"
+          :step="priceRange.interval"
+          hide-details
+          thumb-label="always"
+          class="align-center mt-12"
+        >
+          <!-- thumb labels value -->
+          <template v-slot:thumb-label="{ value }">
+            {{
+            value === priceRange.max ? "MAX" : value
+            }}
+          </template>
+        </v-range-slider>
+
+        <!-- Products sorting method -->
+        <v-select
+          v-model="activeFilters.selectedSortingTypeId"
+          :items="typesOfSorting"
+          item-text="name"
+          item-value="id"
+          no-data-text="Nessun ordinamento possibile"
+          prepend-icon="mdi-sort"
+          label="Ordina per..."
+        ></v-select>
+
+        <!-- Filters OK button -->
+        <v-btn class="float-right mt-4 mb-3" dark color="blue" @click="searchProducts">
+          Cerca
+          <v-icon class="ml-2" dark>mdi-magnify</v-icon>
+        </v-btn>
+      </v-container>
+    </v-menu>
+  </div>
+</template>
+
+<script>
+import Axios from "axios";
+
+export default {
+  data() {
+    return {
+      // ----- Filters attributes -----
+      filtersChanged: false, // To make a new search only after some filters changed
+      savedFiltersFromURI: false, // needed to start watching for changes of filters only after fetching them from the URI
+      // Title
+      // Categories
+      categories: [],
+      // Brands
+      brands: [],
+      // Price range
+      priceRange: {
+        min: 0,
+        max: 500,
+        interval: 25
+      },
+      // Order types
+      typesOfSorting: [
+        {
+          id: 1,
+          name: "Migliore corrispondenza",
+          type: null,
+          sortMethod: null
+        },
+        { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
+        {
+          id: 3,
+          name: "Titolo (decrescente)",
+          type: "title",
+          sortMethod: "desc"
+        },
+        { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
+        {
+          id: 5,
+          name: "Prezzo (decrescente)",
+          type: "price",
+          sortMethod: "desc"
+        }
+      ],
+
+      activeFilters: {
+        selectedCategory: null,
+        selectedBrand: null,
+        priceRange: [0, 500],
+        selectedSortingTypeId: 1
+      }
+    };
+  },
+  computed: {
+    selectedOrder() {
+      return this.typesOfSorting.filter(
+        element => element.id === this.activeFilters.selectedSortingTypeId
+      )[0];
+    }
+  },
+  created() {
+    // query to get all categories (to fill filters)
+    Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
+      .then(response => {
+        this.categories = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    // query to get all brands (to fill filters)
+    Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
+      .then(response => {
+        this.brands = response.data;
+      })
+      .catch(error => {
+        console.error(error);
+      });
+
+    // fill the selected filters values depending on the current query string
+    if (this.$route.query.ps !== undefined)
+      this.activeFilters.priceRange[0] = this.$route.query.ps;
+    if (this.$route.query.pe !== undefined)
+      this.activeFilters.priceRange[1] = this.$route.query.pe;
+    // Category
+
+    // TODO: Set the values of category and brand depending on the current route query string (currently not working)
+    if (this.$route.query.c !== undefined)
+      this.activeFilters.selectedCategory = this.$route.query.c;
+
+    // Brand
+    if (this.$route.query.b !== undefined)
+      this.activeFilters.selectedBrand = this.$route.query.b;
+
+    this.savedFiltersFromURI = true;
+  },
+
+  watch: {
+    activeFilters: {
+      deep: true,
+      handler() {
+        // this handler is also called if the filters are retrieved by the parameters in the URI, so we emit the value only if the change is after that process
+        if (this.savedFiltersFromURI)
+          this.$emit("filters-changed", this.formatFilters());
+      }
+    }
+  },
+  methods: {
+    formatFilters() {
+      // Method that returns an object with the attributes that follow the request format
+      // Also check if the filters are defined and not null
+      var formattedFilters = {};
+      // Category
+      if (this.activeFilters.selectedCategory !== null) {
+        formattedFilters.c = this.activeFilters.selectedCategory;
+      }
+
+      // Brand
+      if (this.activeFilters.selectedBrand !== null) {
+        formattedFilters.b = this.activeFilters.selectedBrand;
+      }
+
+      // Price range
+      if (this.activeFilters.priceRange[0] !== this.priceRange.min) {
+        formattedFilters.ps = this.activeFilters.priceRange[0];
+      }
+
+      if (this.activeFilters.priceRange[1] !== this.priceRange.max) {
+        formattedFilters.pe = this.activeFilters.priceRange[1];
+      }
+
+      // Type of sorting
+      if (this.selectedOrder && this.selectedOrder.type) {
+        formattedFilters.sort = this.selectedOrder.type;
+
+        switch (this.selectedOrder.sortMethod) {
+          case "asc":
+            formattedFilters.asc = null;
+            break;
+
+          case "desc":
+            formattedFilters.desc = null;
+            break;
+
+          default:
+            break;
+        }
+      }
+
+      return formattedFilters;
+    },
+    searchProducts() {
+      this.$emit("search");
+    }
+  }
+};
+</script>
