@@ -1,3 +1,17 @@
+<!--
+Menu that manages the products search filters selection.
+
+It emits 2 events:
+"filters-changed": when the value of a filter changes
+"search": when the search button is clicked
+
+Example of usage:
+
+<EProductsFilterMenu
+  @filters-changed="newFilters => {}"
+  @search="searchProducts()"
+/>
+-->
 <template>
   <!---------------------------------------->
   <!---- Filter button & filter inputs ----->
@@ -63,7 +77,7 @@
 
         <!-- Products sorting method -->
         <v-select
-          v-model="activeFilters.selectedSortingTypeId"
+          v-model="activeFilters.selectedSortingMethodId"
           :items="typesOfSorting"
           item-text="name"
           item-value="id"
@@ -138,14 +152,15 @@ export default {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingTypeId: 1
+        selectedSortingMethodId: 1
       }
     };
   },
   computed: {
-    selectedOrder() {
+    selectedSortingMethod() {
+      // Represents the selected sorting method of the array typesOfSorting
       return this.typesOfSorting.filter(
-        element => element.id === this.activeFilters.selectedSortingTypeId
+        element => element.id === this.activeFilters.selectedSortingMethodId
       )[0];
     }
   },
@@ -221,10 +236,10 @@ export default {
       }
 
       // Type of sorting
-      if (this.selectedOrder && this.selectedOrder.type) {
-        formattedFilters.sort = this.selectedOrder.type;
+      if (this.selectedSortingMethod && this.selectedSortingMethod.type) {
+        formattedFilters.sort = this.selectedSortingMethod.type;
 
-        switch (this.selectedOrder.sortMethod) {
+        switch (this.selectedSortingMethod.sortMethod) {
           case "asc":
             formattedFilters.asc = null;
             break;
@@ -248,7 +263,7 @@ export default {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingTypeId: 1
+        selectedSortingMethodId: 1
       };
     }
   }

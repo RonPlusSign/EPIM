@@ -1,3 +1,11 @@
+<!--
+This component requires 3 props:
+
+"drawerExpanded" (Boolean): to check if the drawer has to be expanded (it can be toggled from outside this component if necessary)
+"logged" (Boolean): to show a different message depending if the user is logged or not
+"username" (String): to show the user name at the top of the component (required, but it also accepts an empty string)
+-->
+
 <template>
   <!--------------------------------->
   <!------ Drawer (side menu) ------->
@@ -79,6 +87,7 @@ export default {
 
   watch: {
     drawerExpanded(value) {
+      // Sync the prop with the value coming from outside
       this.isExpanded = value;
     },
     isExpanded(value) {
@@ -88,6 +97,7 @@ export default {
 
   methods: {
     logout() {
+      // GET request to login.php?logout
       Axios.get(process.env.VUE_APP_API_URL + `login.php?logout`).catch(err =>
         console.log(err)
       );

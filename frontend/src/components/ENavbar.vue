@@ -1,9 +1,9 @@
 <template>
   <div>
     <v-app-bar app color="primary" class="align-content-center" dark>
-      <!-------------------------------->
-      <!---- Drawer button toggler ----->
-      <!-------------------------------->
+      <!------------------------------------------->
+      <!---- Navigation drawer button toggler ----->
+      <!------------------------------------------->
       <v-btn class="mr-1" icon @click="isDrawerExpanded = !isDrawerExpanded">
         <v-icon large>mdi-menu</v-icon>
       </v-btn>
@@ -89,7 +89,6 @@
         </v-btn>
       </div>
     </v-app-bar>
-
     <!---------------------------->
     <!---- Navigation drawer ----->
     <!---------------------------->
@@ -99,7 +98,6 @@
       :logged="logged"
       @toggle="value => isDrawerExpanded = value"
     />
-
     <!----------------------->
     <!---- Login dialog ----->
     <!----------------------->
@@ -167,6 +165,7 @@ export default {
       this.filtersChanged = false;
     },
     checkFilters(newFilters) {
+      // check if filters are changed
       if (this.filters !== newFilters) {
         this.filtersChanged = true;
         this.filters = newFilters;
