@@ -11,21 +11,19 @@ switch ($requestMethod) {
     case 'GET':
         if (isset($_GET["logout"])) { // Do logout
             $lh->logout();
-        } 
-        else if (isset($_GET["admin"])) {    // Check if the user is an admin
+        } else if (isset($_GET["admin"])) {    // Check if the user is an admin
             try {
                 $answer = [
                     "logged" => $lh->checkLogin(),
                     "isAdmin" => false
                 ];
 
-                if ($lh->checkAdmin()) {
+                if ($lh->isAdmin()) {
                     $answer["isAdmin"] = true;
                 }
             } catch (\Exception $e) {
             }
-        } 
-        else {   // Normal user login
+        } else {   // Normal user login
             $answer = [
                 "logged" => $lh->checkLogin()
             ];

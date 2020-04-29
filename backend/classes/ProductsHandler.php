@@ -207,14 +207,20 @@ class ProductsHandler
 
 
 
+    /**
+     * @return Boolean false if not logged as admin
+     */
     public function setQuantity($id, $quantity)
     {
-        // TODO check login
-        $stm = Database::$pdo->prepare("UPDATE product SET quantity=:quantity WHERE id=:id");
-        $stm->bindParam(':id', $id);
-        $stm->bindParam(':quantity', $quantity);
-        $stm->execute();
-        return $stm->rowCount();
+        if (LoginHandler::isAdmin()) {
+            $stm = Database::$pdo->prepare("UPDATE product SET quantity=:quantity WHERE id=:id");
+            $stm->bindParam(':id', $id);
+            $stm->bindParam(':quantity', $quantity);
+            $stm->execute();
+            return $stm->rowCount();
+        } else {
+            return false;
+        }
     }
 
 
@@ -231,24 +237,27 @@ class ProductsHandler
      */
     public function addProduct($productJson)
     {
-        // TODO check login
-        try {
-            $stm = Database::$pdo->prepare("INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand)
+        if (LoginHandler::isAdmin()) {
+            try {
+                $stm = Database::$pdo->prepare("INSERT INTO product (title, description, purchase_price, sell_price, recommended_price, quantity, category, brand)
                                             VALUES (:title, :description, :purchase_price, :sell_price, :recommended_price, :quantity, :category, :brand)");
-            $data = [
-                ':title' => $productJson->title,
-                ':description' => $productJson->description,
-                ':purchase_price' => $productJson->purchase_price,
-                ':sell_price' => $productJson->sell_price,
-                ':recommended_price' => $productJson->recommended_price,
-                ':quantity' => $productJson->quantity,
-                ':category' => $productJson->category,
-                ':brand' => $productJson->brand,
-            ];
-            $stm->execute($data);
-            return $stm->rowCount();
-        } catch (\Exception $e) {
-            echo $e;
+                $data = [
+                    ':title' => $productJson->title,
+                    ':description' => $productJson->description,
+                    ':purchase_price' => $productJson->purchase_price,
+                    ':sell_price' => $productJson->sell_price,
+                    ':recommended_price' => $productJson->recommended_price,
+                    ':quantity' => $productJson->quantity,
+                    ':category' => $productJson->category,
+                    ':brand' => $productJson->brand,
+                ];
+                $stm->execute($data);
+                return $stm->rowCount();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -260,14 +269,17 @@ class ProductsHandler
      */
     public function deleteProduct($id)
     {
-        // TODO check login
-        try {
-            $stm = Database::$pdo->prepare("DELETE FROM product WHERE product.id=:id");
-            $stm->bindParam(':id', $id);
-            $stm->execute();
-            return $stm->rowCount();
-        } catch (\Exception $e) {
-            echo $e;
+        if (LoginHandler::isAdmin()) {
+            try {
+                $stm = Database::$pdo->prepare("DELETE FROM product WHERE product.id=:id");
+                $stm->bindParam(':id', $id);
+                $stm->execute();
+                return $stm->rowCount();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -280,9 +292,9 @@ class ProductsHandler
      */
     public function editProduct($id, $newProductJson)
     {
-        // TODO check login
-        try {
-            $stm = Database::$pdo->prepare("UPDATE product
+        if (LoginHandler::isAdmin()) {
+            try {
+                $stm = Database::$pdo->prepare("UPDATE product
                                             SET title               = COALESCE(:title,title)
                                               , description         = COALESCE(:description,description)
                                               , purchase_price      = COALESCE(:purchase_price,purchase_price)
@@ -292,21 +304,24 @@ class ProductsHandler
                                               , category            = COALESCE(:category,category)
                                               , brand               = COALESCE(:brand,brand)
                                             WHERE id = :id");
-            $data = [
-                ':title' => $newProductJson->title,
-                ':description' => $newProductJson->description,
-                ':purchase_price' => $newProductJson->purchase_price,
-                ':sell_price' => $newProductJson->sell_price,
-                ':recommended_price' => $newProductJson->recommended_price,
-                ':quantity' => $newProductJson->quantity,
-                ':category' => $newProductJson->category,
-                ':brand' => $newProductJson->brand,
-                ':id' => +$id
-            ];
-            $stm->execute($data);
-            return $stm->rowCount();
-        } catch (\Exception $e) {
-            echo $e;
+                $data = [
+                    ':title' => $newProductJson->title,
+                    ':description' => $newProductJson->description,
+                    ':purchase_price' => $newProductJson->purchase_price,
+                    ':sell_price' => $newProductJson->sell_price,
+                    ':recommended_price' => $newProductJson->recommended_price,
+                    ':quantity' => $newProductJson->quantity,
+                    ':category' => $newProductJson->category,
+                    ':brand' => $newProductJson->brand,
+                    ':id' => +$id
+                ];
+                $stm->execute($data);
+                return $stm->rowCount();
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        } else {
+            return false;
         }
     }
 
@@ -334,7 +349,7 @@ class ProductsHandler
 
 
             $stm->bindParam(':productsPerPage', self::$productsPerPage);
-            
+
             $limitOffset = $this->pageNumber * self::$productsPerPage;
             $stm->bindParam(':limitOffset', $limitOffset);
 

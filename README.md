@@ -467,9 +467,9 @@ Removes a product from the user's cart
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
-## products.php
+# products.php
 
 `products.php GET`
 
@@ -479,6 +479,7 @@ Get the list of products bases on a filter
 - by category `?c=`
 - by brand `?b=`
 - by price range `?ps=x&pe=x` (price start and/or price end)
+- by sales `?sales` (the only valid settings are ?asc or ?desc and ?p)
 
 Order by:
 
@@ -602,7 +603,7 @@ Adds a new product
 
 `products.php POST?set-quantity&id=[productId] POST`
 
-Set quantity of product (user must be logged and admin)
+Set quantity of product (user must be logged as admin)
 
 #### Request
 
@@ -671,7 +672,9 @@ Deletes an image from the server
 - HTTP 403: error (Not logged)
 
 
-## orders.php (to be defined)
+<br>
+
+# orders.php (to be defined)
 
 *//TODO: Define orders methods*
 

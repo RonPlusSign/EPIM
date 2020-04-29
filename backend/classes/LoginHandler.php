@@ -12,7 +12,7 @@ class LoginHandler
      * Checks if the user exists and sets the $_SESSION["logged"] & $_SESSION["user_id"]
      * @return TRUE if the login was successful, FALSE otherwise
      */
-    function doLogin($email, $password)
+    static public function doLogin($email, $password)
     {
         try {
             $stm = Database::$pdo->prepare("SELECT * FROM user
@@ -21,7 +21,7 @@ class LoginHandler
             $stm->execute();
             $user = $stm->fetch(PDO::FETCH_ASSOC);
 
-            
+
             if (password_verify(trim($password), $user["password"])) {
                 // User found
                 $_SESSION["logged"] = true;
@@ -40,7 +40,7 @@ class LoginHandler
      * Checks if the user is logged ($_SESSION["logged"] === true)
      * @return TRUE if the user is logged in, FALSE otherwise
      */
-    static function checkLogin()
+    static public function checkLogin()
     {
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             // user is logged
@@ -52,7 +52,7 @@ class LoginHandler
      * Checks if the user is an admin
      * @return TRUE if the user is an admin, FALSE otherwise
      */
-    static function checkAdmin()
+    static public function isAdmin()
     {
         try {
             $stm = Database::$pdo->prepare("SELECT user.is_admin FROM user
@@ -71,7 +71,7 @@ class LoginHandler
     /**
      * Destroys the session
      */
-    static function logout()
+    static public function logout()
     {
         session_destroy();
         http_response_code(200);
