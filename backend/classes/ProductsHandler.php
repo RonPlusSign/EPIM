@@ -75,7 +75,7 @@ class ProductsHandler
      * @param float $minimum Minimum price
      * @param float $maximum Maximum price
      */
-    public function setPriceRangeFilter($isActive, $minimum = 0, $maximum = 0)
+    public function setPriceRangeFilter($isActive, $minimum = 0, $maximum = PHP_FLOAT_MAX)
     {
         $this->isPriceRangeFilter = $isActive;
         $this->priceRangeFilterMin = $minimum;
