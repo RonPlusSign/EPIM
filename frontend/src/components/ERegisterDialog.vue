@@ -219,7 +219,7 @@ export default {
             // Disable loading effect after the server response
             this.loading = false;
             this.error = true;
-            console.log(error);
+            console.error(error);
           });
       }
     },

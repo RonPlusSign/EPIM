@@ -21,6 +21,7 @@ switch ($requestMethod) {
      *      - by category       ?c=
      *      - by brand          ?b=
      *      - by price range    ?ps=x&pe=x  (price start and price end)
+     *      - by sales          ?sales      (the only valid settings are ?asc or ?desc and ?p)
      *
      *  Order by:
      *      - order by price                ?sort=price
@@ -83,10 +84,19 @@ switch ($requestMethod) {
                 echo json_encode(["success" => false, "info" => "Product not found"]);
                 http_response_code(404);
             } else echo json_encode($product);
-        } else if (empty($_GET)) {  // -------------- TODO: in case there isn't any filter, return the "best seller" items -------------- //
+        }
+        // Get best selling
+        else if (isset($_GET['sales'])) {
+            $products = $ph->getBestSelling();
+
+            echo json_encode($products);
+        }
+
+        // Display help message
+        else if (empty($_GET)) {
             http_response_code(400);
             echo "Missing queries. Options:\n";
-            echo "\n?q= | ?c= | ?b | ?ps=x&pe=x";
+            echo "\n?q= | ?c= | ?b | ?ps=x&pe=x | ?sales";
             echo "\n?sort= | ?asc or ?desc";
             echo "\n?id= | ?p=";
         }

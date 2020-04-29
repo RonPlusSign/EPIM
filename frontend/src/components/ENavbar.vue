@@ -157,10 +157,6 @@ export default {
           name: "products",
           query: { q, ...this.filters }
         });
-        console.log(
-          "Search of products: ",
-          this.$router.history.current.fullPath
-        );
       }
       this.filtersChanged = false;
     },

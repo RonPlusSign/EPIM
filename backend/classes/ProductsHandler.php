@@ -309,4 +309,39 @@ class ProductsHandler
             echo $e;
         }
     }
+
+
+    /**
+     *  Get best-selling products
+     * 
+     *  (If sortSetting is set to ASC it will return the worst selling)
+     */
+    public function getBestSelling()
+    {
+
+        try {
+            $query = "SELECT COUNT(*) as product_sales FROM product p 
+                      INNER JOIN order_detail od ON p.id = od.product_id 
+                      GROUP BY p.id
+                      ORDER BY product_sales ";
+
+            // If no sort settings -> DESC
+            $this->isSort && $this->isOrderAsc ? $query .= "ASC" : $query .= "DESC";
+
+            $query .= " LIMIT :limitOffset, :productsPerPage";
+
+            $stm = Database::$pdo->prepare($query);
+
+
+            $stm->bindParam(':productsPerPage', self::$productsPerPage);
+            
+            $limitOffset = $this->pageNumber * self::$productsPerPage;
+            $stm->bindParam(':limitOffset', $limitOffset);
+
+            $stm->execute();
+            return $stm->fetch(PDO::FETCH_ASSOC);
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
 }
