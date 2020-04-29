@@ -5,27 +5,26 @@ header("Content-Type: application/json");
 require_once __DIR__ . '/../classes/LoginHandler.php';
 
 session_start();
-$lh = new LoginHandler();
 
 switch ($requestMethod) {
     case 'GET':
         if (isset($_GET["logout"])) { // Do logout
-            $lh->logout();
+            loginHandler::logout();  //li sto facendo utilizzare la funzione di login handler senza la creazione di un oggetto
         } else if (isset($_GET["admin"])) {    // Check if the user is an admin
             try {
                 $answer = [
-                    "logged" => $lh->checkLogin(),
+                    "logged" => loginHandler::isLogged(),
                     "isAdmin" => false
                 ];
 
-                if ($lh->isAdmin()) {
+                if (loginHandler::isAdmin()) {
                     $answer["isAdmin"] = true;
                 }
             } catch (\Exception $e) {
             }
         } else {   // Normal user login
             $answer = [
-                "logged" => $lh->checkLogin()
+                "logged" => loginHandler::isLogged()
             ];
         }
         echo json_encode($answer);
@@ -41,7 +40,7 @@ switch ($requestMethod) {
 
         $json = json_decode(file_get_contents('php://input'), true);
 
-        if ($lh->doLogin($json["email"], $json["password"]))
+        if (loginHandler::doLogin($json["email"], $json["password"]))
             http_response_code(204);
         else http_response_code(403);
         break;
