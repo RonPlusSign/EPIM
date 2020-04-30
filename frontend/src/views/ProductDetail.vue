@@ -3,18 +3,14 @@
   <div class="ProductDetail">
     <v-row cols="12">
       <v-col justify="center" align="center" xs="12" sm="12" md="6" lg="5" xl="4">
-        <!----------------------------------->
-        <!----- Product images carousel ----->
-        <!----------------------------------->
+        <!-- Product images carousel -->
         <EImagesCarousel :images="product.images" />
       </v-col>
       <v-col xs="12" sm="12" md="6" lg="7" xl="8">
-        <!------ Product info ------>
-
         <!-- Title -->
         <h3 class="title">{{ product.title }}</h3>
         <!-- Brand -->
-        <p class="subtitle-2">
+        <p class="subtitle-2 mb-2">
           di
           <a
             @click="
@@ -23,12 +19,14 @@
           >{{ product.brandName }}</a>
         </p>
         <!-- Price -->
-        <p class="subtitle-1">
+        <p class="subtitle-1 mb-2">
           Prezzo:
-          <span class="font-weight-medium">{{ product.sellPrice }} €</span>
+          <span
+            class="font-weight-medium orange--text text--darken-3"
+          >{{ product.sellPrice }} €</span>
         </p>
         <!-- Category -->
-        <p class="body">
+        <p class="body mb-2">
           Categoria:
           <a
             @click="
@@ -39,7 +37,27 @@
           >{{ product.categoryName }}</a>
         </p>
         <!-- Quantity available -->
-        <p class="body">Quantità disponibile: {{ product.quantity }}</p>
+        <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
+
+        <!-- Add to cart buttons -->
+        <v-row cols="12">
+          <v-col xs="12" sm="3" md="4" lg="2" xl="2">
+            <ENumberInput
+              :value="selectedQuantity"
+              :min="0"
+              :max="product.quantity"
+              :caption="'Quantità'"
+              @change="newValue => selectedQuantity = newValue"
+            />
+          </v-col>
+          <v-col justify-self="start" align-self="end" xs="12" sm="6" md="8" lg="10" xl="10">
+            <v-btn class="left"  color="success" :disabled="selectedQuantity === 0">
+              Aggiungi al carrello
+              <v-icon right dark>mdi-cart</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+
         <!-- Description -->
         <p class="body">{{ product.description }}</p>
       </v-col>
@@ -50,10 +68,11 @@
 <script>
 import Axios from "axios";
 import EImagesCarousel from "@/components/EImagesCarousel.vue";
+import ENumberInput from "@/components/ENumberInput.vue";
 
 export default {
   name: "ProductDetail",
-  components: { EImagesCarousel },
+  components: { EImagesCarousel, ENumberInput },
   data() {
     return {
       product: {
@@ -69,7 +88,8 @@ export default {
         categoryName: "Nessuna categoria",
         brandId: null,
         brandName: "Nessuna marca"
-      }
+      },
+      selectedQuantity: 0
     };
   },
   created() {

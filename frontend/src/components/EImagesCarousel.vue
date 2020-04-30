@@ -19,7 +19,7 @@
       <v-carousel-item class="grey lighten-4" v-if="this.images.length === 0">
         <v-img
           ratio="1"
-          class="mx-auto"
+          class="image mx-auto"
           height="420"
           width="420"
           src="@/assets/Product Not Found.png"
@@ -73,5 +73,9 @@ export default {
 .overlayImage {
   max-height: 80vh;
   max-width: 80vw;
+}
+
+.image {
+  scale: 0.9;
 }
 </style>
