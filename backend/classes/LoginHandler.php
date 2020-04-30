@@ -40,7 +40,7 @@ class LoginHandler
      * Checks if the user is logged ($_SESSION["logged"] === true)
      * @return TRUE if the user is logged in, FALSE otherwise
      */
-    static public function checkLogin()
+    static public function isLogged()
     {
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             // user is logged
