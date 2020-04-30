@@ -39,8 +39,8 @@
         <!-- Quantity available -->
         <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
 
-        <!-- Add to cart buttons -->
         <v-row cols="12">
+          <!-- Select quantity input -->
           <v-col xs="12" sm="3" md="4" lg="2" xl="2">
             <ENumberInput
               :value="selectedQuantity"
@@ -50,8 +50,9 @@
               @change="newValue => selectedQuantity = newValue"
             />
           </v-col>
+          <!-- Add to cart button -->
           <v-col justify-self="start" align-self="end" xs="12" sm="6" md="8" lg="10" xl="10">
-            <v-btn class="left"  color="success" :disabled="selectedQuantity === 0">
+            <v-btn color="success" :disabled="selectedQuantity === 0">
               Aggiungi al carrello
               <v-icon right dark>mdi-cart</v-icon>
             </v-btn>
