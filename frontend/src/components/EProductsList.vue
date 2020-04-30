@@ -1,7 +1,11 @@
 <template>
   <div class="EProductListItem">
     <template v-if="!isEmpty">
-      <EProductListItem v-for="product in products" :product="product" :key="product.id" />
+      <EProductListItem
+        v-for="product in products"
+        :product="product"
+        :key="product.id"
+      />
     </template>
     <h2 class="text-center" v-else>Nessun prodotto trovato!</h2>
   </div>
@@ -13,18 +17,18 @@ import EProductListItem from "@/components/EProductListItem";
 export default {
   name: "EProductsList",
   components: {
-    EProductListItem
+    EProductListItem,
   },
   props: {
     products: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
-    isEmpty: function() {
+    isEmpty: function () {
       return this.products.length === 0;
-    }
-  }
+    },
+  },
 };
 </script>

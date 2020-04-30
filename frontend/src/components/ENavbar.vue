@@ -11,12 +11,17 @@
       <!--------------->
       <!---- Logo ----->
       <!--------------->
-      <v-btn @click="$router.push('/').catch((err) => {})" text height="44px" class="px-0">
+      <v-btn
+        @click="$router.push('/').catch((err) => {})"
+        text
+        height="44px"
+        class="px-0"
+      >
         <v-img
           alt="EPIM Logo"
           class="shrink"
           contain
-          src="https://www.freepnglogos.com/uploads/letter-e-design-logo-png-27.png"
+          src="/epim-logo.png"
           transition="scale-transition"
           width="38"
         />
@@ -48,7 +53,7 @@
       <!---- Product search filters button and menu ----->
       <!------------------------------------------------->
       <EProductsFilterMenu
-        @filters-changed="newFilters => checkFilters(newFilters)"
+        @filters-changed="(newFilters) => checkFilters(newFilters)"
         @search="searchProducts()"
       />
 
@@ -72,7 +77,12 @@
 
         <div v-else>
           <!-- Login button -->
-          <v-btn target="_blank" @click="isLoginDialogActive = true" class="px-0 mx-0" text>
+          <v-btn
+            target="_blank"
+            @click="isLoginDialogActive = true"
+            class="px-0 mx-0"
+            text
+          >
             <h4 class="pt-1">Login</h4>
             <v-icon class="ml-2">mdi-account</v-icon>
           </v-btn>
@@ -96,7 +106,7 @@
       :drawerExpanded="isDrawerExpanded"
       :username="username"
       :logged="logged"
-      @toggle="value => isDrawerExpanded = value"
+      @toggle="(value) => (isDrawerExpanded = value)"
     />
     <!----------------------->
     <!---- Login dialog ----->
@@ -138,7 +148,7 @@ export default {
       filters: {},
       // User values
       logged: false,
-      username: "" // TODO: make a request to user.php to get username
+      username: "", // TODO: make a request to user.php to get username
     };
   },
 
@@ -155,7 +165,7 @@ export default {
 
         this.$router.push({
           name: "products",
-          query: { q, ...this.filters }
+          query: { q, ...this.filters },
         });
       }
       this.filtersChanged = false;
@@ -166,7 +176,7 @@ export default {
         this.filtersChanged = true;
         this.filters = newFilters;
       }
-    }
+    },
   },
 
   watch: {
@@ -178,11 +188,11 @@ export default {
     },
     productSearchQuery() {
       this.filtersChanged = true;
-    }
+    },
   },
   created() {
     if (this.$route.query.q !== undefined)
       this.productSearchQuery = this.$route.query.q;
-  }
+  },
 };
 </script>

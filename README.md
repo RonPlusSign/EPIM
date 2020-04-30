@@ -539,7 +539,7 @@ Response format:
     "my/image/url2",
     "my/image/url3"
   ],
-  "price": 43.21, // ONLY sell_price
+  "sellPrice": 43.21, // ONLY sell_price
   "quantity": 23, // Products availability
   "categoryId": 1,
   "categoryName": "Smartphone",
@@ -671,12 +671,11 @@ Deletes an image from the server
 
 - HTTP 403: error (Not logged)
 
-
 <br>
 
 # orders.php (to be defined)
 
-*//TODO: Define orders methods*
+_//TODO: Define orders methods_
 
 `orders.php GET`
 

@@ -69,9 +69,7 @@ Example of usage:
         >
           <!-- thumb labels value -->
           <template v-slot:thumb-label="{ value }">
-            {{
-            value === priceRange.max ? "MAX" : value
-            }}
+            {{ value === priceRange.max ? "MAX" : value }}
           </template>
         </v-range-slider>
 
@@ -122,7 +120,7 @@ export default {
       priceRange: {
         min: 0,
         max: 500,
-        interval: 25
+        interval: 25,
       },
       // Order types
       typesOfSorting: [
@@ -130,56 +128,68 @@ export default {
           id: 1,
           name: "Migliore corrispondenza",
           type: null,
-          sortMethod: null
+          sortMethod: null,
         },
         { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
         {
           id: 3,
           name: "Titolo (decrescente)",
           type: "title",
-          sortMethod: "desc"
+          sortMethod: "desc",
         },
         { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
         {
           id: 5,
           name: "Prezzo (decrescente)",
           type: "price",
-          sortMethod: "desc"
-        }
+          sortMethod: "desc",
+        },
+        {
+          id: 6,
+          name: "Più venduti",
+          type: "sales",
+          sortMethod: "desc",
+        },
+        {
+          id: 7,
+          name: "Meno venduti",
+          type: "sales",
+          sortMethod: "asc",
+        },
       ],
 
       activeFilters: {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1
-      }
+        selectedSortingMethodId: 1,
+      },
     };
   },
   computed: {
     selectedSortingMethod() {
       // Represents the selected sorting method of the array typesOfSorting
       return this.typesOfSorting.filter(
-        element => element.id === this.activeFilters.selectedSortingMethodId
+        (element) => element.id === this.activeFilters.selectedSortingMethodId
       )[0];
-    }
+    },
   },
   created() {
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then(response => {
+      .then((response) => {
         this.categories = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then(response => {
+      .then((response) => {
         this.brands = response.data;
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
@@ -208,8 +218,8 @@ export default {
         // this handler is also called if the filters are retrieved by the parameters in the URI, so we emit the value only if the change is after that process
         if (this.savedFiltersFromURI)
           this.$emit("filters-changed", this.formatFilters());
-      }
-    }
+      },
+    },
   },
   methods: {
     formatFilters() {
@@ -263,9 +273,9 @@ export default {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1
+        selectedSortingMethodId: 1,
       };
-    }
-  }
+    },
+  },
 };
 </script>

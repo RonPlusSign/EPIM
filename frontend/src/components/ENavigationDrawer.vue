@@ -11,20 +11,28 @@ This component requires 3 props:
   <!------ Drawer (side menu) ------->
   <!--------------------------------->
   <v-navigation-drawer light v-model="isExpanded" app>
-    <v-container width="100%" class="headline">{{ logged ? `Ciao, ${username}!` : "Benvenuto!" }}</v-container>
+    <v-container width="100%" class="headline">{{
+      logged ? `Ciao, ${username}!` : "Benvenuto!"
+    }}</v-container>
     <v-divider></v-divider>
 
     <!-- List of items -->
     <v-list dense nav class="py-0">
       <!-- Dynamic routes (from data()) -->
       <div v-for="item in drawerItems" :key="item.title">
-        <v-list-item @click="$router.replace(item.route).catch((err) => {})" class="py-1" link>
+        <v-list-item
+          @click="$router.replace(item.route).catch((err) => {})"
+          class="py-1"
+          link
+        >
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title class="subtitle-1">{{ item.title }}</v-list-item-title>
+            <v-list-item-title class="subtitle-1">{{
+              item.title
+            }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
@@ -53,16 +61,16 @@ export default {
   props: {
     drawerExpanded: {
       type: Boolean,
-      required: true
+      required: true,
     },
     logged: {
       type: Boolean,
-      required: true
+      required: true,
     },
     username: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
@@ -74,10 +82,10 @@ export default {
         {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
-          route: "/categorie"
+          route: "/categorie",
         },
-        { title: "Marche", icon: "mdi-tag", route: "/marche" }
-      ]
+        { title: "Marche", icon: "mdi-tag", route: "/marche" },
+      ],
     };
   },
 
@@ -92,18 +100,18 @@ export default {
     },
     isExpanded(value) {
       this.$emit("toggle", value);
-    }
+    },
   },
 
   methods: {
     logout() {
       // GET request to login.php?logout
-      Axios.get(process.env.VUE_APP_API_URL + `login.php?logout`).catch(err =>
-        console.log(err)
-      );
+      Axios.get(
+        process.env.VUE_APP_API_URL + `login.php?logout`
+      ).catch(() => {});
 
       this.$router.replace("/");
-    }
-  }
+    },
+  },
 };
 </script>
