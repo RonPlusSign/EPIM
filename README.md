@@ -479,12 +479,12 @@ Get the list of products bases on a filter
 - by category `?c=`
 - by brand `?b=`
 - by price range `?ps=x&pe=x` (price start and/or price end)
-- by sales `?sales` (the only valid settings are ?asc or ?desc and ?p)
 
 Order by:
 
 - order by price `?sort=price`
 - order by title `?sort=title`
+- order by sales `?sales` (best sellers / worst sellers)
 - Order ASC or DESC `?asc` or `?desc`
 
 Pagination:
