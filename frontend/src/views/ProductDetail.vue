@@ -99,9 +99,9 @@ export default {
         ],
         sellPrice: 0,
         quantity: 0, // Products availability
-        categoryId: 3,
+        categoryId: null,
         categoryName: "Nessuna categoria",
-        brandId: 7,
+        brandId: null,
         brandName: "Nessuna marca",
       },
     };
