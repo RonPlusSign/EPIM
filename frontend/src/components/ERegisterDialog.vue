@@ -13,18 +13,21 @@ example:
   <!------- Dialog ------->
   <!---------------------->
   <v-dialog
+    v-model="isDialogActive"
     align="center"
     justify="center"
-    v-model="isDialogActive"
     width="600"
   >
     <v-card class="pb-5" :loading="loading">
       <!--------------------->
       <!------- Title ------->
       <!--------------------->
-      <v-card-title class="primary darken-1 white--text mb-3"
-        >Registrati
+
+      <v-card-title class="primary darken-1 white--text mb-3 pl-3">
+        <!-- Title -->
+        Registrati
         <v-spacer />
+        <!-- Close button -->
         <v-btn @click="isDialogActive = !isDialogActive" icon color="white"
           ><v-icon>mdi-close</v-icon></v-btn
         >

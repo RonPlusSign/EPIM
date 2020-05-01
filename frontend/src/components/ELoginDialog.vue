@@ -1,8 +1,11 @@
 <!--
 This component requires the "isOpen" prop to get its status.
-There's the needing to handle 2 custom events:
+The component emits 2 custom events:
 - "status-changed" (open or closed) event
 "logged" event (user login went ok)
+
+- you can also pass the "persistent" property (default = False).
+If it is set to true, the dialog won't close until the user does the login.
 
 example:
 <ELoginDialog :isOpen="isLoginDialogActive" @logged="(value) => {this.logged = value}" @status-changed="(value) => { this.isLoginDialogActive = value}" />
@@ -13,20 +16,37 @@ example:
   <!------- Dialog ------->
   <!---------------------->
   <v-dialog
+    v-model="isDialogActive"
+    :persistent="persistent"
     align="center"
     justify="center"
-    v-model="isDialogActive"
     width="450"
   >
     <v-card class="pb-5" :loading="loading">
-      <!--------------------->
-      <!------- Title ------->
-      <!--------------------->
-      <v-card-title class="primary darken-1 white--text mb-3"
-        >Effettua il login
+      <!---------------------------->
+      <!------- Dialog title ------->
+      <!---------------------------->
+      <v-card-title class="primary darken-1 white--text mb-3">
+        <!-- Title -->
+        Effettua il login
         <v-spacer />
-        <v-btn @click="isDialogActive = !isDialogActive" icon color="white"
+        <!-- Close dialog button -->
+        <v-btn
+          v-if="!persistent"
+          @click="isDialogActive = !isDialogActive"
+          icon
+          color="white"
           ><v-icon>mdi-close</v-icon></v-btn
+        >
+        <v-btn
+          v-else
+          @click="
+            $router.replace('/');
+            isDialogActive = false;
+          "
+          icon
+          color="white"
+          ><v-icon>mdi-home</v-icon></v-btn
         >
       </v-card-title>
       <!-------------------->
@@ -94,6 +114,7 @@ example:
     </v-card>
     <ERegisterDialog
       :isOpen="isRegisterDialogActive"
+      :persistent="persistent"
       @registered="
         (value) => {
           this.emitLogged();
@@ -102,6 +123,7 @@ example:
       @status-changed="
         (value) => {
           this.isRegisterDialogActive = value;
+          if (persistent) this.isDialogActive = true;
         }
       "
     />
@@ -114,11 +136,12 @@ import Axios from "axios";
 
 export default {
   name: "ELoginDialog",
-  props: {
-    isOpen: { type: Boolean, required: true },
-  },
   components: {
     ERegisterDialog,
+  },
+  props: {
+    isOpen: { type: Boolean, required: true },
+    persistent: { type: Boolean, default: false },
   },
   data() {
     return {
