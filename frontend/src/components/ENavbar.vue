@@ -71,7 +71,7 @@
             class="mt-2"
             text
           >
-            <span class="mr-2">Profilo di {{ username }}</span>
+            <span class="mr-2">Profilo di {{ user.name }}</span>
           </v-btn>
         </div>
 
@@ -104,8 +104,6 @@
     <!---------------------------->
     <ENavigationDrawer
       :drawerExpanded="isDrawerExpanded"
-      :username="username"
-      :logged="logged"
       @toggle="(value) => (isDrawerExpanded = value)"
     />
     <!----------------------->
@@ -118,17 +116,11 @@
           this.isLoginDialogActive = value;
         }
       "
-      @logged="
-        (value) => {
-          this.logged = value;
-        }
-      "
     />
   </div>
 </template>
 
 <script>
-import Axios from "axios";
 import ELoginDialog from "@/components/ELoginDialog.vue";
 import ENavigationDrawer from "@/components/ENavigationDrawer.vue";
 import EProductsFilterMenu from "@/components/EProductsFilterMenu.vue";
@@ -146,10 +138,15 @@ export default {
       productSearchQuery: "",
       filtersChanged: false,
       filters: {},
-      // User values
-      logged: false,
-      username: "", // TODO: make a request to user.php to get username
     };
+  },
+  computed: {
+    logged() {
+      return this.$store.getters.logged;
+    },
+    user() {
+      return this.$store.getters.user;
+    },
   },
 
   methods: {
@@ -180,12 +177,6 @@ export default {
   },
 
   watch: {
-    logged(newVal) {
-      if (newVal) {
-        Axios;
-        // TODO: Make a GET request to user.php to get the username
-      }
-    },
     productSearchQuery() {
       this.filtersChanged = true;
     },

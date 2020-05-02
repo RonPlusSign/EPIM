@@ -1,14 +1,13 @@
 <!--
 This component requires the "isOpen" prop to get its status.
-The component emits 2 custom events:
+The component emits a custom event:
 - "status-changed" (open or closed) event
-"logged" event (user login went ok)
 
 - you can also pass the "persistent" property (default = False).
 If it is set to true, the dialog won't close until the user does the login.
 
 example:
-<ELoginDialog :isOpen="isLoginDialogActive" @logged="(value) => {this.logged = value}" @status-changed="(value) => { this.isLoginDialogActive = value}" />
+<ELoginDialog :isOpen="isLoginDialogActive" @status-changed="(value) => { this.isLoginDialogActive = value}" />
 -->
 
 <template>
@@ -115,11 +114,6 @@ example:
     <ERegisterDialog
       :isOpen="isRegisterDialogActive"
       :persistent="persistent"
-      @registered="
-        (value) => {
-          this.emitLogged();
-        }
-      "
       @status-changed="
         (value) => {
           this.isRegisterDialogActive = value;
@@ -132,7 +126,6 @@ example:
 
 <script>
 import ERegisterDialog from "./ERegisterDialog.vue";
-import Axios from "axios";
 
 export default {
   name: "ELoginDialog",
@@ -182,27 +175,19 @@ export default {
       if (this.$refs.loginForm.validate()) {
         this.loading = true;
 
-        Axios.post(process.env.VUE_APP_API_URL + `login.php`, {
-          email: this.user.email,
-          password: this.user.password,
-        })
-          .then((/*response*/) => {
+        this.$store
+          .dispatch("login", this.user)
+          .then(() => {
             // Disable loading effect after the server response
             this.loading = false;
             this.isDialogActive = false;
-
-            this.emitLogged();
           })
-          .catch((error) => {
+          .catch(() => {
             // Disable loading effect after the server response
             this.loading = false;
             this.error = true;
-            console.error(error);
           });
       }
-    },
-    emitLogged() {
-      this.$emit("logged", true);
     },
   },
 };

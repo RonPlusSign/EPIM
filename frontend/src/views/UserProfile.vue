@@ -4,14 +4,16 @@
     <ELoginDialog
       :isOpen="isLoginDialogActive"
       :persistent="true"
-      @logged="(value) => (this.logged = value)"
-      @status-changed="(value) => (this.isLoginDialogActive = value)"
+      @status-changed="
+        (value) => {
+          this.isLoginDialogActive = value;
+        }
+      "
     />
   </div>
 </template>
 
 <script>
-import Axios from "axios";
 import ELoginDialog from "@/components/ELoginDialog.vue";
 
 export default {
@@ -19,23 +21,19 @@ export default {
   components: { ELoginDialog },
   data() {
     return {
-      logged: false,
       isLoginDialogActive: false,
-      user: null,
     };
   },
+  computed: {
+    logged() {
+      return this.$store.getters.logged;
+    },
+    user() {
+      return this.$store.getters.user;
+    },
+  },
   created() {
-    Axios.get(process.env.VUE_APP_API_URL + `login.php`)
-      .then((response) => {
-        if (!response.data.logged) this.isLoginDialogActive = true;
-        else
-          Axios.get(process.env.VUE_APP_API_URL + `user.php`)
-            .then((response) => {
-              this.user = response.data;
-            })
-            .catch(() => {});
-      })
-      .catch(() => {});
+    this.isLoginDialogActive = !this.logged;
   },
 };
 </script>

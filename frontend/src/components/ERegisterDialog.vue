@@ -2,10 +2,9 @@
 This component requires the "isOpen" prop to get its status.
 There's the needing to handle 2 custom events:
 - "status-changed" (open or closed) event
-"registered" event (user registration went ok)
 
 example:
-<ERegisterDialog :isOpen="isRegisterDialogActive" @registered="(value) => {this.registered = value}" @status-changed="(value) => { this.isRegisterDialogActive = value}" />
+<ERegisterDialog :isOpen="isRegisterDialogActive" @status-changed="(value) => { this.isRegisterDialogActive = value}" />
 -->
 
 <template>
@@ -215,8 +214,6 @@ export default {
             // Disable loading effect after the server response
             this.loading = false;
             this.isDialogActive = false;
-
-            this.$emit("logged", true);
           })
           .catch((error) => {
             // Disable loading effect after the server response

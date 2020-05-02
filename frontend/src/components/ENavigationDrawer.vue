@@ -1,9 +1,7 @@
 <!--
-This component requires 3 props:
+This component requires one prop:
 
 "drawerExpanded" (Boolean): to check if the drawer has to be expanded (it can be toggled from outside this component if necessary)
-"logged" (Boolean): to show a different message depending if the user is logged or not
-"username" (String): to show the user name at the top of the component (required, but it also accepts an empty string)
 -->
 
 <template>
@@ -12,7 +10,7 @@ This component requires 3 props:
   <!--------------------------------->
   <v-navigation-drawer light v-model="isExpanded" app>
     <v-container width="100%" class="headline">{{
-      logged ? `Ciao, ${username}!` : "Benvenuto!"
+      logged ? `Ciao, ${user.name}!` : "Benvenuto!"
     }}</v-container>
     <v-divider></v-divider>
 
@@ -54,21 +52,12 @@ This component requires 3 props:
 </template>
 
 <script>
-import Axios from "axios";
 
 export default {
   name: "ENavigationDrawer",
   props: {
     drawerExpanded: {
       type: Boolean,
-      required: true,
-    },
-    logged: {
-      type: Boolean,
-      required: true,
-    },
-    username: {
-      type: String,
       required: true,
     },
   },
@@ -88,6 +77,14 @@ export default {
       ],
     };
   },
+  computed: {
+    logged() {
+      return this.$store.getters.logged;
+    },
+    user() {
+      return this.$store.getters.user;
+    },
+  },
 
   created() {
     this.isExpanded = this.drawerExpanded;
@@ -105,10 +102,7 @@ export default {
 
   methods: {
     logout() {
-      // GET request to login.php?logout
-      Axios.get(
-        process.env.VUE_APP_API_URL + `login.php?logout`
-      ).catch(() => {});
+      this.$store.dispatch("logout");
 
       this.$router.replace("/");
     },

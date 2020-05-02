@@ -29,6 +29,9 @@ export default {
   data: () => ({
     //
   }),
+  created() {
+    this.$store.dispatch("checkLogin");
+  },
 };
 </script>
 
