@@ -44,6 +44,14 @@ const routes = [
     component: () =>
       import(/* webpackChunkName: "user" */ "../views/UserCart.vue"),
   },
+
+  {
+    // will match everything (for 404 errors, pages not found)
+    path: "/404",
+    alias: "*",
+    component: () =>
+      import(/* webpackChunkName: "error" */ "../views/Error.vue"),
+  },
 ];
 
 const router = new VueRouter({

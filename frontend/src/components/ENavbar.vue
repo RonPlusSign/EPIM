@@ -84,7 +84,7 @@
             text
           >
             <h4 class="pt-1">Login</h4>
-            <v-icon class="ml-2">mdi-account</v-icon>
+            <v-icon class="ml-2 hidden-xs-only">mdi-account</v-icon>
           </v-btn>
         </div>
 
