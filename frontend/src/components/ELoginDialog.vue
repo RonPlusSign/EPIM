@@ -157,8 +157,8 @@ export default {
     };
   },
   watch: {
-    isOpen() {
-      this.isDialogActive = this.isOpen;
+    isOpen(value) {
+      this.isDialogActive = value;
     },
     isDialogActive() {
       this.$emit("status-changed", this.isDialogActive);
@@ -168,6 +168,10 @@ export default {
         this.isDialogActive = false;
       }
     },
+  },
+
+  created() {
+    this.isDialogActive = this.isOpen;
   },
 
   methods: {
