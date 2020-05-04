@@ -53,7 +53,7 @@ Example of a product:
         </v-card-subtitle>
 
         <!---- Add to cart button ---->
-        <v-btn small class="ml-5 mt-2" color="success" :disabled="selectedQuantity === 0">
+        <v-btn small class="ml-5 mt-2" color="primary">
           Aggiungi al carrello
           <v-icon small right dark>mdi-cart</v-icon>
         </v-btn>
@@ -63,7 +63,7 @@ Example of a product:
           <p class="subtitle-1 mb-2">
             Prezzo:
             <span
-              class="font-weight-medium orange--text text--darken-3"
+              class="font-weight-medium accent--text text--darken-3"
             >{{ product.price }} €</span>
           </p>
           <!---- Category ---->

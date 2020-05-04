@@ -4,7 +4,7 @@
       <!-- Title (big 404) -->
       <p
         id="title-404"
-        class="display-4 font-weight-bold orange--text text--darken-3"
+        class="display-4 font-weight-bold accent--text text--darken-3"
       >
         404
       </p>
@@ -16,7 +16,6 @@
       </p>
       <!-- Go to homepage button -->
       <v-btn
-        flat
         large
         color="primary"
         @click="$router.push('/').catch((err) => {})"

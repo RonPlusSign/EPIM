@@ -28,7 +28,7 @@
             <v-btn
               class="mr-2 mb-2"
               outlined
-              color="orange darken-3"
+              color="accent darken-3"
               @click="routeToProductsWithFilter(item)"
               target="_blank"
             >

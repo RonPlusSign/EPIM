@@ -22,7 +22,7 @@
         <p class="subtitle-1 mb-2">
           Prezzo:
           <span
-            class="font-weight-medium orange--text text--darken-3"
+            class="font-weight-medium accent--text text--darken-3"
           >{{ product.sellPrice }} €</span>
         </p>
         <!-- Category -->
