@@ -177,18 +177,14 @@ export default {
   created() {
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then((response) => {
-        this.categories = response.data;
-      })
+      .then((response) => (this.categories = response.data))
       .catch((error) => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then((response) => {
-        this.brands = response.data;
-      })
+      .then((response) => (this.brands = response.data))
       .catch((error) => {
         console.error(error);
       });

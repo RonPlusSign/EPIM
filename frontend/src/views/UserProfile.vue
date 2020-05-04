@@ -1,27 +1,15 @@
 <template>
   <div>
-    <!-- Persistent login dialog (if not logged) -->
-    <ELoginDialog
-      :isOpen="isLoginDialogActive"
-      :persistent="true"
-      @status-changed="
-        (value) => {
-          this.isLoginDialogActive = value;
-        }
-      "
-    />
+    <h2>User profile</h2>
   </div>
 </template>
 
 <script>
-import ELoginDialog from "@/components/ELoginDialog.vue";
-
 export default {
   name: "UserProfile",
-  components: { ELoginDialog },
   data() {
     return {
-      isLoginDialogActive: false,
+      //
     };
   },
   computed: {
@@ -33,7 +21,18 @@ export default {
     },
   },
   created() {
-    this.isLoginDialogActive = !this.logged;
+    // Persistent login dialog (if not logged)
+    if (!this.logged) this.$store.commit("openLoginDialog", true);
+  },
+
+  watch: {
+    logged(value) {
+      // Persistent login dialog (if not logged)
+      if (!value) this.$store.commit("openLoginDialog", true);
+      // Close login dialog if the user is logged
+      // Must do this because the view when created doesn't see logged === true and opens the dialog
+      else this.$store.commit("closeLoginDialog");
+    },
   },
 };
 </script>

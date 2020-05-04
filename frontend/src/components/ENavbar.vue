@@ -79,7 +79,7 @@
           <!-- Login button -->
           <v-btn
             target="_blank"
-            @click="isLoginDialogActive = true"
+            @click="$store.commit('openLoginDialog')"
             class="px-0 mx-0"
             text
           >
@@ -106,32 +106,18 @@
       :drawerExpanded="isDrawerExpanded"
       @toggle="(value) => (isDrawerExpanded = value)"
     />
-    <!----------------------->
-    <!---- Login dialog ----->
-    <!----------------------->
-    <ELoginDialog
-      :isOpen="isLoginDialogActive"
-      @status-changed="
-        (value) => {
-          this.isLoginDialogActive = value;
-        }
-      "
-    />
   </div>
 </template>
 
 <script>
-import ELoginDialog from "@/components/ELoginDialog.vue";
 import ENavigationDrawer from "@/components/ENavigationDrawer.vue";
 import EProductsFilterMenu from "@/components/EProductsFilterMenu.vue";
 
 export default {
   name: "ENavbar",
-  components: { ELoginDialog, ENavigationDrawer, EProductsFilterMenu },
+  components: { ENavigationDrawer, EProductsFilterMenu },
   data() {
     return {
-      // Login dialog status
-      isLoginDialogActive: false,
       // Side menu status
       isDrawerExpanded: false,
       // Research filters

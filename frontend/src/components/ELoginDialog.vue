@@ -1,13 +1,19 @@
 <!--
-This component requires the "isOpen" prop to get its status.
-The component emits a custom event:
-- "status-changed" (open or closed) event
+Login dialog controlled by the store.
+It opens when the property this.$store.getters.isLoginDialogActive is set to True
+This also links to the Register dialog.
 
-- you can also pass the "persistent" property (default = False).
-If it is set to true, the dialog won't close until the user does the login.
+The dialog can also be persistent (not closable), if this.$store.getters.isPersistentLoginDialog is set to True
+  If it is persistent, the user can either login or go to the homepage ("/" route) 
 
-example:
-<ELoginDialog :isOpen="isLoginDialogActive" @status-changed="(value) => { this.isLoginDialogActive = value}" />
+To open the dialog, do:
+  this.$store.commit("openLoginDialog");
+
+To open the dialog as persistant, do:
+  this.$store.commit("openLoginDialog", true);
+
+To close the dialog, do:
+  this.$store.commit("closeLoginDialog");
 -->
 
 <template>
@@ -32,19 +38,12 @@ example:
         <!-- Close dialog button -->
         <v-btn
           v-if="!persistent"
-          @click="isDialogActive = !isDialogActive"
+          @click="$store.commit('closeLoginDialog')"
           icon
           color="white"
           ><v-icon>mdi-close</v-icon></v-btn
         >
-        <v-btn
-          v-else
-          @click="
-            $router.replace('/');
-            isDialogActive = false;
-          "
-          icon
-          color="white"
+        <v-btn v-else @click="closePersistentDialog()" icon color="white"
           ><v-icon>mdi-home</v-icon></v-btn
         >
       </v-card-title>
@@ -56,6 +55,7 @@ example:
         <!------- Inputs ------->
         <!---------------------->
         <v-form ref="loginForm">
+          <!-- Email -->
           <v-text-field
             v-model="user.email"
             label="Email"
@@ -66,6 +66,7 @@ example:
             required
           />
 
+          <!-- Password -->
           <v-text-field
             v-model="user.password"
             id="password"
@@ -99,27 +100,28 @@ example:
       <!------- Buttons ------->
       <!----------------------->
       <v-card-actions class="px-4">
+        <!-- Register button -->
         <v-btn
           @click="isRegisterDialogActive = !isRegisterDialogActive"
           color="blue white--text"
           >Registrati</v-btn
         >
         <v-spacer />
+        <!-- Do login button -->
         <v-btn @click="handleLogin()" :loading="loading" color="primary">
           <span class="mt-1">Login</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
         </v-btn>
       </v-card-actions>
     </v-card>
+
+    <!------------------------------->
+    <!------- Register dialog ------->
+    <!------------------------------->
     <ERegisterDialog
       :isOpen="isRegisterDialogActive"
       :persistent="persistent"
-      @status-changed="
-        (value) => {
-          this.isRegisterDialogActive = value;
-          if (persistent) this.isDialogActive = true;
-        }
-      "
+      @status-changed="(value) => handleRegistrationClosing(value)"
     />
   </v-dialog>
 </template>
@@ -132,21 +134,23 @@ export default {
   components: {
     ERegisterDialog,
   },
-  props: {
-    isOpen: { type: Boolean, required: true },
-    persistent: { type: Boolean, default: false },
-  },
   data() {
     return {
+      // Input values
       user: {
         email: "",
         password: "",
       },
-      loading: false,
-      isDialogActive: false,
-      isPasswordVisible: false,
-      isRegisterDialogActive: false,
+
+      // Login status
       error: false,
+      loading: false,
+      isPasswordVisible: false,
+
+      // Register dialog status
+      isRegisterDialogActive: false,
+
+      // Input rules
       rules: {
         required: (value) => !!value || "Inserisci questo parametro",
         email: (value) => {
@@ -156,35 +160,41 @@ export default {
       },
     };
   },
-  watch: {
-    isOpen(value) {
-      this.isDialogActive = value;
-    },
+
+  computed: {
+    // Get the dialog status from the store
     isDialogActive() {
-      this.$emit("status-changed", this.isDialogActive);
+      return this.$store.getters.isLoginDialogActive;
     },
-    isRegisterDialogActive(value) {
-      if (value) {
-        this.isDialogActive = false;
+
+    // Get if the dialog is persistent from the store
+    persistent() {
+      return this.$store.getters.isPersistentLoginDialog;
+    },
+  },
+
+  watch: {
+    isRegisterDialogActive(isActive) {
+      // If the register dialog is open, close this dialog
+      if (isActive) {
+        this.$store.commit("closeLoginDialog");
       }
     },
   },
 
-  created() {
-    this.isDialogActive = this.isOpen;
-  },
-
   methods: {
     handleLogin() {
+      // Check if the user inputs follow the rules
       if (this.$refs.loginForm.validate()) {
         this.loading = true;
 
+        // Make the login request to the server using the store
         this.$store
           .dispatch("login", this.user)
           .then(() => {
             // Disable loading effect after the server response
             this.loading = false;
-            this.isDialogActive = false;
+            this.$store.commit("closeLoginDialog");
           })
           .catch(() => {
             // Disable loading effect after the server response
@@ -192,6 +202,15 @@ export default {
             this.error = true;
           });
       }
+    },
+    closePersistentDialog() {
+      this.$router.replace("/");
+      this.$store.commit("closeLoginDialog");
+    },
+    handleRegistrationClosing(value) {
+      this.isRegisterDialogActive = value;
+      if (this.persistent)
+        this.$store.commit("openLoginDialog", this.persistent);
     },
   },
 };

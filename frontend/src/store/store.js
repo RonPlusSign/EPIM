@@ -5,12 +5,18 @@ import Axios from "axios";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  strict: true, // Forces to use getters and mutations to access state data
+  strict: true, // Forces to use getters and mutations to access and change state data
 
   state: {
     // data of the Store
     logged: false,
-    user: { name: "Pippo" }, // TODO: make a request to user.php to get user info
+    user: null, // TODO: make a request to user.php to get user info
+
+    // Login dialog status
+    isLoginDialogActive: false,
+
+    // Login dialog persistent
+    isPersistentLoginDialog: false,
   },
 
   getters: {
@@ -18,8 +24,17 @@ const store = new Vuex.Store({
     logged(state) {
       return state.logged;
     },
+
     user(state) {
       return state.user;
+    },
+
+    isLoginDialogActive(state) {
+      return state.isLoginDialogActive;
+    },
+
+    isPersistentLoginDialog(state) {
+      return state.isPersistentLoginDialog;
     },
   },
 
@@ -31,15 +46,35 @@ const store = new Vuex.Store({
     // Clear all the data
     clearAll(state) {
       state.logged = false;
-      // state.user = null;
+      state.user = null;
     },
 
-    isLogged(state, isLogged) {
+    /**
+     * Sets the value of the "logged" property
+     * @param {Boolean} isLogged the new value for the "logged" property
+     */
+    setLogged(state, isLogged) {
       if (isLogged) {
         // TODO: Make a request to user.php to get user data
         // Use the getUserData action?
         state.logged = isLogged;
       } else state.commit("clearAll");
+    },
+
+    /**
+     * Open the login dialog (state.isLoginDialogActive = True)
+     * @param {Boolean} persistent if the dialog has to be persistent (default = False)
+     */
+    openLoginDialog(state, persistent = false) {
+      state.isPersistentLoginDialog = persistent;
+      state.isLoginDialogActive = true;
+    },
+
+    /**
+     * Close the login dialog (state.isLoginDialogActive = False)
+     */
+    closeLoginDialog(state) {
+      state.isLoginDialogActive = false;
     },
   },
 
@@ -62,8 +97,9 @@ const store = new Vuex.Store({
         })
           .then((/*response*/) => {
             // Update the state
-            context.commit("logged", true);
+            context.commit("setLogged", true);
             context.dispatch("getUserData");
+            context.commit("closeLoginDialog");
             // Request is successful
             resolve();
           })
@@ -92,10 +128,9 @@ const store = new Vuex.Store({
     checkLogin(context) {
       Axios.get(process.env.VUE_APP_API_URL + `login.php`)
         .then((response) => {
-          context.commit("isLogged", response.data.logged);
+          context.commit("setLogged", response.data.logged);
         })
         .catch(() => {});
-      context.commit("clearAll");
     },
 
     /**

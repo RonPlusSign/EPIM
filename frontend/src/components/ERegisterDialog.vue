@@ -90,7 +90,7 @@ example:
             prepend-icon="mdi-lock"
             :rules="[rules.required, rules.password]"
             :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="() => (isPasswordVisible = !isPasswordVisible)"
+            @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
             required
           />
@@ -104,7 +104,7 @@ example:
             prepend-icon="mdi-lock-reset"
             :rules="[rules.required, rules.confirmPassword]"
             :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="() => (isPasswordVisible = !isPasswordVisible)"
+            @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
             required
           />

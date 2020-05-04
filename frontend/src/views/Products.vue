@@ -22,8 +22,10 @@ export default {
     };
   },
   methods: {
+    // Fetch the products list from the server
     fetchProducts() {
       Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+        // Add the filters (query string params)
         params: this.filtersEmpty
           ? { sort: "sales", desc: null }
           : this.$route.query,
@@ -38,6 +40,7 @@ export default {
     },
   },
   computed: {
+    // Check if filters are empty or undefined
     filtersEmpty() {
       let isEmpty = true;
       Object.entries(this.$route.query).forEach(([, value]) => {
