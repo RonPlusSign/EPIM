@@ -2,7 +2,15 @@
 <template>
   <div class="ProductDetail">
     <v-row cols="12">
-      <v-col justify="center" align="center" xs="12" sm="12" md="6" lg="5" xl="4">
+      <v-col
+        justify="center"
+        align="center"
+        xs="12"
+        sm="12"
+        md="6"
+        lg="5"
+        xl="4"
+      >
         <!-- Product images carousel -->
         <EImagesCarousel :images="product.images" />
       </v-col>
@@ -16,14 +24,15 @@
             @click="
               $router.push({ path: '/prodotti', query: { b: product.brandId } })
             "
-          >{{ product.brandName }}</a>
+            >{{ product.brandName }}</a
+          >
         </p>
         <!-- Price -->
         <p class="subtitle-1 mb-2">
           Prezzo:
-          <span
-            class="font-weight-medium accent--text text--darken-3"
-          >{{ product.sellPrice }} €</span>
+          <span class="font-weight-medium accent--text text--darken-3"
+            >{{ product.sellPrice }} €</span
+          >
         </p>
         <!-- Category -->
         <p class="body mb-2">
@@ -34,7 +43,8 @@
                 .push({ path: '/prodotti', query: { c: product.categoryId } })
                 .catch((err) => {})
             "
-          >{{ product.categoryName }}</a>
+            >{{ product.categoryName }}</a
+          >
         </p>
         <!-- Quantity available -->
         <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
@@ -47,12 +57,24 @@
               :min="0"
               :max="product.quantity"
               :caption="'Quantità'"
-              @change="newValue => selectedQuantity = newValue"
+              @change="(newValue) => (selectedQuantity = newValue)"
             />
           </v-col>
           <!-- Add to cart button -->
-          <v-col justify-self="start" align-self="end" xs="12" sm="6" md="8" lg="10" xl="10">
-            <v-btn color="success" :disabled="selectedQuantity === 0">
+          <v-col
+            justify-self="start"
+            align-self="end"
+            xs="12"
+            sm="6"
+            md="8"
+            lg="10"
+            xl="10"
+          >
+            <v-btn
+              color="success"
+              @click="addToCart(product.id, selectedQuantity)"
+              :disabled="selectedQuantity === 0"
+            >
               Aggiungi al carrello
               <v-icon right dark>mdi-cart</v-icon>
             </v-btn>
@@ -88,19 +110,39 @@ export default {
         categoryId: null,
         categoryName: "Nessuna categoria",
         brandId: null,
-        brandName: "Nessuna marca"
+        brandName: "Nessuna marca",
       },
-      selectedQuantity: 0
+      selectedQuantity: 0,
     };
   },
   created() {
     Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-      params: { id: this.$router.history.current.params.id }
+      params: { id: this.$router.history.current.params.id },
     })
-      .then(response => {
+      .then((response) => {
         this.product = response.data;
       })
       .catch((/* error */) => {});
-  }
+  },
+  methods: {
+    // Add a product to the cart
+    addToCart(id, quantity) {
+      const task = () => {
+        Axios.post(process.env.VUE_APP_API_URL + `user.php?cart`, {
+          id: id, // Product id
+          quantity: quantity, // Default quantity
+        }).catch((err) => {
+          console.error(err);
+        });
+      };
+      // Check if the user is logged
+      if (this.logged) {
+        task();
+      } else {
+        this.$store.commit("openLoginDialog");
+        this.$store.commit("setActionAfterLogin", task);
+      }
+    },
+  },
 };
 </script>

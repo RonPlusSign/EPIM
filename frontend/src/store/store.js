@@ -17,6 +17,9 @@ const store = new Vuex.Store({
 
     // Login dialog persistent
     isPersistentLoginDialog: false,
+
+    // Function to execute after the login
+    afterLogin: () => {},
   },
 
   getters: {
@@ -47,6 +50,7 @@ const store = new Vuex.Store({
     clearAll(state) {
       state.logged = false;
       state.user = null;
+      state.afterLogin = () => {};
     },
 
     /**
@@ -75,6 +79,22 @@ const store = new Vuex.Store({
      */
     closeLoginDialog(state) {
       state.isLoginDialogActive = false;
+      state.afterLogin = () => {};
+    },
+
+    /**
+     * Set the function that has to be executed after the login
+     * @param {function} action that has to be executed after the login
+     */
+    setActionAfterLogin(state, action) {
+      state.afterLogin = action;
+    },
+
+    /**
+     * Run the function stored in afterLogin
+     */
+    runAfterLoginTask(state) {
+      state.afterLogin();
     },
   },
 
@@ -99,6 +119,7 @@ const store = new Vuex.Store({
             // Update the state
             context.commit("setLogged", true);
             context.dispatch("getUserData");
+            context.commit("runAfterLoginTask");
             context.commit("closeLoginDialog");
             // Request is successful
             resolve();

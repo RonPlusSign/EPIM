@@ -130,7 +130,12 @@ example:
       <!----------------------->
       <v-card-actions class="px-5">
         <v-spacer />
-        <v-btn @click="handleRegistration()" :loading="loading" color="primary">
+        <v-btn
+          @click="handleRegistration()"
+          @keyup.enter="handleRegistration()"
+          :loading="loading"
+          color="primary"
+        >
           <span class="mt-1">Registrati</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
         </v-btn>

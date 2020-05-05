@@ -108,7 +108,12 @@ To close the dialog, do:
         >
         <v-spacer />
         <!-- Do login button -->
-        <v-btn @click="handleLogin()" :loading="loading" color="primary">
+        <v-btn
+          @click="handleLogin()"
+          @keyup.enter="handleLogin()"
+          :loading="loading"
+          color="primary"
+        >
           <span class="mt-1">Login</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
         </v-btn>
@@ -163,8 +168,14 @@ export default {
 
   computed: {
     // Get the dialog status from the store
-    isDialogActive() {
-      return this.$store.getters.isLoginDialogActive;
+    isDialogActive: {
+      get() {
+        return this.$store.getters.isLoginDialogActive;
+      },
+      set(value) {
+        if (value) this.$store.commit("openLoginDialog", this.persistent);
+        else this.$store.commit("closeLoginDialog");
+      },
     },
 
     // Get if the dialog is persistent from the store
