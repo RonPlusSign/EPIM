@@ -1,9 +1,15 @@
 <template>
   <div>
     <div class="text-center pt-3" v-if="filtersEmpty">
+      <!------------------------------>
+      <!---- Best sellers (title) ---->
+      <!------------------------------>
       <h1>Prodotti più venduti</h1>
     </div>
-    <EProductsList class="Products" :products="products" />
+    <!----------------------->
+    <!---- Products list ---->
+    <!----------------------->
+    <EProductsList class="Products" :products="products" :loading="loading" />
   </div>
 </template>
 
@@ -19,11 +25,14 @@ export default {
   data() {
     return {
       products: [],
+      loading: false,
     };
   },
   methods: {
     // Fetch the products list from the server
     fetchProducts() {
+      this.loading = true;
+
       Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
         // Add the filters (query string params)
         params: this.filtersEmpty
@@ -37,6 +46,8 @@ export default {
         .catch((error) => {
           console.error(error);
         });
+
+      this.loading = false;
     },
   },
   computed: {
