@@ -10,6 +10,16 @@
     <!---- Products list ---->
     <!----------------------->
     <EProductsList class="Products" :products="products" :loading="loading" />
+
+    <!----------------------------------->
+    <!---- Products pages navigation ---->
+    <!----------------------------------->
+    <v-pagination
+      v-if="numberOfPages > 0"
+      v-model="selectedPage"
+      :length="numberOfPages"
+      total-visible="7"
+    />
   </div>
 </template>
 
@@ -24,8 +34,16 @@ export default {
   },
   data() {
     return {
+      // List of products
       products: [],
+
+      // Loading effect activation
       loading: false,
+
+      // Pages navigation
+      numberOfProductsFound: 0,
+      productsPerPage: 0,
+      selectedPage: 1,
     };
   },
   methods: {
@@ -40,8 +58,21 @@ export default {
           : this.$route.query,
       })
         .then((response) => {
-          if (response.data.data) this.products = response.data.data;
-          else this.products = [];
+          // Parse the response from the server
+          /*
+          Response format:
+          {
+            totalResults: 123,
+            productsPerPage: 16,
+            data: [
+              // Products list
+            ]
+          }
+          */
+
+          this.products = response.data.data ? response.data.data : [];
+          this.numberOfProductsFound = response.data.totalResults;
+          this.productsPerPage = response.data.productsPerPage;
         })
         .catch((error) => {
           console.error(error);
@@ -59,10 +90,30 @@ export default {
       });
       return isEmpty;
     },
+
+    // Returns the number of pages (total number of results divided by the number of products per page)
+    numberOfPages() {
+      return Math.ceil(this.numberOfProductsFound / this.productsPerPage);
+    },
   },
   watch: {
     $route() {
       this.fetchProducts();
+    },
+    selectedPage(value) {
+      // Empty the products list
+      //in that way the page automatically scrolls up and you see the loading effect
+      this.products = [];
+
+      value -= 1; // Page index starts from 0, but the first page is shown as page 1
+
+      this.$router.replace({
+        path: "/prodotti",
+        query: {
+          ...this.$route.query,
+          p: value,
+        },
+      });
     },
   },
   created() {

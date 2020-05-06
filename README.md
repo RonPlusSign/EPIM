@@ -501,16 +501,25 @@ Response format:
 
 ```jsonc
 {
-  "id": 2,
-  "title": "My product",
-  "description": "...",
-  "imageUrl": "my/image/url", // URL to the first image of a product
-  "price": 43.21, // ONLY sell_price
-  "quantity": 23, // Products availability
-  "categoryId": 1,
-  "categoryName": "Smartphone",
-  "brandId": 2,
-  "brandName": "Samsung"
+  "totalResults": 123,
+  "productsPerPage": 16,
+  "data": [
+    {
+      "id": 2,
+      "title": "My product",
+      "description": "...",
+      "imageUrl": "my/image/url", // URL to the first image of a product
+      "price": 43.21, // ONLY sell_price
+      "quantity": 23, // Products availability
+      "categoryId": 1,
+      "categoryName": "Smartphone",
+      "brandId": 2,
+      "brandName": "Samsung"
+    },
+    {
+      // One object for each product
+    }
+  ]
 }
 ```
 
