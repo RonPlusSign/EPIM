@@ -11,7 +11,12 @@ const store = new Vuex.Store({
     // data of the Store
     logged: false,
     isAdmin: false,
-    user: null, // TODO: make a request to user.php to get user info
+    user: {
+      name: "Pippo",
+      surname: "Baudo",
+      email: "pippo@baudo.it",
+      phoneNumber: "1231231230",
+    }, // TODO: make a request to user.php to get user info
 
     // Login dialog status
     isLoginDialogActive: false,

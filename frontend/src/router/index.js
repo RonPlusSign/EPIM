@@ -36,20 +36,52 @@ const routes = [
     path: "/profilo",
     name: "profile",
     component: () =>
-      import(/* webpackChunkName: "user" */ "../views/UserProfile.vue"),
+      import(/* webpackChunkName: "user" */ "../views/user/UserProfile.vue"),
   },
   {
     path: "/carrello",
     name: "cart",
     component: () =>
-      import(/* webpackChunkName: "user" */ "../views/UserCart.vue"),
+      import(/* webpackChunkName: "user" */ "../views/user/UserCart.vue"),
   },
 
   {
     path: "/admin",
     name: "admin",
     component: () =>
-      import(/* webpackChunkName: "admin" */ "../views/Admin.vue"),
+      import(/* webpackChunkName: "admin" */ "../views/admin/Admin.vue"),
+  },
+
+  {
+    path: "/admin/ordini",
+    name: "admin",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/admin/OrdersAdmin.vue"),
+  },
+
+  {
+    path: "/admin/prodotti",
+    name: "admin",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin" */ "../views/admin/ProductsAdmin.vue"
+      ),
+  },
+
+  {
+    path: "/admin/marche",
+    name: "admin",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/admin/BrandsAdmin.vue"),
+  },
+
+  {
+    path: "/admin/categorie",
+    name: "admin",
+    component: () =>
+      import(
+        /* webpackChunkName: "admin" */ "../views/admin/CategoriesAdmin.vue"
+      ),
   },
 
   {

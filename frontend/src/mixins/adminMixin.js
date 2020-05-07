@@ -1,17 +1,8 @@
-<template>
-  <div>
-    <h2>Admin page</h2>
-  </div>
-</template>
+/*
+This mixin contains the required login logic for the admin pages
+*/
 
-<script>
 export default {
-  name: "Admin",
-  data() {
-    return {
-      //
-    };
-  },
   computed: {
     logged() {
       return this.$store.getters.logged;
@@ -71,4 +62,3 @@ export default {
     },
   },
 };
-</script>
