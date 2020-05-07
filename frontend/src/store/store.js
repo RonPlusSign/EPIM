@@ -10,6 +10,7 @@ const store = new Vuex.Store({
   state: {
     // data of the Store
     logged: false,
+    isAdmin: false,
     user: null, // TODO: make a request to user.php to get user info
 
     // Login dialog status
@@ -39,6 +40,14 @@ const store = new Vuex.Store({
     isPersistentLoginDialog(state) {
       return state.isPersistentLoginDialog;
     },
+
+    isAdmin(state) {
+      return state.isAdmin;
+    },
+
+    afterLogin(state) {
+      return state.afterLogin;
+    },
   },
 
   mutations: {
@@ -49,6 +58,7 @@ const store = new Vuex.Store({
     // Clear all the data
     clearAll(state) {
       state.logged = false;
+      state.isAdmin = false;
       state.user = null;
       state.afterLogin = () => {};
     },
@@ -63,6 +73,14 @@ const store = new Vuex.Store({
         // Use the getUserData action?
         state.logged = isLogged;
       } else state.commit("clearAll");
+    },
+
+    /**
+     * Sets the value of the "isAdmin" property
+     * @param {Boolean} isLogged the new value for the "isAdmin" property
+     */
+    setIsAdmin(state, isAdmin) {
+      state.isAdmin = isAdmin;
     },
 
     /**
@@ -89,13 +107,6 @@ const store = new Vuex.Store({
     setActionAfterLogin(state, action) {
       state.afterLogin = action;
     },
-
-    /**
-     * Run the function stored in afterLogin
-     */
-    runAfterLoginTask(state) {
-      state.afterLogin();
-    },
   },
 
   actions: {
@@ -119,7 +130,7 @@ const store = new Vuex.Store({
             // Update the state
             context.commit("setLogged", true);
             context.dispatch("getUserData");
-            context.commit("runAfterLoginTask");
+            context.dispatch("runAfterLoginTask");
             context.commit("closeLoginDialog");
             // Request is successful
             resolve();
@@ -155,6 +166,24 @@ const store = new Vuex.Store({
     },
 
     /**
+     * Makes a GET request to login.php?admin to see if the user is logged and is admin
+     * @returns a Promise that is resolved if the user is admin, and rejected if it isn't
+     */
+    checkLoginAdmin(context) {
+      return new Promise((resolve, reject) => {
+        Axios.get(process.env.VUE_APP_API_URL + `login.php?admin`)
+          .then((response) => {
+            context.commit("setIsAdmin", response.data.isAdmin);
+            context.commit("setLogged", response.data.logged);
+
+            if (response.data.isAdmin) resolve();
+            else reject();
+          })
+          .catch(() => {});
+      });
+    },
+
+    /**
      * GET the user data from the server and update the state
      * (this action is called after the login)
      */
@@ -162,6 +191,13 @@ const store = new Vuex.Store({
       console.log("Getting user data...");
       // TODO: Make a request to user.php to get user data
       context;
+    },
+
+    /**
+     * Run the function stored in afterLogin
+     */
+    runAfterLoginTask(context) {
+      context.getters.afterLogin(context);
     },
   },
 });

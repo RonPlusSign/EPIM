@@ -46,6 +46,13 @@ const routes = [
   },
 
   {
+    path: "/admin",
+    name: "admin",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/Admin.vue"),
+  },
+
+  {
     // will match everything (for 404 errors, pages not found)
     path: "/404",
     alias: "*",
