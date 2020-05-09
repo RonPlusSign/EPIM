@@ -25,7 +25,9 @@ Example of usage:
       <!-- filters menu toggler -->
       <template v-slot:activator="{ on }">
         <v-btn icon dark v-on="on">
-          <v-icon>mdi-filter</v-icon>
+          <v-icon>{{
+            filtersEmpty ? "mdi-filter-outline" : "mdi-filter"
+          }}</v-icon>
         </v-btn>
       </template>
 
@@ -176,6 +178,16 @@ export default {
       return this.typesOfSorting.filter(
         (element) => element.id === this.activeFilters.selectedSortingMethodId
       )[0];
+    },
+
+    filtersEmpty() {
+      return (
+        this.activeFilters.selectedCategory === null &&
+        this.activeFilters.selectedBrand === null &&
+        this.activeFilters.priceRange[0] === 0 &&
+        this.activeFilters.priceRange[1] === 500 &&
+        this.activeFilters.selectedSortingMethodId === 1
+      );
     },
   },
   created() {

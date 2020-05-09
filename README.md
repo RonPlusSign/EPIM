@@ -203,6 +203,18 @@ Renames one category, if the user is logged AND is an admin
 
 ---
 
+`categories.php?id=[categoryID]`
+
+Deletes one category, if the user is logged AND is an admin
+
+#### Response:
+
+- HTTP 200: successful
+
+- HTTP 403: error
+
+---
+
 ## brands.php
 
 Same methods, requests and response messages as `categories.php`. See above for details.
