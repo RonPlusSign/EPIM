@@ -17,7 +17,11 @@ Example of usage:
   <!---- Filter button & filter inputs ----->
   <!---------------------------------------->
   <div class="text-center">
-    <v-menu offset-y :close-on-content-click="false">
+    <v-menu
+      transition="slide-y-transition"
+      offset-y
+      :close-on-content-click="false"
+    >
       <!-- filters menu toggler -->
       <template v-slot:activator="{ on }">
         <v-btn icon dark v-on="on">

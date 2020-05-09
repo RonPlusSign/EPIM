@@ -54,14 +54,14 @@ const routes = [
 
   {
     path: "/admin/ordini",
-    name: "admin",
+    name: "ordersAdmin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/admin/OrdersAdmin.vue"),
   },
 
   {
     path: "/admin/prodotti",
-    name: "admin",
+    name: "productsAdmin",
     component: () =>
       import(
         /* webpackChunkName: "admin" */ "../views/admin/ProductsAdmin.vue"
@@ -70,14 +70,14 @@ const routes = [
 
   {
     path: "/admin/marche",
-    name: "admin",
+    name: "brandsAdmin",
     component: () =>
       import(/* webpackChunkName: "admin" */ "../views/admin/BrandsAdmin.vue"),
   },
 
   {
     path: "/admin/categorie",
-    name: "admin",
+    name: "categoriesAdmin",
     component: () =>
       import(
         /* webpackChunkName: "admin" */ "../views/admin/CategoriesAdmin.vue"
