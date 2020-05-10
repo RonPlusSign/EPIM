@@ -208,7 +208,7 @@ export default {
         Axios;
 
         // Send registration request
-        Axios.post(process.env.VUE_APP_API_URL + `user.php?register`, {
+        Axios.post(process.env.VUE_APP_API_URL + `user.php?signup`, {
           name: this.user.name,
           surname: this.user.surname,
           email: this.user.email,

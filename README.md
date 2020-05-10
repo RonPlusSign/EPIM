@@ -229,7 +229,8 @@ Format:
 
 ```jsonc
 {
-  "logged": true // if the user is logged
+  "logged": true,   // if the user is logged
+  "isAdmin": false  // if the user is Admin
 }
 ```
 
@@ -244,19 +245,6 @@ Status code:
 #### Response:
 
 - HTTP 200: successful
-
----
-
-`login.php?admin GET`
-
-#### Response:
-
-```jsonc
-{
-  "logged": true, // TRUE if the user is logged
-  "isAdmin": false // TRUE if the user is an admin AND is logged
-}
-```
 
 ---
 
@@ -299,6 +287,32 @@ Status codes:
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged)
+
+---
+
+`user.php?all GET` (get all users, only if admin)
+
+#### Response:
+
+Format:
+
+```jsonc
+[
+  {
+    "name": "Pippo",
+    "surname": "Baudo",
+    "email": "pippo@baudo.it",
+    "phoneNumber": "1231231230"
+  },
+  ...
+]
+```
+
+Status codes:
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not logged as admin)
 
 ---
 
@@ -401,7 +415,7 @@ An admin can add new admins from the existing users.
 
 - HTTP 200: successful
 
-- HTTP 400: general error (Bad Request)
+- HTTP 403: forbidden (ex. current user not admin)
 
 ---
 

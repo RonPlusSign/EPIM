@@ -64,7 +64,7 @@ switch ($requestMethod) {
             // if start is omited sets it to 0
             if (!isset($_GET['ps'])) $ph->setPriceRangeFilter(true, 0, $_GET['pe']);
             // if end is omited sets it to FLOAT_MAX
-            if (!isset($_GET['pe'])) $ph->setPriceRangeFilter(true, $_GET['ps'], PHP_FLOAT_MAX);
+            else if (!isset($_GET['pe'])) $ph->setPriceRangeFilter(true, $_GET['ps'], PHP_FLOAT_MAX);
             // if both present, normal behavior
             else $ph->setPriceRangeFilter(true, $_GET['ps'], $_GET['pe']);
         }

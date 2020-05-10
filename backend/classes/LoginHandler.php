@@ -12,7 +12,7 @@ class LoginHandler
      * Checks if the user exists and sets the $_SESSION["logged"] & $_SESSION["user_id"]
      * @return TRUE if the login was successful, FALSE otherwise
      */
-    static public function doLogin($email, $password)
+    static public function loginUser($email, $password)
     {
         try {
             $stm = Database::$pdo->prepare("SELECT * FROM user
@@ -76,4 +76,5 @@ class LoginHandler
         session_destroy();
         http_response_code(200);
     }
+
 }

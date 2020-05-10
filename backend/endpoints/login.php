@@ -7,63 +7,47 @@ require_once __DIR__ . '/../classes/LoginHandler.php';
 session_start();
 
 switch ($requestMethod) {
+        /**
+     * Handle user login and signup
+     * 
+     * Methods:
+     * 
+     *      GET:
+     *          - default (no queries)  shows the current stats (logged/not logged, isAdmin)
+     *          - ?logout   logout the user
+     * 
+     *      POST:
+     *          Post json to login user
+     * 
+     */
     case 'GET':
-        if (isset($_GET["logout"])) { // Do logout
-            loginHandler::logout();  //li sto facendo utilizzare la funzione di login handler senza la creazione di un oggetto
-        } else if (isset($_GET["admin"])) {    // Check if the user is an admin
-            try {
-                $answer = [
-                    "logged" => loginHandler::isLogged(),
-                    "isAdmin" => false
-                ];
 
-                if (loginHandler::isAdmin()) {
-                    $answer["isAdmin"] = true;
-                }
-            } catch (\Exception $e) {
-            }
-        } else {   // Normal user login
-            $answer = [
-                "logged" => loginHandler::isLogged()
-            ];
+        // Logout
+        if (isset($_GET["logout"])) {
+            LoginHandler::logout();
+        } 
+        
+        // Show stats
+        else {
+            echo json_encode([
+                "logged" => LoginHandler::isLogged(),
+                "isAdmin" => LoginHandler::isAdmin()
+            ]);
         }
-        echo json_encode($answer);
+
         break;
 
-    case 'POST': // user is logging on the website
-        /* POST Format:
-        {
-            "email": "pippo@baudo.it",
-            "password": "myPassword"
-        }
-        */
+    case 'POST':
 
         $json = json_decode(file_get_contents('php://input'), true);
 
-        if (loginHandler::doLogin($json["email"], $json["password"]))
-            http_response_code(204);
+        // Login user
+        if (LoginHandler::loginUser($json["email"], $json["password"])) http_response_code(200);
         else http_response_code(403);
+
         break;
+
     default:
         http_response_code(405);
         break;
 }
-
-/*
-foreach ($sas as &$key) {
-    foreach ($key as &$lol => $six) {
-    }
-}
-
-try {
-    $stm = Database::$pdo->prepare("SELECT product.*, brand.name as brand, category.name as category FROM product
-                                    INNER JOIN category ON product.category=category.id
-                                    INNER JOIN brand ON product.brand=brand.id
-                                    WHERE product.id=:id");
-    $stm->bindParam(':id', $id);
-    $stm->execute();
-    return $stm->fetch(PDO::FETCH_ASSOC);
-} catch (\Exception $e) {
-    echo $e;
-}
-*/
