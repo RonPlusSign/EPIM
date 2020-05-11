@@ -43,6 +43,7 @@ export default {
   created() {
     // Check if the user is logged when the page is loaded, so we can display user's info
     this.$store.dispatch("checkLogin");
+    this.$store.dispatch("getUserData");
   },
 };
 </script>

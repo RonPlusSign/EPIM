@@ -1,6 +1,6 @@
 <!-- Page of a single product info -->
 <template>
-  <div class="ProductDetail">
+  <div>
     <v-row cols="12">
       <v-col
         justify="center"
@@ -31,7 +31,7 @@
         <p class="subtitle-1 mb-2">
           Prezzo:
           <span class="font-weight-medium accent--text text--darken-3"
-            >{{ product.sellPrice }} €</span
+            >{{ product.price }} €</span
           >
         </p>
         <!-- Category -->

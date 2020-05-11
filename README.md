@@ -229,8 +229,8 @@ Format:
 
 ```jsonc
 {
-  "logged": true,   // if the user is logged
-  "isAdmin": false  // if the user is Admin
+  "logged": true, // if the user is logged
+  "isAdmin": false // if the user is Admin
 }
 ```
 
@@ -535,7 +535,7 @@ Response format:
       "title": "My product",
       "description": "...",
       "imageUrl": "my/image/url", // URL to the first image of a product
-      "price": 43.21, // ONLY sell_price
+      "sellPrice": 43.21, // ONLY sell_price
       "quantity": 23, // Products availability
       "categoryId": 1,
       "categoryName": "Smartphone",
@@ -587,7 +587,7 @@ Response format:
 
 `products.php?admin GET`
 
-Same as `products.php GET`, but it also returns recommended_price and purchase_price
+Same as `products.php GET`, but it also returns recommendedPrice and purchasePrice
 
 #### Response codes
 
@@ -599,7 +599,7 @@ Same as `products.php GET`, but it also returns recommended_price and purchase_p
 
 `products.php?admin&id=[productId] GET`
 
-Same as `products.php?id=[number] GET`, but it also returns recommended_price and purchase_price
+Same as `products.php?id=[number] GET`, but it also returns recommendedPrice and purchasePrice
 
 #### Response codes
 

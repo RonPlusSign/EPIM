@@ -43,7 +43,6 @@ export default {
   mixins: [adminMixin],
   data() {
     return {
-      
       pages: [
         {
           title: "Ordini",

@@ -9,7 +9,7 @@
     <!----------------------->
     <!---- Products list ---->
     <!----------------------->
-    <EProductsList class="Products" :products="products" :loading="loading" />
+    <EProductsList :products="products" :loading="loading" />
 
     <!----------------------------------->
     <!---- Products pages navigation ---->

@@ -93,7 +93,7 @@ To close the dialog, do:
           border="top"
           color="red darken-1"
         >
-          Questo account non esiste. Hai inserito i dati correttamente?
+          Errore durante il login. Hai inserito i dati correttamente?
         </v-alert>
       </v-card-text>
       <!----------------------->

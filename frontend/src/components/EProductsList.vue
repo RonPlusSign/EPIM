@@ -14,8 +14,14 @@
         <v-spacer class="hidden-xs-only" />
 
         <v-col xl="6" lg="8" md="9" sm="10" xs="12" align-self="center">
+          <!------------------------->
           <!-- Single product item -->
-          <EProductListItem :product="product" />
+          <!------------------------->
+          <EProductListItem
+            :product="product"
+            :adminVersion="adminVersion"
+            @deleted="(productId) => $emit('deleted', productId)"
+          />
         </v-col>
         <v-spacer class="hidden-xs-only" />
       </v-row>
@@ -41,6 +47,10 @@ export default {
       required: true,
     },
     loading: {
+      type: Boolean,
+      default: false,
+    },
+    adminVersion: {
       type: Boolean,
       default: false,
     },

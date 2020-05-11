@@ -11,12 +11,7 @@ const store = new Vuex.Store({
     // data of the Store
     logged: false,
     isAdmin: false,
-    user: {
-      name: "Pippo",
-      surname: "Baudo",
-      email: "pippo@baudo.it",
-      phoneNumber: "1231231230",
-    }, // TODO: make a request to user.php to get user info
+    user: null, // TODO: make a request to user.php to get user info
 
     // Login dialog status
     isLoginDialogActive: false,
@@ -89,6 +84,14 @@ const store = new Vuex.Store({
     },
 
     /**
+     * Sets the user object value
+     * @param {Object} userData data of the user
+     */
+    setUser(state, userData) {
+      state.user = userData;
+    },
+
+    /**
      * Open the login dialog (state.isLoginDialogActive = True)
      * @param {Boolean} persistent if the dialog has to be persistent (default = False)
      */
@@ -133,7 +136,7 @@ const store = new Vuex.Store({
         })
           .then((/*response*/) => {
             // Update the state
-            context.commit("setLogged", true);
+            context.dispatch("checkLogin");
             context.dispatch("getUserData");
             context.dispatch("runAfterLoginTask");
             context.commit("closeLoginDialog");
@@ -166,6 +169,7 @@ const store = new Vuex.Store({
       Axios.get(process.env.VUE_APP_API_URL + `login.php`)
         .then((response) => {
           context.commit("setLogged", response.data.logged);
+          context.commit("setIsAdmin", response.data.logged);
         })
         .catch(() => {});
     },
@@ -176,7 +180,7 @@ const store = new Vuex.Store({
      */
     checkLoginAdmin(context) {
       return new Promise((resolve, reject) => {
-        Axios.get(process.env.VUE_APP_API_URL + `login.php?admin`)
+        Axios.get(process.env.VUE_APP_API_URL + `login.php`)
           .then((response) => {
             context.commit("setIsAdmin", response.data.isAdmin);
             context.commit("setLogged", response.data.logged);
@@ -193,9 +197,14 @@ const store = new Vuex.Store({
      * (this action is called after the login)
      */
     getUserData(context) {
-      console.log("Getting user data...");
-      // TODO: Make a request to user.php to get user data
-      context;
+      Axios.get(process.env.VUE_APP_API_URL + `user.php`)
+        .then((result) => {
+          context.commit("setUser", result.data);
+        })
+        .catch((err) => {
+          console.error(err);
+          context.dispatch("checkLogin");
+        });
     },
 
     /**

@@ -24,7 +24,7 @@ Example of usage:
     >
       <!-- filters menu toggler -->
       <template v-slot:activator="{ on }">
-        <v-btn icon dark v-on="on">
+        <v-btn icon v-on="on">
           <v-icon>{{
             filtersEmpty ? "mdi-filter-outline" : "mdi-filter"
           }}</v-icon>
