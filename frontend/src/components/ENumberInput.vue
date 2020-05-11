@@ -6,6 +6,7 @@ Params:
 - "min" (Number): lower bound
 - "max" (Number): upper bound
 - "caption" (String): Caption of the input number
+- "decimals" (Number, default 0): Number of decimals accepted by the input
 
 Events:
 - "changed": Returns the number value
@@ -16,7 +17,7 @@ Events:
     <!----------------->
     <!---- Caption ---->
     <!----------------->
-    <span class="caption">{{caption}}</span>
+    <span class="caption">{{ caption }}</span>
 
     <!------------------------->
     <!---- Number selector ---->
@@ -28,10 +29,17 @@ Events:
         @click="decrease()"
         :disabled="this.number === this.min"
         color="gray darken-4"
-      >mdi-minus</v-icon>
+      >
+        mdi-minus
+      </v-icon>
 
       <!-- Input box with the number -->
-      <input class="value text-center" v-model="number" type="number" />
+      <input
+        class="value text-center"
+        v-model="number"
+        :step="decimals"
+        type="number"
+      />
 
       <!-- "plus" button -->
       <v-icon
@@ -39,7 +47,9 @@ Events:
         @click="increase()"
         :disabled="this.number === this.max"
         color="gray darken-4"
-      >mdi-plus</v-icon>
+      >
+        mdi-plus
+      </v-icon>
     </div>
   </div>
 </template>
@@ -48,47 +58,57 @@ Events:
 export default {
   data() {
     return {
-      number: 0
+      number: 0,
     };
   },
   props: {
     value: {
       type: Number,
-      required: true
+      required: true,
     },
     max: {
       type: Number,
-      default: Number.MAX_VALUE
+      default: Number.MAX_VALUE,
     },
     min: {
       type: Number,
-      default: Number.MIN_VALUE
+      default: Number.MIN_VALUE,
     },
-    caption: String
+    decimals: {
+      type: Number,
+      default: 0,
+    },
+    caption: String,
+  },
+
+  created() {
+    this.number = this.value ? this.value : 0;
   },
 
   methods: {
     increase() {
       if (this.number !== this.max) this.number++;
+      this.number = +this.number.toFixed(this.decimals);
     },
 
     decrease() {
       if (this.number !== this.min) this.number--;
-    }
+      this.number = +this.number.toFixed(this.decimals);
+    },
   },
   watch: {
     number(val) {
       // Control the new value, to check if it has been changed by the user directly
-      if (Number.parseInt(val) > this.max) {
+      if (Number.parseFloat(val) > this.max) {
         val = this.max;
         this.number = this.max;
-      } else if (Number.parseInt(val) < this.min) {
+      } else if (Number.parseFloat(val) < this.min) {
         val = this.min;
         this.number = this.min;
       }
-      this.$emit("change", Number.parseInt(val));
-    }
-  }
+      this.$emit("change", Number.parseFloat(val));
+    },
+  },
 };
 </script>
 

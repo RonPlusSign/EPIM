@@ -71,7 +71,7 @@
             class="mt-2"
             text
           >
-            <span class="mr-2">Profilo di {{ user.name }}</span>
+            <span class="mr-2">Profilo di {{ user ? user.name : "" }}</span>
           </v-btn>
         </div>
 

@@ -69,19 +69,19 @@ const routes = [
   },
 
   {
-    path: "/admin/prodotti/:id",
-    name: "editProduct",
-    component: () =>
-      import(/* webpackChunkName: "admin" */ "../views/admin/EditProduct.vue"),
-  },
-
-  {
     path: "/admin/prodotti/nuovo",
     name: "createProduct",
     component: () =>
       import(
         /* webpackChunkName: "admin" */ "../views/admin/CreateProduct.vue"
       ),
+  },
+
+  {
+    path: "/admin/prodotti/:id",
+    name: "editProduct",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/admin/EditProduct.vue"),
   },
 
   {

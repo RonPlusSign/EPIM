@@ -10,7 +10,7 @@ This component requires one prop:
   <!--------------------------------->
   <v-navigation-drawer light v-model="isExpanded" app>
     <v-container width="100%" class="headline">{{
-      logged ? `Ciao, ${user.name}!` : "Benvenuto!"
+      logged ? `Ciao, ${user ? user.name : ""}!` : "Benvenuto!"
     }}</v-container>
     <v-divider></v-divider>
 
@@ -52,7 +52,6 @@ This component requires one prop:
 </template>
 
 <script>
-
 export default {
   name: "ENavigationDrawer",
   props: {

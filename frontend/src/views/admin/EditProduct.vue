@@ -1,17 +1,48 @@
 <template>
-  <div>Edit product {{ id }} here</div>
+  <div>
+    <!-------------------------------------->
+    <!---- Go back to Admin page button ---->
+    <!-------------------------------------->
+    <v-btn @click="$router.push('/admin/prodotti')" text color="secondary">
+      <v-icon class="mr-2">mdi-arrow-left</v-icon>
+      <span class="mt-1">torna alla pagina dei prodotti</span>
+    </v-btn>
+
+    <v-spacer class="my-3" />
+
+    <!---------------------------------->
+    <!---- "Edit product" component ---->
+    <!---------------------------------->
+    <EEditProduct :productObject="product" />
+  </div>
 </template>
 
 <script>
-// TODO: Import adminMixin
+import Axios from "axios";
+
+import adminMixin from "@/mixins/adminMixin";
+import EEditProduct from "@/components/admin/EEditProduct.vue";
+
 export default {
+  name: "EditProduct",
+  mixins: [adminMixin],
+  components: { EEditProduct },
   data() {
     return {
-      id: this.$router.history.current.params.id,
+      product: null,
     };
   },
   created() {
-    // TODO: get the product to edit
+    // Get the product to edit
+    Axios.get(process.env.VUE_APP_API_URL + `products.php?admin`, {
+      params: { id: this.$router.history.current.params.id },
+    })
+      .then((response) => {
+        this.product = response.data;
+      })
+      .catch((err) => {
+        console.error(err);
+      });
     // ID = id: this.$router.history.current.params.id
   },
 };
