@@ -213,7 +213,7 @@ class ProductsHandler
             category.name as category, category.id as category_id, p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
 
             if (LoginHandler::isAdmin()) {
-                $query .= ", p.purchase_price, p.recommended_price,";
+                $query .= ", p.purchase_price, p.recommended_price ";
             }
 
             $query .= " FROM product as p
