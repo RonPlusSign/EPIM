@@ -108,7 +108,6 @@ export default {
       params: { id: this.$router.history.current.params.id }
     })
       .then(response => {
-        console.log(response.data);
         this.product = response.data;
       })
       .catch((/* error */) => {});
