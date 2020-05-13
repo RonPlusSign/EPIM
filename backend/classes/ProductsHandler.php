@@ -115,7 +115,7 @@ class ProductsHandler
     {
         // Query
         if ($countResults) {
-            $query = "SELECT count(*) as number_of_products FROM product";
+            $query = "SELECT count(*) as number_of_products FROM product as p";
         } else {
             $query = "SELECT p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
 
@@ -123,7 +123,7 @@ class ProductsHandler
                 $query .= ", p.purchase_price, p.recommended_price";
             }
 
-            $query = ", brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product as p";
+            $query .= ", brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product as p";
         }
 
         $query .= " INNER JOIN category ON p.category=category.id
