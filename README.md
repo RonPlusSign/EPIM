@@ -361,7 +361,7 @@ Sends in POST one or more fields and the server overwrites it
 
 - HTTP 200: successful
 
-- HTTP 400: general error (Bad Request)
+- HTTP 403: User not logged
 
 ---
 
