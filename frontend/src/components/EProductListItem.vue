@@ -35,19 +35,23 @@ Example of a product:
       <!---- Product image ----->
       <!------------------------>
       <v-col xl="3" lg="4" md="4" sm="5" xs="12" align="center">
-        <v-avatar class="ml-1" size="200" tile image left>
+        <v-avatar
+          class="ml-1"
+          size="200"
+          tile
+          image
+          left
+          @click="
+            $router.push({ name: 'productDetail', params: { id: product.id } })
+          "
+        >
           <v-img
             contain
             class="ml-3"
-            v-if="product.imageUrl && product.imageUrl !== ''"
-            :src="product.imageUrl"
-          ></v-img>
-          <v-img
-            contain
-            class="ml-3"
-            v-else
-            src="@/assets/Product Not Found.png"
-          ></v-img>
+            v-if="product.images[0] && product.images[0] !== ''"
+            :src="product.images[0]"
+          />
+          <v-img contain class="ml-3" v-else src="@/assets/Product Not Found.png" />
         </v-avatar>
       </v-col>
       <!----------------------->
@@ -62,8 +66,7 @@ Example of a product:
           @click="
             $router.push({ name: 'productDetail', params: { id: product.id } })
           "
-          >{{ product.title }}</v-card-title
-        >
+        >{{ product.title }}</v-card-title>
 
         <!---------------->
         <!---- Brand ----->
@@ -74,8 +77,7 @@ Example of a product:
             @click="
               $router.push({ path: '/prodotti', query: { b: product.brand_id } })
             "
-            >{{ product.brand }}</a
-          >
+          >{{ product.brand }}</a>
         </v-card-subtitle>
         <!-------------------------->
         <!----- Admin buttons ------>
@@ -99,12 +101,7 @@ Example of a product:
           </v-col>
           <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
             <!---- Delete button ---->
-            <v-btn
-              @click="deleteProduct(product.id)"
-              :loading="deleting"
-              dark
-              color="red"
-            >
+            <v-btn @click="deleteProduct(product.id)" :loading="deleting" dark color="red">
               Cancella
               <v-icon class="ml-2">mdi-delete</v-icon>
             </v-btn>
@@ -132,9 +129,9 @@ Example of a product:
           <!---------------->
           <p v-if="!adminVersion" class="subtitle-1 mb-2">
             Prezzo:
-            <span class="font-weight-medium accent--text text--darken-3"
-              >{{ product.sell_price }} €</span
-            >
+            <span
+              class="font-weight-medium accent--text text--darken-3"
+            >{{ product.sell_price }} €</span>
           </p>
 
           <!----------------------------->
@@ -143,21 +140,21 @@ Example of a product:
           <div v-if="adminVersion">
             <p class="subtitle-1 mb-2">
               Prezzo di vendita:
-              <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.sell_price }} €</span
-              >
+              <span
+                class="font-weight-medium accent--text text--darken-3"
+              >{{ product.sell_price }} €</span>
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo di acquisto:
-              <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.purchase_price }} €</span
-              >
+              <span
+                class="font-weight-medium accent--text text--darken-3"
+              >{{ product.purchase_price }} €</span>
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo consigliato:
-              <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.recommended_price }} €</span
-              >
+              <span
+                class="font-weight-medium accent--text text--darken-3"
+              >{{ product.recommended_price }} €</span>
             </p>
           </div>
           <!------------------>
@@ -171,8 +168,7 @@ Example of a product:
                   .push({ path: '/prodotti', query: { c: product.category_id } })
                   .catch((err) => {})
               "
-              >{{ product.category }}</a
-            >
+            >{{ product.category }}</a>
           </p>
           <!------------------------>
           <!-- Quantity available -->
@@ -192,23 +188,23 @@ export default {
   computed: {
     logged() {
       return this.$store.getters.logged;
-    },
+    }
   },
   data() {
     return {
       addingToCart: false,
-      deleting: false,
+      deleting: false
     };
   },
   props: {
     product: {
       type: Object,
-      required: true,
+      required: true
     },
     adminVersion: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   methods: {
     // Add a product to the cart
@@ -217,8 +213,8 @@ export default {
       const task = () => {
         Axios.post(process.env.VUE_APP_API_URL + `user.php?cart`, {
           id: id, // Product id
-          quantity: 1, // Default quantity
-        }).catch((err) => {
+          quantity: 1 // Default quantity
+        }).catch(err => {
           console.error(err);
         });
       };
@@ -236,18 +232,18 @@ export default {
       this.deleting = true;
       Axios.delete(process.env.VUE_APP_API_URL + `products.php`, {
         params: {
-          id: id,
-        },
+          id: id
+        }
       })
         .then(() => {
           this.$emit("deleted", id);
           this.deleting = false;
         })
-        .catch((err) => {
+        .catch(err => {
           console.error(err);
         });
-    },
-  },
+    }
+  }
 };
 </script>
 
