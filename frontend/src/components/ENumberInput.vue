@@ -9,7 +9,7 @@ Params:
 - "decimals" (Number, default 0): Number of decimals accepted by the input
 
 Events:
-- "changed": Returns the number value
+- "change": Returns the number value
 -->
 
 <template>
