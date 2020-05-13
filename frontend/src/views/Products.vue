@@ -30,7 +30,7 @@ import EProductsList from "@/components/EProductsList";
 export default {
   name: "Products",
   components: {
-    EProductsList,
+    EProductsList
   },
   data() {
     return {
@@ -43,7 +43,7 @@ export default {
       // Pages navigation
       numberOfProductsFound: 0,
       productsPerPage: 0,
-      selectedPage: 1,
+      selectedPage: 1
     };
   },
   methods: {
@@ -51,13 +51,14 @@ export default {
     fetchProducts() {
       this.loading = true;
 
-      Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+      // If the filters are empty, look for best sellers
+      let salesString = this.filtersEmpty ? "?sales&desc" : "";
+
+      Axios.get(process.env.VUE_APP_API_URL + `products.php` + salesString, {
         // Add the filters (query string params)
-        params: this.filtersEmpty
-          ? { sort: "sales", desc: null }
-          : this.$route.query,
+        params: this.filtersEmpty ? {} : this.$route.query
       })
-        .then((response) => {
+        .then(response => {
           // Parse the response from the server
           /*
           Response format:
@@ -74,12 +75,12 @@ export default {
           this.numberOfProductsFound = response.data.totalResults;
           this.productsPerPage = response.data.productsPerPage;
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
 
       this.loading = false;
-    },
+    }
   },
   computed: {
     // Check if filters are empty or undefined
@@ -94,7 +95,7 @@ export default {
     // Returns the number of pages (total number of results divided by the number of products per page)
     numberOfPages() {
       return Math.ceil(this.numberOfProductsFound / this.productsPerPage);
-    },
+    }
   },
   watch: {
     $route() {
@@ -111,13 +112,13 @@ export default {
         path: "/prodotti",
         query: {
           ...this.$route.query,
-          p: value,
-        },
+          p: value
+        }
       });
-    },
+    }
   },
   created() {
     this.fetchProducts();
-  },
+  }
 };
 </script>
