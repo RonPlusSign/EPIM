@@ -59,10 +59,10 @@ switch ($requestMethod) {
     case 'PATCH':
         $json = json_decode(file_get_contents('php://input'));
 
-        if (isset($_GET['id'])) {
-            if (UserHandler::editUser($_GET['id'], $json)) http_response_code(200);
-            else http_response_code(403);
-        }
+
+        if (UserHandler::editUser($_GET['id'], $json)) http_response_code(200);
+        else http_response_code(403);
+
 
         break;
 

@@ -128,17 +128,28 @@ Every .php file should have the first letter capitalized.
 Every file should be capitalized. Views and components should go in the folder with the same name (/views and /components).
 Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue).
 
-# PHP files usage
+# Endpoints
+
+
+- [Categories](#categories.php)
+  - [GET](#get)
+  - [POST](#post)
+  - [PATCH](#patch)
+  - [DELETE](#delete)
+- [Brands](#brands.php)
+- [Login](#login.php)
+- [User](#user.php)
+- [Product](#products.php)
+- [Order](#orders.php)
+
 
 ## categories.php
 
-`categories.php GET`
+#### GET
 
 Returns the list of all the categories
 
 #### Response:
-
-- HTTP 200: successful
 
 ```jsonc
 [
@@ -149,13 +160,15 @@ Returns the list of all the categories
 ]
 ```
 
----
+- HTTP 200: successful
 
-`categories.php POST`
+<br>
+
+#### POST
 
 Adds a new category, if the user is logged AND is an admin
 
-#### Request
+##### Request
 
 ```jsonc
 {
@@ -163,15 +176,8 @@ Adds a new category, if the user is logged AND is an admin
 }
 ```
 
-#### Response:
+##### Response:
 
-- HTTP 200: successful
-
-- HTTP 403: error
-
-#### Response:
-
-- HTTP 200: successful
 
 ```jsonc
 [
@@ -182,9 +188,13 @@ Adds a new category, if the user is logged AND is an admin
 ]
 ```
 
----
+- HTTP 200: successful
 
-`categories.php PATCH`
+- HTTP 403: error
+
+<br>
+
+#### PATCH
 
 Renames one category, if the user is logged AND is an admin
 
@@ -195,37 +205,42 @@ Renames one category, if the user is logged AND is an admin
 }
 ```
 
-#### Response:
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 403: error
 
----
 
-`categories.php?id=[categoryID]`
+<br>
 
-Deletes one category, if the user is logged AND is an admin
+#### DELETE
 
-#### Response:
+> ?id=[categoryID]
+
+Deletes a category, the user **must** be admin
+
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 403: error
 
----
+<br>
 
 ## brands.php
 
 Same methods, requests and response messages as `categories.php`. See above for details.
 
+<br>
+
 ## login.php
 
-`login.php GET`
+#### GET
 
-#### Response:
+> no query
 
-Format:
+##### Response:
 
 ```jsonc
 {
@@ -233,24 +248,20 @@ Format:
   "isAdmin": false // if the user is Admin
 }
 ```
+- HTTP 200: successful
 
-Status code:
+<br>
+
+> ?logout
+
+##### Response:
 
 - HTTP 200: successful
 
----
 
-`login.php?logout GET`
+<br>
 
-#### Response:
-
-- HTTP 200: successful
-
----
-
-`login.php POST`
-
-JSON in post:
+#### POST
 
 ```jsonc
 {
@@ -259,19 +270,22 @@ JSON in post:
 }
 ```
 
-#### Response:
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 403: error
 
+<br>
+
 ## user.php
 
-`user.php GET` (if the user is logged)
 
-#### Response:
+#### GET
 
-Format:
+> no query
+
+##### Response:
 
 ```jsonc
 {
@@ -282,19 +296,18 @@ Format:
 }
 ```
 
-Status codes:
-
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged)
 
----
 
-`user.php?all GET` (get all users, only if admin)
+<br>
 
-#### Response:
+> ?all
 
-Format:
+###### user **must** be admin to use this
+
+##### Response:
 
 ```jsonc
 [
@@ -308,17 +321,30 @@ Format:
 ]
 ```
 
-Status codes:
-
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged as admin)
 
----
 
-`user.php POST` = User registration
+<br>
 
-JSON in post:
+> ?cart
+
+###### Gets all the products from the user's cart
+
+#### Response
+
+*Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart*
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not logged)
+
+<br>
+
+#### POST
+
+> User registration
 
 ```jsonc
 {
@@ -330,46 +356,24 @@ JSON in post:
 }
 ```
 
-#### Response:
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 400: general error (Bad Request)
 
-Optional response:
+##### Optional response:
 
 ```jsonc
 // Example: in case of a registration with an email already in use by someone
 { "error": "E-mail already in use." }
 ```
 
----
+<br>
 
-`user.php PATCH` (if the user is logged)
+> ?address
 
-Sends in POST one or more fields and the server overwrites it
-
-#### Request format:
-
-```jsonc
-{
-  // The request can contain all the user fields (name, surname, phoneNumber, email)
-  "name": "Pippo",
-  "phoneNumber": "1231231230"
-}
-```
-
-- HTTP 200: successful
-
-- HTTP 400: general error (Bad Request)
-
----
-
-### user.php?address (manage user addresses)
-
-`user.php?address POST` = Add an address to the user's addresses
-
-JSON in post:
+###### Add an address to the user's addresses
 
 ```jsonc
 {
@@ -381,28 +385,26 @@ JSON in post:
 }
 ```
 
-#### Response:
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 400: general error (Bad Request)
 
-Optional response:
+##### Optional response:
 
 ```jsonc
 // Example in case of a registration with an email already taken
 { "error": "E-mail already in use." }
 ```
 
----
+<br>
 
-### user.php?admin (Add new admins)
+> ?admin
 
-`user.php?admin POST` (if the user is logged AND is admin)
+###### An admin can add new admins from the existing users (user must be admin to perform this action).
 
-An admin can add new admins from the existing users.
-
-#### Request format:
+##### Request:
 
 ```jsonc
 {
@@ -411,37 +413,17 @@ An admin can add new admins from the existing users.
 }
 ```
 
-#### Response codes
+##### Response
 
 - HTTP 200: successful
 
 - HTTP 403: forbidden (ex. current user not admin)
 
----
+<br>
 
-## user.php?cart (User cart management)
+> ?cart
 
-`user.php?cart GET`
-
-Gets all the products from the user's cart
-
-#### Response
-
-Format:
-
-Same as `products.php GET`, but the field "quantity" represents the quantity of the product into the cart
-
-Codes:
-
-- HTTP 200: successful
-
-- HTTP 403: error (Not logged)
-
----
-
-`user.php?cart POST`
-
-Adds a product to the user's cart
+###### Adds a product to the user's cart
 
 #### Request format:
 
@@ -458,13 +440,38 @@ Adds a product to the user's cart
 
 - HTTP 403: error (Not logged)
 
----
 
-`user.php?cart PATCH`
+<br>
 
-Changes the selected product's quantity in the user's cart
+#### PATCH
 
-#### Request format:
+> no query
+
+###### user must be logged in order to work
+
+##### Request:
+
+```jsonc
+{
+  // The request can contain all the user fields (name, surname, phoneNumber, email)
+  "name": "Pippo",
+  "phoneNumber": "1231231230"
+}
+```
+
+##### Response:
+
+- HTTP 200: successful
+
+- HTTP 403: User not logged
+
+<br>
+
+> ?cart
+
+###### Changes the selected product's quantity in the user's cart
+
+##### Request:
 
 ```jsonc
 {
@@ -473,7 +480,7 @@ Changes the selected product's quantity in the user's cart
 }
 ```
 
-#### Response codes
+##### Response
 
 - HTTP 200: successful
 
@@ -481,13 +488,16 @@ Changes the selected product's quantity in the user's cart
 
 - HTTP 403: error (Not logged)
 
----
 
-`user.php?cart?id=[productId] DELETE`
+<br>
 
-Removes a product from the user's cart
+#### DELETE
 
-#### Response codes
+> ?cart?id=[productId]
+
+###### Removes a product from the user's cart
+
+#### Response
 
 - HTTP 200: successful (product removed from cart (or it already wasn't there))
 
@@ -495,7 +505,7 @@ Removes a product from the user's cart
 
 <br>
 
-# products.php
+## products.php
 
 `products.php GET`
 

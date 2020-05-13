@@ -100,7 +100,8 @@ class UserHandler
     {
         session_start();
 
-        if (LoginHandler::isLogged() && $_SESSION["user_id"] === +$id) {
+        if (LoginHandler::isLogged()) {
+            $id = $_SESSION["user_id"];
             try {
                 $stm = Database::$pdo->prepare("UPDATE user
                                             SET email            = COALESCE(:email,email)
