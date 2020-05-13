@@ -4,6 +4,7 @@
  */
 
 require_once __DIR__ . '/../lib/Bootstrap.php';
+require_once __DIR__ . '/../classes/LoginHandler.php';
 
 
 class ProductsHandler
@@ -24,6 +25,7 @@ class ProductsHandler
     public function __construct()
     {
         $this->isSort = false;
+        $this->isAdminView = false;
         $this->extraFilter = NULL;
         $this->pageNumber = 0;
     }
@@ -101,7 +103,6 @@ class ProductsHandler
     }
 
 
-
     /**
      * Match products by string
      * 
@@ -116,11 +117,17 @@ class ProductsHandler
         if ($countResults) {
             $query = "SELECT count(*) as number_of_products FROM product";
         } else {
-            $query = "SELECT product.*, brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product";
+            $query = "SELECT p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
+
+            if (LoginHandler::isAdmin()) {
+                $query .= ", p.purchase_price, p.recommended_price";
+            }
+
+            $query = ", brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product as p";
         }
 
-        $query .= " INNER JOIN category ON product.category=category.id
-                    INNER JOIN brand ON product.brand=brand.id
+        $query .= " INNER JOIN category ON p.category=category.id
+                    INNER JOIN brand ON p.brand=brand.id
                     WHERE MATCH (" . $filter . ") AGAINST (:filterString IN NATURAL LANGUAGE MODE)";
 
 
@@ -165,7 +172,16 @@ class ProductsHandler
         }
 
         $stm->execute();
-        return $stm->fetchAll(PDO::FETCH_ASSOC);
+        $products = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+
+        if (!$countResults) {
+            foreach ($products as &$product) {
+                $product["images"] = $this->getProductImages($product["id"]);
+            }
+        }
+
+        return $products;
     }
 
     /**
@@ -193,15 +209,51 @@ class ProductsHandler
     public function getProduct($id)
     {
         try {
-            $stm = Database::$pdo->prepare("SELECT product.*, brand.name as brand, category.name as category FROM product
-                                            INNER JOIN category ON product.category=category.id
-                                            INNER JOIN brand ON product.brand=brand.id
+            $query = "SELECT brand.name as brand, brand.id as brand_id, 
+            category.name as category, category.id as category_id, p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
+
+            if (LoginHandler::isAdmin()) {
+                $query .= ", p.purchase_price, p.recommended_price,";
+            }
+
+            $query .= " FROM product as p
+            INNER JOIN category ON p.category=category.id
+            INNER JOIN brand ON p.brand=brand.id
+            WHERE p.id=:id";
+
+            $stm = Database::$pdo->prepare($query);
+
+            $stm->bindParam(':id', $id);
+            $stm->execute();
+            $product = $stm->fetch(PDO::FETCH_ASSOC);
+
+            $product["images"] = $this->getProductImages($id);
+
+            return $product;
+        } catch (\Exception $e) {
+            echo $e;
+        }
+    }
+
+
+    public function getProductImages($id)
+    {
+        try {
+            $stm = Database::$pdo->prepare("SELECT product_image.url FROM product
+                                            INNER JOIN product_image ON product_image.product=product.id
                                             WHERE product.id=:id");
             $stm->bindParam(':id', $id);
             $stm->execute();
-            return $stm->fetch(PDO::FETCH_ASSOC);
+            $resultArray = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+            $images = [];
+            foreach ($resultArray as $el) {
+                array_push($images, $el["url"]);
+            }
+
+            return $images;
         } catch (\Exception $e) {
-            echo $e;
+            return [];
         }
     }
 

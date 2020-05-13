@@ -544,7 +544,7 @@ Response format:
       "id": 2,
       "title": "My product",
       "description": "...",
-      "imageUrl": "my/image/url", // URL to the first image of a product
+      "images": ["...",...],
       "sellPrice": 43.21, // ONLY sell_price
       "quantity": 23, // Products availability
       "categoryId": 1,
@@ -558,6 +558,8 @@ Response format:
   ]
 }
 ```
+
+#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
 ---
 
@@ -593,29 +595,7 @@ Response format:
 }
 ```
 
----
-
-`products.php?admin GET`
-
-Same as `products.php GET`, but it also returns recommendedPrice and purchasePrice
-
-#### Response codes
-
-- HTTP 200: successful (User is logged and is admin)
-
-- HTTP 403: error (Not logged)
-
----
-
-`products.php?admin&id=[productId] GET`
-
-Same as `products.php?id=[number] GET`, but it also returns recommendedPrice and purchasePrice
-
-#### Response codes
-
-- HTTP 200: successful (User is logged and is admin)
-
-- HTTP 403: error (Not logged)
+#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
 ---
 
