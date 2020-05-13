@@ -32,10 +32,10 @@
           <!-------------------->
           <h3 class="mb-3">Prezzo di vendita (€)</h3>
           <ENumberInput
-            :value="product.sellPrice"
+            :value="product.sell_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.sellPrice = value)"
+            @changed="(value) => (product.sell_price = value)"
           />
         </v-col>
         <v-col xl="4" lg="4" md="6" sm="12" xs="12" align="center">
@@ -44,10 +44,10 @@
           <!------------------------>
           <h3 class="mb-3">Prezzo di acquisto (€)</h3>
           <ENumberInput
-            :value="product.purchasePrice"
+            :value="product.purchase_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.purchasePrice = value)"
+            @changed="(value) => (product.purchase_price = value)"
           />
         </v-col>
         <v-col xl="4" lg="4" md="12" sm="12" xs="12" align="center">
@@ -56,10 +56,10 @@
           <!--------------------------->
           <h3 class="mb-3">Prezzo consigliato (€)</h3>
           <ENumberInput
-            :value="product.recommendedPrice"
+            :value="product.recommended_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.recommendedPrice = value)"
+            @changed="(value) => (product.recommended_price = value)"
           />
         </v-col>
       </v-row>
@@ -102,7 +102,7 @@
       <h3 class="mb-3">Categoria</h3>
 
       <v-select
-        v-model="product.categoryId"
+        v-model="product.category_id"
         :items="categories"
         item-text="name"
         item-value="id"
@@ -121,7 +121,7 @@
       <h3 class="mb-3">Marca</h3>
 
       <v-select
-        v-model="product.brandId"
+        v-model="product.brand_id"
         :items="brands"
         item-text="name"
         item-value="id"
@@ -168,11 +168,11 @@ export default {
         title: "",
         description: "",
         quantity: 0,
-        brandId: -1,
-        categoryId: -1,
-        purchasePrice: -1,
-        sellPrice: -1,
-        recommendedPrice: -1,
+        brand_id: -1,
+        category_id: -1,
+        purchase_price: -1,
+        sell_price: -1,
+        recommended_price: -1,
       },
       categories: [],
       brands: [],
@@ -252,23 +252,23 @@ export default {
           if (this.product.quantity !== this.productObject.quantity)
             patch.quantity = this.product.quantity;
 
-          if (this.product.brandId !== this.productObject.brandId)
-            patch.brandId = this.product.brandId;
+          if (this.product.brand_id !== this.productObject.brand_id)
+            patch.brand_id = this.product.brand_id;
 
-          if (this.product.categoryId !== this.productObject.categoryId)
-            patch.categoryId = this.product.categoryId;
+          if (this.product.category_id !== this.productObject.category_id)
+            patch.category_id = this.product.category_id;
 
-          if (this.product.purchasePrice !== this.productObject.purchasePrice)
-            patch.purchasePrice = this.product.purchasePrice;
+          if (this.product.purchase_price !== this.productObject.purchase_price)
+            patch.purchase_price = this.product.purchase_price;
 
-          if (this.product.sellPrice !== this.productObject.sellPrice)
-            patch.sellPrice = this.product.sellPrice;
+          if (this.product.sell_price !== this.productObject.sell_price)
+            patch.sell_price = this.product.sell_price;
 
           if (
-            this.product.recommendedPrice !==
-            this.productObject.recommendedPrice
+            this.product.recommended_price !==
+            this.productObject.recommended_price
           )
-            patch.recommendedPrice = this.product.recommendedPrice;
+            patch.recommended_price = this.product.recommended_price;
 
           // console.log(patch);
           Axios.patch(process.env.VUE_APP_API_URL + `products.php`, patch)

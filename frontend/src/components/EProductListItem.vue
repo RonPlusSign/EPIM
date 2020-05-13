@@ -17,14 +17,14 @@ Example of a product:
   "title": "My product",
   "description": "...",
   "imageUrl": "my/image/url", // URL to the first image of a product
-  "sellPrice": 43.21,
-  "purchasePrice": 30.0, // Only if admin
-  "recommendedPrice": 40.0, // Only if admin
+  "sell_price": 43.21,
+  "purchase_price": 30.0, // Only if admin
+  "recommended_price": 40.0, // Only if admin
   "quantity": 23, // Products availability
-  "categoryId": 1,
-  "categoryName": "Smartphone",
-  "brandId": 2,
-  "brandName": "Samsung"
+  "category_id": 1,
+  "category": "Smartphone",
+  "brand_id": 2,
+  "brand": "Samsung"
 }
 
  -->
@@ -72,9 +72,9 @@ Example of a product:
           di
           <a
             @click="
-              $router.push({ path: '/prodotti', query: { b: product.brandId } })
+              $router.push({ path: '/prodotti', query: { b: product.brand_id } })
             "
-            >{{ product.brandName }}</a
+            >{{ product.brand }}</a
           >
         </v-card-subtitle>
         <!-------------------------->
@@ -133,7 +133,7 @@ Example of a product:
           <p v-if="!adminVersion" class="subtitle-1 mb-2">
             Prezzo:
             <span class="font-weight-medium accent--text text--darken-3"
-              >{{ product.sellPrice }} €</span
+              >{{ product.sell_price }} €</span
             >
           </p>
 
@@ -144,19 +144,19 @@ Example of a product:
             <p class="subtitle-1 mb-2">
               Prezzo di vendita:
               <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.sellPrice }} €</span
+                >{{ product.sell_price }} €</span
               >
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo di acquisto:
               <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.purchasePrice }} €</span
+                >{{ product.purchase_price }} €</span
               >
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo consigliato:
               <span class="font-weight-medium accent--text text--darken-3"
-                >{{ product.recommendedPrice }} €</span
+                >{{ product.recommended_price }} €</span
               >
             </p>
           </div>
@@ -168,10 +168,10 @@ Example of a product:
             <a
               @click="
                 $router
-                  .push({ path: '/prodotti', query: { c: product.categoryId } })
+                  .push({ path: '/prodotti', query: { c: product.category_id } })
                   .catch((err) => {})
               "
-              >{{ product.categoryName }}</a
+              >{{ product.category }}</a
             >
           </p>
           <!------------------------>
