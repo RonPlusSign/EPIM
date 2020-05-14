@@ -16,9 +16,6 @@ Props:
 
 - "fetchingItems" (Boolean, required): true = currently fetching data from a server, show a loading effect
 
-- "endpoint" (String, required): endpoint where to do the CRUD requests (for example "brands.php")
-  (this component only does DELETE requests, see EAddressCRUDListDialog to see CREATE and PATCH requests)
-
 - "nameOfItems" (String, required): name of the items (for example "marche" or "categorie")
 
 Events:
@@ -27,15 +24,13 @@ Events:
 
 -->
 
-<!--
-
 <template>
   <v-container>
     <v-row cols="12" justify="center">
-      <v-col xl="8" lg="8" md="8" sm="9" xs="12">
-        <! ---------------------- -- >
-        <! ------ Data table ---- -- >
-        <! ---------------------- -- >
+      <v-col>
+        <!------------------------>
+        <!------ Data table ------>
+        <!------------------------>
         <v-data-table
           :headers="headers"
           :items="filteredItems"
@@ -45,16 +40,16 @@ Events:
           loading-text="Caricamento in corso..."
           no-data-text="Nessun elemento disponibile!"
         >
-          <! -------------------------------------------------------------- -- >
-          <! ------ Header section (title, search box, Add new button) ---- -- >
-          <! -------------------------------------------------------------- -- >
+          <!---------------------------------------------------------------->
+          <!------ Header section (title, search box, Add new button) ------>
+          <!---------------------------------------------------------------->
           <template v-slot:top>
-            <! ---- Title -- -- >
+            <!---- Title ---->
             <h3 class="pt-4 pl-6">Lista di {{ nameOfItems }}</h3>
             <v-toolbar flat color="white">
               <v-row cols="12">
                 <v-col xl="6" lg="6" md="6" sm="6" xs="6">
-                  <! ---- Search box -- -- >
+                  <!---- Search box ---->
                   <v-text-field
                     v-model="filter"
                     append-icon="mdi-magnify"
@@ -66,7 +61,7 @@ Events:
                 </v-col>
                 <v-spacer />
                 <v-col align="right" xl="6" lg="6" md="6" sm="6" xs="6">
-                  <! ---- "Add new" button -- -- >
+                  <!---- "Add new" button ---->
                   <v-btn @click="dialog = true" dark color="blue">
                     <span class="subtitle-2">Aggiungi</span>
                     <v-icon class="ml-2">mdi-plus</v-icon>
@@ -76,18 +71,18 @@ Events:
             </v-toolbar>
           </template>
 
-          <! --------------------------- -- >
-          <! ------ Actions buttons ---- -- >
-          <! --------------------------- -- >
+          <!----------------------------->
+          <!------ Actions buttons ------>
+          <!----------------------------->
           <template v-slot:item.modify="{ item }">
-            <! ---- "Edit" button -- -- >
+            <!---- "Edit" button ---->
             <v-btn fab icon @click="editItem(item)" class="editBtn">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </template>
 
           <template v-slot:item.delete="{ item }">
-            <! ---- "Delete" button -- -- >
+            <!---- "Delete" button ---->
             <v-btn fab icon @click="deleteItem(item)" class="deleteBtn">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -97,13 +92,12 @@ Events:
     </v-row>
     <v-spacer class="mb-10" />
 
-    <! ----------------------------- -- >
-    <! ---- Add new/Modify dialog -- -- >
-    <! ----------------------------- -- >
-    <EAdminCRUDListDialog
+    <!------------------------------->
+    <!---- Add new/Modify dialog ---->
+    <!------------------------------->
+    <EAddressDialog
       :state="dialog"
       :title="dialogTitle"
-      :endpoint="endpoint"
       @state-changed="(value) => (value ? (dialog = value) : close())"
       :startingObject="editedIndex !== -1 ? items[editedIndex] : null"
       @updated-server-values="$emit('updated-server-values')"
@@ -113,11 +107,11 @@ Events:
 
 <script>
 import Axios from "axios";
-import EAdminCRUDListDialog from "@/components/admin/EAdminCRUDListDialog.vue";
+import EAddressDialog from "@/components/user/EAddressDialog.vue";
 
 export default {
   name: "EAdminCRUDList",
-  components: { EAddressCRUDListDialog },
+  components: { EAddressDialog },
   data: () => ({
     dialog: false, // Controls the dialog status (open/close)
     filter: "", // Filter for search (by name)
@@ -134,17 +128,47 @@ export default {
             */
         // Name column
         text: "Città",
-        align: "start",
         sortable: true,
-        value: "name",
-        filterable: true
+        value: "city",
+        filterable: true,
+        align: "center",
+        width: "80"
       },
       {
         // Street column
         text: "Via",
         sortable: true,
-        value: "name",
-        filterable: true
+        value: "street",
+        filterable: true,
+        align: "center",
+        width: "150"
+      },
+      {
+        // House number column
+        text: "Civico",
+        sortable: false,
+        value: "houseNumber",
+        filterable: false,
+        align: "center",
+        width: "50"
+      },
+      {
+        // House number column
+        text: "CAP",
+        sortable: true,
+        value: "postalCode",
+        filterable: true,
+        align: "center",
+        width: "50"
+      },
+      {
+        // House number column
+        text: "Telefono",
+        sortable: true,
+        value: "phoneNumber",
+        filterable: true,
+        align: "center",
+        width: "80"
       },
       // TODO: Add all the other columns
       {
@@ -173,34 +197,9 @@ export default {
     items: {
       type: Array,
       required: true
-
-      /*
-      Example of list:
-       [
-            {
-                "id": 13, // Address id
-                "city": 234, // City id
-                "street": "Via dei Polli",
-                "houseNumber": 123,
-                "postalCode": 54100,
-                "phoneNumber": "123123123" // Phone number associated with that address
-            },
-            {
-                "city": 123, // City id
-                "street": "Via delle galline",
-                "houseNumber": 321,
-                "postalCode": 21300,
-                "phoneNumber": "456456456" // Phone number associated with that address
-            }
-        ]
-       */
     },
     fetchingItems: {
       type: Boolean,
-      required: true
-    },
-    endpoint: {
-      type: String,
       required: true
     },
     nameOfItems: {
@@ -239,7 +238,7 @@ export default {
     deleteItem(item) {
       if (confirm(`Sei sicuro di voler eliminare ${item.name}?`)) {
         // DELETE request to the server
-        Axios.delete(process.env.VUE_APP_API_URL + this.endpoint, {
+        Axios.delete(process.env.VUE_APP_API_URL + `user.php?address`, {
           params: { id: item.id }
         })
           .then(() => {
@@ -271,5 +270,3 @@ export default {
   transition: 0.2s;
 }
 </style>
-
- -->

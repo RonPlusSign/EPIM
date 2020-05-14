@@ -296,17 +296,17 @@
           </v-col>
         </v-row>
       </v-col>
-      <!-- <v-col cols="12">
-        <! ---------------------------- >
-        <! ---- CRUD address table ---- >
-        <! ---------------------------- >
+      <v-col cols="12">
+        <!---------------------------->
+        <!---- CRUD address table ---->
+        <!---------------------------->
         <EAddressCRUDTable
-          :fetchingItems="loading"
+          :fetchingItems="fetchingAddresses"
           :items="addresses"
           :nameOfItems="'indirizzi'"
           @updated-server-values="fetchAddresses"
         />
-      </v-col>-->
+      </v-col>
     </v-row>
 
     <v-divider />
@@ -316,13 +316,11 @@
 <script>
 import Axios from "axios";
 
-// import EAddressCRUDTable from "@/components/user/EAddressCRUDTable.vue";
+import EAddressCRUDTable from "@/components/user/EAddressCRUDTable.vue";
 
 export default {
   name: "UserProfile",
-  components: {
-    // EAddressCRUDTable
-  },
+  components: { EAddressCRUDTable },
   data() {
     return {
       fetchingAddresses: false,

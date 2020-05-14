@@ -23,7 +23,7 @@ Events:
     <!---- "Add new" card ---->
     <!------------------------>
     <v-card>
-      <v-form ref="newBrandForm" onSubmit="return false;">
+      <v-form ref="form" onSubmit="return false;">
         <!-------------------->
         <!---- Card title ---->
         <!-------------------->
@@ -143,7 +143,7 @@ export default {
     // Method to submit the form
     submit() {
       // Check if the input follows the rules
-      if (this.$refs.newBrandForm.validate()) {
+      if (this.$refs.form.validate()) {
         this.loading = true;
         if (this.startingObject === null) {
           // If there isn't a starting object, it means that we're adding a new item (POST Request)
