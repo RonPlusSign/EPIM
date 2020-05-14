@@ -131,15 +131,14 @@ Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue
 # Endpoints
 
 - [Categories](#categories.php)
-  - [GET](#get)
-  - [POST](#post)
-  - [PATCH](#patch)
-  - [DELETE](#delete)
 - [Brands](#brands.php)
 - [Login](#login.php)
 - [User](#user.php)
-- [Product](#products.php)
+- [Products](#products.php)
+- [Address](#address.php)
 - [Order](#orders.php)
+
+---
 
 ## categories.php
 
@@ -222,13 +221,13 @@ Deletes a category, the user **must** be admin
 
 - HTTP 403: error
 
-<br>
+---
 
 ## brands.php
 
 Same methods, requests and response messages as `categories.php`. See above for details.
 
-<br>
+---
 
 ## login.php
 
@@ -272,7 +271,7 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 - HTTP 403: error
 
-<br>
+---
 
 ## user.php
 
@@ -299,7 +298,7 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 > ?all
 
-###### user **must** be admin to use this
+##### user **must** be admin to use this
 
 ##### Response:
 
@@ -318,20 +317,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged as admin)
-
-<br>
-
-> ?cart
-
-###### Gets all the products from the user's cart
-
-#### Response
-
-_Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart_
-
-- HTTP 200: successful
-
-- HTTP 403: error (Not logged)
 
 <br>
 
@@ -364,17 +349,62 @@ _Same as products.php `GET`, but the field "quantity" represents the quantity of
 
 <br>
 
+#### PATCH
+
+User profile changes
+
+##### Request:
+
+```jsonc
+{
+  "name": "Pippo",
+  "surname": "Baudo",
+  "email": "pippo@baudo.it"
+}
+```
+
+#### Response
+
+- HTTP 200: successful
+
+- HTTP 400: general error
+
+- HTTP 403: error (Not logged)
+
+##### Optional response:
+
+```jsonc
+// Example in case of a patch with an email already taken
+{ "error": "E-mail already in use." }
+```
+
+> ?cart
+
+### Gets all the products from the user's cart
+
+#### Response
+
+_Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart_
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not logged)
+
+<br>
+
 > ?address
+
+#### POST
 
 ###### Add an address to the user's addresses
 
 ```jsonc
 {
-  "region": 2, // Region id
-  "province": 43, // Province id
-  "city": 234, // City id,
-  "address": "1231231230", // Can be of 9 or 10 chars
-  "password": "myPassword"
+  "city": 234, // City id
+  "street": "Via dei Polli",
+  "houseNumber": 123,
+  "postalCode": 54100,
+  "phoneNumber": "123123123" // Phone number associated with that address
 }
 ```
 
@@ -384,12 +414,73 @@ _Same as products.php `GET`, but the field "quantity" represents the quantity of
 
 - HTTP 400: general error (Bad Request)
 
-##### Optional response:
+<br>
+
+#### GET
+
+###### GET all the USERS's addresses
 
 ```jsonc
-// Example in case of a registration with an email already taken
-{ "error": "E-mail already in use." }
+[
+  {
+    "id": 13, // Address id
+    "city": 234, // City id
+    "street": "Via dei Polli",
+    "houseNumber": 123,
+    "postalCode": 54100,
+    "phoneNumber": "123123123" // Phone number associated with that address
+  },
+  {
+    "city": 123, // City id
+    "street": "Via delle galline",
+    "houseNumber": 321,
+    "postalCode": 21300,
+    "phoneNumber": "456456456" // Phone number associated with that address
+  }
+]
 ```
+
+##### Response:
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not Logged)
+
+<br>
+
+#### DELETE
+
+###### DELETE a user's address
+
+params: `?id=[address-id]`
+
+##### Response:
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not Logged)
+
+<br>
+
+#### PATCH
+
+###### Modify a user's address
+
+```jsonc
+{
+  "id": 123,
+  "street": "Via dei pollai",
+  "houseNumber": 123
+}
+```
+
+##### Response:
+
+- HTTP 200: successful
+
+- HTTP 400: general error (Bad Request)
+
+- HTTP 403: error (Not logged)
 
 <br>
 
@@ -494,7 +585,7 @@ _Same as products.php `GET`, but the field "quantity" represents the quantity of
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
 ## products.php
 
@@ -552,7 +643,7 @@ Response format:
 
 #### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
----
+<br>
 
 `products.phpi?id=[productId] GET`
 
@@ -588,7 +679,7 @@ Response format:
 
 #### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
----
+<br>
 
 `products.php POST`
 
@@ -615,7 +706,7 @@ Adds a new product
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `products.php POST?set-quantity&id=[productId] POST`
 
@@ -633,7 +724,7 @@ Set quantity of product (user must be logged as admin)
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `products.php?id=[productId] DELETE`
 
@@ -645,7 +736,7 @@ Deletes a product and its images from the database
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `products.php?id=[productId] PATCH`
 
@@ -657,7 +748,7 @@ Patch data of selected product. You can send only the desired changed values wit
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 ## products.php?image
 
@@ -675,7 +766,7 @@ _// TODO: Define how to send images to the server and store them_
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `products.php?image&id=[productId] DELETE`
 
@@ -687,11 +778,11 @@ Deletes an image from the server
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
 ## address.php
 
-Get of all the regions, provinces and cities of Italy
+Get of the regions, provinces and cities of Italy
 
 `address.php?regions GET`
 
@@ -711,6 +802,19 @@ Returns an array with all the regions of Italy
     // ... other regions
   }
 ]
+```
+
+<br>
+
+`address.php?regions?id=[region-id] GET`
+
+Returns the region with that id
+
+```jsonc
+{
+  "id": 2,
+  "name": "Toscana"
+}
 ```
 
 <br>
@@ -759,6 +863,20 @@ Returns an array with all the provinces of a specific region of Italy
 
 <br>
 
+`address.php?provinces?id=[province-id] GET`
+
+Returns the province with that id
+
+```jsonc
+{
+  "id": 2,
+  "name": "Firenze",
+  "regionId": 3 // Province's region id
+}
+```
+
+<br>
+
 `address.php?cities GET`
 
 Returns an array with all the cities of Italy
@@ -800,6 +918,22 @@ Returns an array with all the cities of a specific province
   }
 ]
 ```
+
+<br>
+
+`address.php?cities?id=[city-id] GET`
+
+Returns the city with that id
+
+```jsonc
+{
+  "id": 2,
+  "name": "Scandicci",
+  "provinceId": 3 // City's province id
+}
+```
+
+---
 
 ## orders.php
 
@@ -846,7 +980,7 @@ Get of the user's orders
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `orders.php?purchase GET`
 
@@ -860,7 +994,7 @@ Add an user's order
 
 - HTTP 403: error (Not logged)
 
----
+<br>
 
 `orders.php?admin GET`
 
