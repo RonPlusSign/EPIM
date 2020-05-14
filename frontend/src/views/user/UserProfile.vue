@@ -296,6 +296,17 @@
           </v-col>
         </v-row>
       </v-col>
+      <!-- <v-col cols="12">
+        <!---------------------------- >
+        <!---- CRUD address table ---- >
+        <!---------------------------- >
+        <EAddressCRUDTable
+          :fetchingItems="loading"
+          :items="addresses"
+          :nameOfItems="'indirizzi'"
+          @updated-server-values="fetchAddresses"
+        />
+      </v-col>-->
     </v-row>
 
     <v-divider />
@@ -305,11 +316,16 @@
 <script>
 import Axios from "axios";
 
+import EAddressCRUDTable from "@/components/user/EAddressCRUDTable.vue";
+
 export default {
   name: "UserProfile",
+  components: { EAddressCRUDTable },
   data() {
     return {
+      fetchingAddresses: false,
       editedUser: {},
+      addresses: [],
       editToggler: {
         name: false,
         surname: false,
@@ -371,6 +387,8 @@ export default {
 
     user() {
       this.editedUser = Object.assign({}, this.user);
+
+      this.fetchAddresses();
     }
   },
 
@@ -451,6 +469,19 @@ export default {
             console.error(err);
           });
       }
+    },
+
+    fetchAddresses() {
+      this.fetchingAddresses = true;
+      Axios.get(process.env.VUE_APP_API_URL + `address.php`)
+        .then(response => {
+          this.addresses = response.data;
+          this.fetchingAddresses = false;
+        })
+        .catch(err => {
+          console.error(err);
+          this.fetchingAddresses = false;
+        });
     }
   }
 };
