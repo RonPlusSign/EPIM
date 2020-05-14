@@ -689,7 +689,119 @@ Deletes an image from the server
 
 <br>
 
-# orders.php
+## address.php
+
+Get of all the regions, provinces and cities of Italy
+
+`address.php?regions GET`
+
+Returns an array with all the regions of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Toscana"
+  },
+  {
+    "id": 3,
+    "name": "Emilia Romagna"
+  },
+  {
+    // ... other regions
+  }
+]
+```
+
+<br>
+
+`address.php?provinces GET`
+
+Returns an array with all the provinces of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Bologna"
+  },
+  {
+    // ... other provinces
+  }
+]
+```
+
+<br>
+
+`address.php?provinces?region=[region-id] GET`
+
+Returns an array with all the provinces of a specific region of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Prato"
+  },
+  {
+    // ... other provinces of that region
+  }
+]
+```
+
+<br>
+
+`address.php?cities GET`
+
+Returns an array with all the cities of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Arezzo"
+  },
+  {
+    // ... other cities of Italy
+  }
+]
+```
+
+<br>
+
+`address.php?cities?province=[province-id] GET`
+
+Returns an array with all the cities of a specific province
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Scandicci"
+  },
+  {
+    // ... other provinces of that region
+  }
+]
+```
+
+## orders.php
 
 `orders.php GET`
 
