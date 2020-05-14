@@ -123,7 +123,7 @@ class UserHandler
                 $stm->execute($data);
                 return $stm->rowCount();
             } catch (\Exception $e) {
-                echo $e;
+                return false;
             }
         } else {
             return false;

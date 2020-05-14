@@ -81,6 +81,11 @@ switch ($requestMethod) {
                 "data" => $ph->getByTitle($_GET['q'])
             ));
         }
+
+        else if (isset($_GET['images']) && isset($_GET['id'])) {
+            echo json_encode($ph->getProductImages($_GET["id"]));
+        }
+
         // Get single product
         else if (isset($_GET['id'])) {
             $product = $ph->getProduct($_GET['id']);
@@ -90,6 +95,7 @@ switch ($requestMethod) {
                 http_response_code(404);
             } else echo json_encode($product);
         }
+
         // Get best selling
         else if (isset($_GET['sales'])) {
             $products = $ph->getBestSelling();
@@ -97,8 +103,9 @@ switch ($requestMethod) {
             echo json_encode($products);
         }
 
+
         // Display help message
-        else if (empty($_GET)) {
+        else {
             http_response_code(400);
             echo "Missing queries. Options:\n";
             echo "\n?q= | ?c= | ?b | ?ps=x&pe=x | ?sales";

@@ -9,7 +9,7 @@ Params:
 - "decimals" (Number, default 0): Number of decimals accepted by the input
 
 Events:
-- "changed": Returns the number value
+- "change": Returns the number value
 -->
 
 <template>
@@ -29,17 +29,10 @@ Events:
         @click="decrease()"
         :disabled="this.number === this.min"
         color="gray darken-4"
-      >
-        mdi-minus
-      </v-icon>
+      >mdi-minus</v-icon>
 
       <!-- Input box with the number -->
-      <input
-        class="value text-center"
-        v-model="number"
-        :step="decimals"
-        type="number"
-      />
+      <input class="value text-center" v-model="number" :step="decimals" type="number" />
 
       <!-- "plus" button -->
       <v-icon
@@ -47,9 +40,7 @@ Events:
         @click="increase()"
         :disabled="this.number === this.max"
         color="gray darken-4"
-      >
-        mdi-plus
-      </v-icon>
+      >mdi-plus</v-icon>
     </div>
   </div>
 </template>
@@ -58,27 +49,27 @@ Events:
 export default {
   data() {
     return {
-      number: 0,
+      number: 0
     };
   },
   props: {
     value: {
       type: Number,
-      required: true,
+      required: true
     },
     max: {
       type: Number,
-      default: Number.MAX_VALUE,
+      default: Number.MAX_VALUE
     },
     min: {
       type: Number,
-      default: Number.MIN_VALUE,
+      default: Number.MIN_VALUE
     },
     decimals: {
       type: Number,
-      default: 0,
+      default: 0
     },
-    caption: String,
+    caption: String
   },
 
   created() {
@@ -94,7 +85,7 @@ export default {
     decrease() {
       if (this.number !== this.min) this.number--;
       this.number = +this.number.toFixed(this.decimals);
-    },
+    }
   },
   watch: {
     number(val) {
@@ -108,7 +99,11 @@ export default {
       }
       this.$emit("change", Number.parseFloat(val));
     },
-  },
+
+    value(val) {
+      this.number = val;
+    }
+  }
 };
 </script>
 

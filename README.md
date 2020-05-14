@@ -130,7 +130,6 @@ Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue
 
 # Endpoints
 
-
 - [Categories](#categories.php)
   - [GET](#get)
   - [POST](#post)
@@ -141,7 +140,6 @@ Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue
 - [User](#user.php)
 - [Product](#products.php)
 - [Order](#orders.php)
-
 
 ## categories.php
 
@@ -178,7 +176,6 @@ Adds a new category, if the user is logged AND is an admin
 
 ##### Response:
 
-
 ```jsonc
 [
   { "id": 1, "name": "TV" },
@@ -210,7 +207,6 @@ Renames one category, if the user is logged AND is an admin
 - HTTP 200: successful
 
 - HTTP 403: error
-
 
 <br>
 
@@ -248,6 +244,7 @@ Same methods, requests and response messages as `categories.php`. See above for 
   "isAdmin": false // if the user is Admin
 }
 ```
+
 - HTTP 200: successful
 
 <br>
@@ -257,7 +254,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 ##### Response:
 
 - HTTP 200: successful
-
 
 <br>
 
@@ -280,7 +276,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 ## user.php
 
-
 #### GET
 
 > no query
@@ -299,7 +294,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged)
-
 
 <br>
 
@@ -325,7 +319,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 - HTTP 403: error (Not logged as admin)
 
-
 <br>
 
 > ?cart
@@ -334,7 +327,7 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 #### Response
 
-*Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart*
+_Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart_
 
 - HTTP 200: successful
 
@@ -440,7 +433,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 - HTTP 403: error (Not logged)
 
-
 <br>
 
 #### PATCH
@@ -487,7 +479,6 @@ Same methods, requests and response messages as `categories.php`. See above for 
 - HTTP 400: general error (example: quantity not available)
 
 - HTTP 403: error (Not logged)
-
 
 <br>
 
@@ -544,7 +535,7 @@ Response format:
       "id": 2,
       "title": "My product",
       "description": "...",
-      "imageUrl": "my/image/url", // URL to the first image of a product
+      "images": ["...",...],
       "sellPrice": 43.21, // ONLY sell_price
       "quantity": 23, // Products availability
       "categoryId": 1,
@@ -558,6 +549,8 @@ Response format:
   ]
 }
 ```
+
+#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
 ---
 
@@ -593,29 +586,7 @@ Response format:
 }
 ```
 
----
-
-`products.php?admin GET`
-
-Same as `products.php GET`, but it also returns recommendedPrice and purchasePrice
-
-#### Response codes
-
-- HTTP 200: successful (User is logged and is admin)
-
-- HTTP 403: error (Not logged)
-
----
-
-`products.php?admin&id=[productId] GET`
-
-Same as `products.php?id=[number] GET`, but it also returns recommendedPrice and purchasePrice
-
-#### Response codes
-
-- HTTP 200: successful (User is logged and is admin)
-
-- HTTP 403: error (Not logged)
+#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
 
 ---
 
@@ -718,22 +689,202 @@ Deletes an image from the server
 
 <br>
 
-# orders.php (to be defined)
+## address.php
 
-_//TODO: Define orders methods_
+Get of all the regions, provinces and cities of Italy
+
+`address.php?regions GET`
+
+Returns an array with all the regions of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Toscana"
+  },
+  {
+    "id": 3,
+    "name": "Emilia Romagna"
+  },
+  {
+    // ... other regions
+  }
+]
+```
+
+<br>
+
+`address.php?provinces GET`
+
+Returns an array with all the provinces of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Bologna"
+  },
+  {
+    // ... other provinces
+  }
+]
+```
+
+<br>
+
+`address.php?provinces?region=[region-id] GET`
+
+Returns an array with all the provinces of a specific region of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Prato"
+  },
+  {
+    // ... other provinces of that region
+  }
+]
+```
+
+<br>
+
+`address.php?cities GET`
+
+Returns an array with all the cities of Italy
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Arezzo"
+  },
+  {
+    // ... other cities of Italy
+  }
+]
+```
+
+<br>
+
+`address.php?cities?province=[province-id] GET`
+
+Returns an array with all the cities of a specific province
+
+```jsonc
+[
+  {
+    "id": 2,
+    "name": "Firenze"
+  },
+  {
+    "id": 3,
+    "name": "Scandicci"
+  },
+  {
+    // ... other provinces of that region
+  }
+]
+```
+
+## orders.php
 
 `orders.php GET`
 
 Get of the user's orders
 
+#### Response
+
+```jsonc
+[
+  // orders array
+  {
+    "id": 3,
+    "date": "2020-03-13", // time of the order (timestamp)
+    "hour": "14:12:54",
+    "address": "Via di Pippo, 13 (FI)",
+    "phoneNumber": 123123123,
+    "shippingCost": 12.3,
+    "products": [
+      // Array of products
+      {
+        "productId": 3,
+        "productTitle": "My product",
+        "quantity": 7,
+        "price": 33.2,
+        "brandName": "Samsung"
+      },
+      {
+        // Every object is a product
+      }
+    ],
+    "status": "Spedito"
+  },
+  {
+    // Every object is an order
+  }
+]
+```
+
+#### Response codes
+
+- HTTP 200: successful (User is logged and is admin)
+
+- HTTP 403: error (Not logged)
+
 ---
 
-`orders.php POST`
+`orders.php?purchase GET`
 
 Add an user's order
+
+#### Request: empty (no body)
+
+#### Response codes
+
+- HTTP 200: successful (User is logged and is admin)
+
+- HTTP 403: error (Not logged)
 
 ---
 
 `orders.php?admin GET`
 
-Get of all the orders (limit them at a defined number? maybe with a parameter)
+Get of all the orders
+
+```jsonc
+[
+  // Orders array
+  {
+    // Every object is an order
+    // The order has the same format as orders.php GET, but every order also has the references to the user
+
+    // ... order data (= to orders.php GET)
+
+    // user data
+    "user": {
+      "id": 33,
+      "name": "Pippo",
+      "surname": "Baudo",
+      "email": "pippo@baudo.it"
+    }
+  },
+  {
+    // ...
+  }
+]
+```

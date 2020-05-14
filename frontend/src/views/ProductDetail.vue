@@ -2,15 +2,7 @@
 <template>
   <div>
     <v-row cols="12">
-      <v-col
-        justify="center"
-        align="center"
-        xs="12"
-        sm="12"
-        md="6"
-        lg="5"
-        xl="4"
-      >
+      <v-col justify="center" align="center" xs="12" sm="12" md="6" lg="5" xl="4">
         <!-- Product images carousel -->
         <EImagesCarousel :images="product.images" />
       </v-col>
@@ -22,17 +14,16 @@
           di
           <a
             @click="
-              $router.push({ path: '/prodotti', query: { b: product.brandId } })
+              $router.push({ path: '/prodotti', query: { b: product.brand_id } })
             "
-            >{{ product.brandName }}</a
-          >
+          >{{ product.brand }}</a>
         </p>
         <!-- Price -->
         <p class="subtitle-1 mb-2">
           Prezzo:
-          <span class="font-weight-medium accent--text text--darken-3"
-            >{{ product.price }} €</span
-          >
+          <span
+            class="font-weight-medium accent--text text--darken-3"
+          >{{ product.sell_price }} €</span>
         </p>
         <!-- Category -->
         <p class="body mb-2">
@@ -40,11 +31,10 @@
           <a
             @click="
               $router
-                .push({ path: '/prodotti', query: { c: product.categoryId } })
+                .push({ path: '/prodotti', query: { c: product.category_id } })
                 .catch((err) => {})
             "
-            >{{ product.categoryName }}</a
-          >
+          >{{ product.category }}</a>
         </p>
         <!-- Quantity available -->
         <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
@@ -61,15 +51,7 @@
             />
           </v-col>
           <!-- Add to cart button -->
-          <v-col
-            justify-self="start"
-            align-self="end"
-            xs="12"
-            sm="6"
-            md="8"
-            lg="10"
-            xl="10"
-          >
+          <v-col justify-self="start" align-self="end" xs="12" sm="6" md="8" lg="10" xl="10">
             <v-btn
               color="success"
               @click="addToCart(product.id, selectedQuantity)"
@@ -82,7 +64,8 @@
         </v-row>
 
         <!-- Description -->
-        <p class="body">{{ product.description }}</p>
+        <p class="body subtitle-1 mt-2 mb-1">Descrizione:</p>
+        <p class="body px-3">{{ product.description }}</p>
       </v-col>
     </v-row>
   </div>
@@ -105,21 +88,26 @@ export default {
           "Ci dispiace, questo prodotto non è disponibile su questo sito. Riprova in un altro momento.",
         // list to all the images of a product
         images: [],
-        sellPrice: 0,
+        sell_price: 0,
         quantity: 0, // Product availability
-        categoryId: null,
-        categoryName: "Nessuna categoria",
-        brandId: null,
-        brandName: "Nessuna marca",
+        category_id: null,
+        category: "Nessuna categoria",
+        brand_id: null,
+        brand: "Nessuna marca"
       },
-      selectedQuantity: 0,
+      selectedQuantity: 0
     };
+  },
+  computed: {
+    logged() {
+      return this.$store.getters.logged;
+    }
   },
   created() {
     Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-      params: { id: this.$router.history.current.params.id },
+      params: { id: this.$router.history.current.params.id }
     })
-      .then((response) => {
+      .then(response => {
         this.product = response.data;
       })
       .catch((/* error */) => {});
@@ -130,8 +118,8 @@ export default {
       const task = () => {
         Axios.post(process.env.VUE_APP_API_URL + `user.php?cart`, {
           id: id, // Product id
-          quantity: quantity, // Default quantity
-        }).catch((err) => {
+          quantity: quantity // Default quantity
+        }).catch(err => {
           console.error(err);
         });
       };
@@ -142,7 +130,7 @@ export default {
         this.$store.commit("openLoginDialog");
         this.$store.commit("setActionAfterLogin", task);
       }
-    },
-  },
+    }
+  }
 };
 </script>

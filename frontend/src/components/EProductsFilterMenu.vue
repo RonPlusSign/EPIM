@@ -17,17 +17,15 @@ Example of usage:
   <!---- Filter button & filter inputs ----->
   <!---------------------------------------->
   <div class="text-center">
-    <v-menu
-      transition="slide-y-transition"
-      offset-y
-      :close-on-content-click="false"
-    >
+    <v-menu transition="slide-y-transition" offset-y :close-on-content-click="false">
       <!-- filters menu toggler -->
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
-          <v-icon>{{
+          <v-icon>
+            {{
             filtersEmpty ? "mdi-filter-outline" : "mdi-filter"
-          }}</v-icon>
+            }}
+          </v-icon>
         </v-btn>
       </template>
 
@@ -37,6 +35,21 @@ Example of usage:
       <v-container class="white">
         <h3 class="mb-1">Filtri di ricerca</h3>
         <v-divider></v-divider>
+
+        <!-- Best sellers -->
+        <v-row class="pa-3">
+          <v-col align="center">
+            <v-btn
+              @click="bestSellers"
+              color="primary lighten-2 black--text"
+              small
+            >Prodotti più venduti</v-btn>
+          </v-col>
+          <v-col align="center">
+            <!-- Worst sellers -->
+            <v-btn @click="worstSellers" color="orange lighten-2" small>Prodotti meno venduti</v-btn>
+          </v-col>
+        </v-row>
 
         <!-- Category -->
         <v-select
@@ -74,9 +87,7 @@ Example of usage:
           class="align-center mt-12"
         >
           <!-- thumb labels value -->
-          <template v-slot:thumb-label="{ value }">
-            {{ value === priceRange.max ? "MAX" : value }}
-          </template>
+          <template v-slot:thumb-label="{ value }">{{ value === priceRange.max ? "MAX" : value }}</template>
         </v-range-slider>
 
         <!-- Products sorting method -->
@@ -90,18 +101,22 @@ Example of usage:
           label="Ordina per..."
         ></v-select>
 
-        <v-row class="mx-1 mb-3 mt-2">
-          <!-- Filters Clear button -->
-          <v-btn color="red lighten-1" dark @click="clearFilters">
-            Cancella filtri
-            <v-icon class="ml-2" dark>mdi-delete</v-icon>
-          </v-btn>
-          <v-spacer />
-          <!-- Filters OK button -->
-          <v-btn dark color="blue" @click="searchProducts">
-            Cerca
-            <v-icon class="ml-2" dark>mdi-magnify</v-icon>
-          </v-btn>
+        <v-row cols="12" class="mx-1 mb-3 mt-2">
+          <v-col xl="5" lg="5" md="5" sm="12" xs="12" align="center">
+            <!-- Filters Clear button -->
+            <v-btn color="red lighten-1" dark @click="clearFilters">
+              Cancella filtri
+              <v-icon class="ml-2" dark>mdi-delete</v-icon>
+            </v-btn>
+          </v-col>
+          <v-col class="hidden-sm-and-down" xl="3" lg="3" md="3" sm="12" xs="12"></v-col>
+          <v-col xl="4" lg="4" md="4" sm="12" xs="12" align="center">
+            <!-- Filters OK button -->
+            <v-btn dark color="blue" @click="searchProducts">
+              Cerca
+              <v-icon class="ml-2" dark>mdi-magnify</v-icon>
+            </v-btn>
+          </v-col>
         </v-row>
       </v-container>
     </v-menu>
@@ -126,7 +141,7 @@ export default {
       priceRange: {
         min: 0,
         max: 500,
-        interval: 25,
+        interval: 25
       },
       // Order types
       typesOfSorting: [
@@ -134,49 +149,49 @@ export default {
           id: 1,
           name: "Migliore corrispondenza",
           type: null,
-          sortMethod: null,
+          sortMethod: null
         },
         { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
         {
           id: 3,
           name: "Titolo (decrescente)",
           type: "title",
-          sortMethod: "desc",
+          sortMethod: "desc"
         },
         { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
         {
           id: 5,
           name: "Prezzo (decrescente)",
           type: "price",
-          sortMethod: "desc",
-        },
-        {
-          id: 6,
-          name: "Più venduti",
-          type: "sales",
-          sortMethod: "desc",
-        },
-        {
-          id: 7,
-          name: "Meno venduti",
-          type: "sales",
-          sortMethod: "asc",
-        },
+          sortMethod: "desc"
+        }
+        // {
+        //   id: 6,
+        //   name: "Più venduti",
+        //   type: "sales",
+        //   sortMethod: "desc",
+        // },
+        // {
+        //   id: 7,
+        //   name: "Meno venduti",
+        //   type: "sales",
+        //   sortMethod: "asc",
+        // },
       ],
 
       activeFilters: {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1,
-      },
+        selectedSortingMethodId: 1
+      }
     };
   },
   computed: {
     selectedSortingMethod() {
       // Represents the selected sorting method of the array typesOfSorting
       return this.typesOfSorting.filter(
-        (element) => element.id === this.activeFilters.selectedSortingMethodId
+        element => element.id === this.activeFilters.selectedSortingMethodId
       )[0];
     },
 
@@ -188,20 +203,20 @@ export default {
         this.activeFilters.priceRange[1] === 500 &&
         this.activeFilters.selectedSortingMethodId === 1
       );
-    },
+    }
   },
   created() {
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then((response) => (this.categories = response.data))
-      .catch((error) => {
+      .then(response => (this.categories = response.data))
+      .catch(error => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then((response) => (this.brands = response.data))
-      .catch((error) => {
+      .then(response => (this.brands = response.data))
+      .catch(error => {
         console.error(error);
       });
 
@@ -230,8 +245,8 @@ export default {
         // this handler is also called if the filters are retrieved by the parameters in the URI, so we emit the value only if the change is after that process
         if (this.savedFiltersFromURI)
           this.$emit("filters-changed", this.formatFilters());
-      },
-    },
+      }
+    }
   },
   methods: {
     formatFilters() {
@@ -285,9 +300,26 @@ export default {
         selectedCategory: null,
         selectedBrand: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1,
+        selectedSortingMethodId: 1
       };
     },
-  },
+
+    bestSellers() {
+      this.clearFilters();
+      this.$emit("filters-changed", {
+        sales: "",
+        desc: ""
+      });
+      this.$emit("search");
+    },
+    worstSellers() {
+      this.clearFilters();
+      this.$emit("filters-changed", {
+        sales: "",
+        asc: ""
+      });
+      this.$emit("search");
+    }
+  }
 };
 </script>

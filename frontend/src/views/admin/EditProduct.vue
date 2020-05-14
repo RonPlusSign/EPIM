@@ -29,21 +29,21 @@ export default {
   components: { EEditProduct },
   data() {
     return {
-      product: null,
+      product: null
     };
   },
   created() {
     // Get the product to edit
-    Axios.get(process.env.VUE_APP_API_URL + `products.php?admin`, {
-      params: { id: this.$router.history.current.params.id },
+    Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+      params: { id: this.$router.history.current.params.id }
     })
-      .then((response) => {
+      .then(response => {
         this.product = response.data;
       })
-      .catch((err) => {
+      .catch(err => {
         console.error(err);
       });
     // ID = id: this.$router.history.current.params.id
-  },
+  }
 };
 </script>

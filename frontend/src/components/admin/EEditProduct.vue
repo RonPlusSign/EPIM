@@ -5,7 +5,7 @@
     <!-------------------->
     <h2>
       {{
-        productObject ? "Modifica di un prodotto" : "Aggiunta di un prodotto"
+      productObject ? "Modifica di un prodotto" : "Aggiunta di un prodotto"
       }}
     </h2>
     <v-divider class="my-3" />
@@ -15,13 +15,7 @@
     <!----------------------->
     <v-form ref="editProductForm">
       <h3 class="mb-3">Titolo</h3>
-      <v-text-field
-        v-model="product.title"
-        :rules="[rules.required]"
-        clearable
-        dense
-        filled
-      />
+      <v-text-field v-model="product.title" :rules="[rules.required]" clearable dense filled />
 
       <v-divider class="my-3" />
 
@@ -32,10 +26,10 @@
           <!-------------------->
           <h3 class="mb-3">Prezzo di vendita (€)</h3>
           <ENumberInput
-            :value="product.sellPrice"
+            :value="product.sell_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.sellPrice = value)"
+            @change="(value) => (product.sell_price = value)"
           />
         </v-col>
         <v-col xl="4" lg="4" md="6" sm="12" xs="12" align="center">
@@ -44,10 +38,10 @@
           <!------------------------>
           <h3 class="mb-3">Prezzo di acquisto (€)</h3>
           <ENumberInput
-            :value="product.purchasePrice"
+            :value="product.purchase_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.purchasePrice = value)"
+            @change="(value) =>  (product.purchase_price = value)"
           />
         </v-col>
         <v-col xl="4" lg="4" md="12" sm="12" xs="12" align="center">
@@ -56,10 +50,10 @@
           <!--------------------------->
           <h3 class="mb-3">Prezzo consigliato (€)</h3>
           <ENumberInput
-            :value="product.recommendedPrice"
+            :value="product.recommended_price"
             :min="0"
             :decimals="2"
-            @changed="(value) => (product.recommendedPrice = value)"
+            @change="(value) => (product.recommended_price = value)"
           />
         </v-col>
       </v-row>
@@ -84,7 +78,7 @@
       <ENumberInput
         :value="product.quantity"
         :min="0"
-        @changed="(value) => (product.quantity = value)"
+        @change="(value) => (product.quantity = value)"
       />
 
       <v-divider class="my-3" />
@@ -93,7 +87,7 @@
       <!---------------->
       <h3>Immagini</h3>
       <!------------------- // TODO: Manage images -------------------->
-      <i> La gestione delle immagini non è supportata al momento. </i>
+      <i>La gestione delle immagini non è supportata al momento.</i>
 
       <v-divider class="my-3" />
       <!------------------>
@@ -102,7 +96,7 @@
       <h3 class="mb-3">Categoria</h3>
 
       <v-select
-        v-model="product.categoryId"
+        v-model="product.category_id"
         :items="categories"
         item-text="name"
         item-value="id"
@@ -121,7 +115,7 @@
       <h3 class="mb-3">Marca</h3>
 
       <v-select
-        v-model="product.brandId"
+        v-model="product.brand_id"
         :items="brands"
         item-text="name"
         item-value="id"
@@ -168,17 +162,17 @@ export default {
         title: "",
         description: "",
         quantity: 0,
-        brandId: -1,
-        categoryId: -1,
-        purchasePrice: -1,
-        sellPrice: -1,
-        recommendedPrice: -1,
+        brand_id: -1,
+        category_id: -1,
+        purchase_price: -1,
+        sell_price: -1,
+        recommended_price: -1
       },
       categories: [],
       brands: [],
 
-      rules: { required: (value) => !!value || "Inserisci questo parametro" },
-      loading: false,
+      rules: { required: value => !!value || "Inserisci questo parametro" },
+      loading: false
     };
   },
 
@@ -186,8 +180,8 @@ export default {
     productObject: {
       // If this object is passed, we're editing the product data
       // If it is null, we're creating a new product
-      default: null,
-    },
+      default: null
+    }
   },
 
   created() {
@@ -195,15 +189,15 @@ export default {
 
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then((response) => (this.categories = response.data))
-      .catch((error) => {
+      .then(response => (this.categories = response.data))
+      .catch(error => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then((response) => (this.brands = response.data))
-      .catch((error) => {
+      .then(response => (this.brands = response.data))
+      .catch(error => {
         console.error(error);
       });
   },
@@ -214,76 +208,86 @@ export default {
 
   watch: {
     productObject(newObject) {
-      this.product = newObject;
+      this.product = Object.assign({}, newObject);
     },
-  },
 
-  methods: {
-    sendProduct() {
-      if (this.$refs.editProductForm.validate()) {
-        this.loading = true;
+    methods: {
+      sendProduct() {
+        if (this.$refs.editProductForm.validate()) {
+          this.loading = true;
 
-        if (!this.productObject) {
-          // Create a new product: POST request
-          Axios.post(process.env.VUE_APP_API_URL + `products.php`, this.product)
-            .then(() => {
-              this.loading = false;
-              this.$router.push("/admin/prodotti");
-            })
-            .catch((err) => {
-              console.error(err);
-              this.loading = false;
-            });
-        } else {
-          // Edit the product: PATCH request
+          if (!this.productObject) {
+            // Create a new product: POST request
+            Axios.post(
+              process.env.VUE_APP_API_URL +
+                `products.php?id=${this.product.id}`,
+              this.product
+            )
+              .then(() => {
+                this.loading = false;
+                this.$router.push("/admin/prodotti");
+              })
+              .catch(err => {
+                console.error(err);
+                this.loading = false;
+              });
+          } else {
+            // Edit the product: PATCH request
 
-          // Check what attributes changed
-          let patch = {};
+            // Check what attributes changed
+            let patch = {};
 
-          // console.log(this.product);
-          // console.log(this.productObject);
+            // console.log(this.product);
+            // console.log(this.productObject);
 
-          if (this.product.title !== this.productObject.title)
-            patch.title = this.product.title;
+            if (this.product.title !== this.productObject.title)
+              patch["title"] = this.product.title;
 
-          if (this.product.description !== this.productObject.description)
-            patch.description = this.product.description;
+            if (this.product.description !== this.productObject.description)
+              patch["description"] = this.product.description;
 
-          if (this.product.quantity !== this.productObject.quantity)
-            patch.quantity = this.product.quantity;
+            if (this.product.quantity !== this.productObject.quantity)
+              patch["quantity"] = this.product.quantity;
 
-          if (this.product.brandId !== this.productObject.brandId)
-            patch.brandId = this.product.brandId;
+            if (this.product.brand_id !== this.productObject.brand_id)
+              patch["brand_id"] = this.product.brand_id;
 
-          if (this.product.categoryId !== this.productObject.categoryId)
-            patch.categoryId = this.product.categoryId;
+            if (this.product.category_id !== this.productObject.category_id)
+              patch["category_id"] = this.product.category_id;
 
-          if (this.product.purchasePrice !== this.productObject.purchasePrice)
-            patch.purchasePrice = this.product.purchasePrice;
+            if (
+              this.product.purchase_price !== this.productObject.purchase_price
+            )
+              patch["purchase_price"] = this.product.purchase_price;
 
-          if (this.product.sellPrice !== this.productObject.sellPrice)
-            patch.sellPrice = this.product.sellPrice;
+            if (this.product.sell_price !== this.productObject.sell_price)
+              patch["sell_price"] = this.product.sell_price;
 
-          if (
-            this.product.recommendedPrice !==
-            this.productObject.recommendedPrice
-          )
-            patch.recommendedPrice = this.product.recommendedPrice;
+            if (
+              this.product.recommended_price !==
+              this.productObject.recommended_price
+            )
+              patch["recommended_price"] = this.product.recommended_price;
 
-          // console.log(patch);
-          Axios.patch(process.env.VUE_APP_API_URL + `products.php`, patch)
-            .then(() => {
-              this.loading = false;
-              this.$router.push("/admin/prodotti");
-            })
-            .catch((err) => {
-              console.error(err);
-              this.loading = false;
-            });
+            // console.log(patch);
+            Axios.patch(
+              process.env.VUE_APP_API_URL +
+                `products.php?id=${this.product.id}`,
+              patch
+            )
+              .then(() => {
+                this.loading = false;
+                this.$router.push("/admin/prodotti");
+              })
+              .catch(err => {
+                console.error(err);
+                this.loading = false;
+              });
+          }
         }
       }
-    },
-  },
+    }
+  }
 };
 </script>
 
