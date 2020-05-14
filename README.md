@@ -384,7 +384,7 @@ User profile changes
 
 #### Response
 
-_Same as products.php `GET`, but the field "quantity" represents the quantity of the product into the cart_
+_Same as products.php `GET`, but with the field "selectedQuantity"that represents the quantity of the product into the cart_
 
 - HTTP 200: successful
 

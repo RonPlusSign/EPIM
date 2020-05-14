@@ -33,9 +33,9 @@ Events:
   <v-container>
     <v-row cols="12" justify="center">
       <v-col xl="8" lg="8" md="8" sm="9" xs="12">
-        <!---------------------- -- >
-        <!------ Data table ---- -- >
-        <!---------------------- -- >
+        <! ---------------------- -- >
+        <! ------ Data table ---- -- >
+        <! ---------------------- -- >
         <v-data-table
           :headers="headers"
           :items="filteredItems"
@@ -45,16 +45,16 @@ Events:
           loading-text="Caricamento in corso..."
           no-data-text="Nessun elemento disponibile!"
         >
-          <!-------------------------------------------------------------- -- >
-          <!------ Header section (title, search box, Add new button) ---- -- >
-          <!-------------------------------------------------------------- -- >
+          <! -------------------------------------------------------------- -- >
+          <! ------ Header section (title, search box, Add new button) ---- -- >
+          <! -------------------------------------------------------------- -- >
           <template v-slot:top>
-            <!---- Title -- -- >
+            <! ---- Title -- -- >
             <h3 class="pt-4 pl-6">Lista di {{ nameOfItems }}</h3>
             <v-toolbar flat color="white">
               <v-row cols="12">
                 <v-col xl="6" lg="6" md="6" sm="6" xs="6">
-                  <!---- Search box -- -- >
+                  <! ---- Search box -- -- >
                   <v-text-field
                     v-model="filter"
                     append-icon="mdi-magnify"
@@ -66,7 +66,7 @@ Events:
                 </v-col>
                 <v-spacer />
                 <v-col align="right" xl="6" lg="6" md="6" sm="6" xs="6">
-                  <!---- "Add new" button -- -- >
+                  <! ---- "Add new" button -- -- >
                   <v-btn @click="dialog = true" dark color="blue">
                     <span class="subtitle-2">Aggiungi</span>
                     <v-icon class="ml-2">mdi-plus</v-icon>
@@ -76,18 +76,18 @@ Events:
             </v-toolbar>
           </template>
 
-          <!--------------------------- -- >
-          <!------ Actions buttons ---- -- >
-          <!--------------------------- -- >
+          <! --------------------------- -- >
+          <! ------ Actions buttons ---- -- >
+          <! --------------------------- -- >
           <template v-slot:item.modify="{ item }">
-            <!---- "Edit" button -- -- >
+            <! ---- "Edit" button -- -- >
             <v-btn fab icon @click="editItem(item)" class="editBtn">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
           </template>
 
           <template v-slot:item.delete="{ item }">
-            <!---- "Delete" button -- -- >
+            <! ---- "Delete" button -- -- >
             <v-btn fab icon @click="deleteItem(item)" class="deleteBtn">
               <v-icon>mdi-delete</v-icon>
             </v-btn>
@@ -97,9 +97,9 @@ Events:
     </v-row>
     <v-spacer class="mb-10" />
 
-    <!----------------------------- -- >
-    <!---- Add new/Modify dialog -- -- >
-    <!----------------------------- -- >
+    <! ----------------------------- -- >
+    <! ---- Add new/Modify dialog -- -- >
+    <! ----------------------------- -- >
     <EAdminCRUDListDialog
       :state="dialog"
       :title="dialogTitle"

@@ -1,14 +1,20 @@
 <!--
 Events:
 - "deleted" (product has been deleted by an admin, clicking the "Delete" button)
-  Admin clicked on "Delete product" button
+  Returns the id of the deleted product
+
+- "selected-quantity-changed" (From the cart, the user changed the selected quantity and the value has been sent to the server)
+  Returns an object like this:
+  { id: 12, selectedQuantity: 3 }
 
 Props:
 - "product" (Object, required): object to display
 
 - "adminVersion" (Boolean, default = False): 
   If true, it shows the delete/edit buttons
-  If false, it shows "add to cart" button
+
+- "cartVersion" (Boolean, default = False): 
+  If true, it shows the delete/selectedQuantity actions
 
 Example of a product:
 
@@ -27,9 +33,11 @@ Example of a product:
   "brand": "Samsung"
 }
 
+If cartVersion is true, the product will also have a "selectedQuantity" attribute
+
  -->
 <template>
-  <v-card>
+  <v-card :loading="deleting">
     <v-row cols="12">
       <!------------------------>
       <!---- Product image ----->
@@ -112,7 +120,7 @@ Example of a product:
         <!---- Add to cart button ---->
         <!---------------------------->
         <v-btn
-          v-if="!adminVersion"
+          v-if="!adminVersion && !cartVersion"
           @click="addToCart(product.id)"
           :loading="addingToCart"
           small
@@ -157,6 +165,30 @@ Example of a product:
               >{{ product.recommended_price }} €</span>
             </p>
           </div>
+
+          <!------------------------->
+          <!----- Cart actions ------>
+          <!------------------------->
+          <v-row cols="12" v-if="cartVersion">
+            <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+              <!---- Selected quantity ---->
+              <ENumberInput
+                :value="product.selectedQuantity"
+                :min="0"
+                :max="product.quantity"
+                :caption="'Quantità'"
+                @change="(newValue) => cartQuantity(product.id, newValue)"
+              />
+            </v-col>
+            <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+              <!---- Delete button ---->
+              <v-btn @click="deleteFromCart(product.id)" :loading="deleting" dark color="red">
+                Rimuovi dal carrello
+                <v-icon class="ml-2">mdi-delete</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+
           <!------------------>
           <!---- Category ---->
           <!------------------>
@@ -238,6 +270,40 @@ export default {
         .then(() => {
           this.$emit("deleted", id);
           this.deleting = false;
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+
+    deleteFromCart(id) {
+      this.deleting = true;
+      Axios.delete(process.env.VUE_APP_API_URL + `user.php?cart`, {
+        params: {
+          id: id
+        }
+      })
+        .then(() => {
+          this.$emit("deleted", id);
+          this.deleting = false;
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+
+    cartQuantity(id, newQuantity) {
+      Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
+        params: {
+          id: id,
+          quantity: newQuantity
+        }
+      })
+        .then(() => {
+          this.$emit("selected-quantity-changed", {
+            id: id,
+            newQuantity: newQuantity
+          });
         })
         .catch(err => {
           console.error(err);

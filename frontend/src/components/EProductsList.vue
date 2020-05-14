@@ -20,6 +20,7 @@
           <EProductListItem
             :product="product"
             :adminVersion="adminVersion"
+            :cartVersion="cartVersion"
             @deleted="(productId) => $emit('deleted', productId)"
           />
         </v-col>
@@ -51,6 +52,10 @@ export default {
       default: false,
     },
     adminVersion: {
+      type: Boolean,
+      default: false,
+    },
+    cartVersion: {
       type: Boolean,
       default: false,
     },
