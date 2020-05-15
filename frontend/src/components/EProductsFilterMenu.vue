@@ -61,7 +61,7 @@ Example of usage:
           no-data-text="Nessuna categoria presente"
           prepend-icon="mdi-format-list-bulleted-square"
           label="Categoria"
-        ></v-select>
+        />
 
         <!-- Brand -->
         <v-select
@@ -73,7 +73,7 @@ Example of usage:
           no-data-text="Nessuna marca presente"
           prepend-icon="mdi-tag"
           label="Marca"
-        ></v-select>
+        />
 
         <!-- Price range -->
         <p class="body mt-2 mb-1">Fascia di prezzo</p>
@@ -99,7 +99,7 @@ Example of usage:
           no-data-text="Nessun ordinamento possibile"
           prepend-icon="mdi-sort"
           label="Ordina per..."
-        ></v-select>
+        />
 
         <v-row cols="12" class="mx-1 mb-3 mt-2">
           <v-col xl="5" lg="5" md="5" sm="12" xs="12" align="center">

@@ -106,7 +106,7 @@
         filled
         label="Categoria"
         :rules="[rules.required]"
-      ></v-select>
+      />
 
       <v-divider class="my-3" />
       <!--------------->
@@ -125,7 +125,7 @@
         filled
         label="Marca"
         :rules="[rules.required]"
-      ></v-select>
+      />
     </v-form>
 
     <!----------------------->
