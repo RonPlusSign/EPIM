@@ -14,9 +14,11 @@ session_start();
 switch ($requestMethod) {
     case 'GET':
 
-
+        if (isset($_GET["cart"])) {
+            
+        }
         // Get all users
-        if (isset($_GET["all"])) {
+        else if (isset($_GET["all"])) {
             $users = UserHandler::getUsers();
 
             if ($users) {

@@ -22,7 +22,9 @@ The project integrates a docker enviroment. To launch it enter:
 docker-compose -f "docker-compose.yml" up  --build
 ```
 
-#### ⚠️ The first time the containers are started you should wait a few minutes to let mariadb initialize the database. <br>
+#### ⚠️ The first time the containers are started you should wait a few minutes to let mariadb initialize the database.
+
+<br>
 
 If you wish to reset (drop) the database launch this script (it should also be valid for linux):
 
@@ -45,7 +47,7 @@ Available services in the container:
 At the start of every PHP file should import `Bootstrap.php`:
 
 ```php
-require_once __DIR__ . '/../lib/cd';
+require_once __DIR__ . '/../lib/Bootstrap.php';
 ```
 
 This will automatically set-up production/debug mode and import 'Database.php'.
@@ -103,7 +105,7 @@ Optional, can be one of the following:
 
 ### SQL
 
-Table name: snake_case, singular, lowercase (es. product_image). <br>
+Table name: snake_case, singular, lowercase (es. product_image). ---
 Column name: snake_case, lowercase (es. postal_code).
 
 Always define foreign and primary keys as CONSTRAINT
@@ -115,20 +117,20 @@ CONSTRAINT `this_table_pk` PRIMARY KEY(columns);
 CONSTRAINT `this_table_unique` UNIQUE(columns);    # You can also use `column_name_unique`
 ```
 
-<br>
+---
 
 ### PHP
 
 Every .php file should have the first letter capitalized.
 
-<br>
+---
 
 ### VUE
 
 Every file should be capitalized. Views and components should go in the folder with the same name (/views and /components).
 Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue).
 
-# Endpoints
+## Endpoints
 
 - [Categories](#categories.php)
 - [Brands](#brands.php)
@@ -142,11 +144,11 @@ Every **component name** should be prefixed with the letter 'E' (es. EFooter.vue
 
 ## categories.php
 
-#### GET
+### GET
 
 Returns the list of all the categories
 
-#### Response:
+##### Response:
 
 ```jsonc
 [
@@ -159,13 +161,13 @@ Returns the list of all the categories
 
 - HTTP 200: successful
 
-<br>
+---
 
-#### POST
+### POST
 
 Adds a new category, if the user is logged AND is an admin
 
-##### Request
+##### Request:
 
 ```jsonc
 {
@@ -188,9 +190,9 @@ Adds a new category, if the user is logged AND is an admin
 
 - HTTP 403: error
 
-<br>
+---
 
-#### PATCH
+### PATCH
 
 Renames one category, if the user is logged AND is an admin
 
@@ -207,11 +209,11 @@ Renames one category, if the user is logged AND is an admin
 
 - HTTP 403: error
 
-<br>
+---
 
-#### DELETE
+### DELETE
 
-> ?id=[categoryID]
+> `?id=[categoryID]`
 
 Deletes a category, the user **must** be admin
 
@@ -231,9 +233,9 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 ## login.php
 
-#### GET
+### GET
 
-> no query
+> `no query`
 
 ##### Response:
 
@@ -246,17 +248,17 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 - HTTP 200: successful
 
-<br>
+---
 
-> ?logout
+> `login.php?logout`
 
 ##### Response:
 
 - HTTP 200: successful
 
-<br>
+---
 
-#### POST
+### POST
 
 ```jsonc
 {
@@ -275,9 +277,9 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 ## user.php
 
-#### GET
+### GET
 
-> no query
+> `no query`
 
 ##### Response:
 
@@ -294,11 +296,13 @@ Same methods, requests and response messages as `categories.php`. See above for 
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-> ?all
+> `user.php?all`
 
-##### user **must** be admin to use this
+Returns all the users.
+
+#### user **must** be admin to use this
 
 ##### Response:
 
@@ -314,15 +318,17 @@ Same methods, requests and response messages as `categories.php`. See above for 
 ]
 ```
 
+##### Response codes:
+
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged as admin)
 
-<br>
+---
 
-#### POST
+### POST
 
-> User registration
+#### User registration
 
 ```jsonc
 {
@@ -334,7 +340,7 @@ Same methods, requests and response messages as `categories.php`. See above for 
 }
 ```
 
-##### Response:
+##### Response codes:
 
 - HTTP 200: successful
 
@@ -347,11 +353,11 @@ Same methods, requests and response messages as `categories.php`. See above for 
 { "error": "E-mail already in use." }
 ```
 
-<br>
+---
 
-#### PATCH
+### PATCH
 
-User profile changes
+#### User profile changes
 
 ##### Request:
 
@@ -363,7 +369,7 @@ User profile changes
 }
 ```
 
-#### Response
+##### Response codes:
 
 - HTTP 200: successful
 
@@ -378,33 +384,55 @@ User profile changes
 { "error": "E-mail already in use." }
 ```
 
-> ?cart
+## user.php?cart (Cart management)
 
-### Gets all the products from the user's cart
+### GET
 
-#### Response
+#### Gets all the products from the user's cart
+
+##### Response:
 
 _Same as products.php `GET`, but with the field "selectedQuantity"that represents the quantity of the product into the cart_
+
+##### Response codes:
 
 - HTTP 200: successful
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-> ?address
+### POST
 
-#### POST
+#### Adds a product to the user's cart
 
-###### Add an address to the user's addresses
+##### Request: format:
 
 ```jsonc
 {
-  "city": 234, // City id
-  "street": "Via dei Polli",
-  "houseNumber": 123,
-  "postalCode": 54100,
-  "phoneNumber": "123123123" // Phone number associated with that address
+  "id": 4, // Product id
+  "quantity": 3
+}
+```
+
+##### Response codes:
+
+- HTTP 200: successful
+
+- HTTP 403: error (Not logged)
+
+---
+
+### PATCH
+
+#### Changes the selected product's quantity in the user's cart
+
+##### Request:
+
+```jsonc
+{
+  "id": 4, // Product id
+  "quantity": 5
 }
 ```
 
@@ -412,13 +440,31 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 - HTTP 200: successful
 
-- HTTP 400: general error (Bad Request)
+- HTTP 400: general error (example: quantity not available)
 
-<br>
+- HTTP 403: error (Not logged)
 
-#### GET
+---
 
-###### GET all the USERS's addresses
+### DELETE
+
+> `?cart?id=[productId]`
+
+#### Removes a product from the user's cart
+
+##### Response:
+
+- HTTP 200: successful (product removed from cart (or it already wasn't there))
+
+- HTTP 403: error (Not logged)
+
+---
+
+## user.php?address
+
+### GET
+
+#### Get all the USERS's addresses
 
 ```jsonc
 [
@@ -446,13 +492,35 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 - HTTP 403: error (Not Logged)
 
-<br>
+---
 
-#### DELETE
+### POST
 
-###### DELETE a user's address
+#### Add an address to the user's addresses
 
-params: `?id=[address-id]`
+```jsonc
+{
+  "city": 234, // City id
+  "street": "Via dei Polli",
+  "houseNumber": 123,
+  "postalCode": 54100,
+  "phoneNumber": "123123123" // Phone number associated with that address
+}
+```
+
+##### Response:
+
+- HTTP 200: successful
+
+- HTTP 400: general error (Bad Request)
+
+---
+
+### DELETE
+
+#### DELETE a user's address
+
+> `?id=[address-id]`
 
 ##### Response:
 
@@ -460,11 +528,11 @@ params: `?id=[address-id]`
 
 - HTTP 403: error (Not Logged)
 
-<br>
+---
 
-#### PATCH
+### PATCH
 
-###### Modify a user's address
+#### Modify a user's address
 
 ```jsonc
 {
@@ -482,11 +550,11 @@ params: `?id=[address-id]`
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-> ?admin
+## user.php?admin
 
-###### An admin can add new admins from the existing users (user must be admin to perform this action).
+#### An **admin** can add new admins from the existing users (user **must be admin** to perform this action).
 
 ##### Request:
 
@@ -497,99 +565,17 @@ params: `?id=[address-id]`
 }
 ```
 
-##### Response
+##### Response:
 
 - HTTP 200: successful
 
 - HTTP 403: forbidden (ex. current user not admin)
 
-<br>
-
-> ?cart
-
-###### Adds a product to the user's cart
-
-#### Request format:
-
-```jsonc
-{
-  "id": 4, // Product id
-  "quantity": 3
-}
-```
-
-#### Response codes
-
-- HTTP 200: successful
-
-- HTTP 403: error (Not logged)
-
-<br>
-
-#### PATCH
-
-> no query
-
-###### user must be logged in order to work
-
-##### Request:
-
-```jsonc
-{
-  // The request can contain all the user fields (name, surname, phoneNumber, email)
-  "name": "Pippo",
-  "phoneNumber": "1231231230"
-}
-```
-
-##### Response:
-
-- HTTP 200: successful
-
-- HTTP 403: User not logged
-
-<br>
-
-> ?cart
-
-###### Changes the selected product's quantity in the user's cart
-
-##### Request:
-
-```jsonc
-{
-  "id": 4, // Product id
-  "quantity": 5
-}
-```
-
-##### Response
-
-- HTTP 200: successful
-
-- HTTP 400: general error (example: quantity not available)
-
-- HTTP 403: error (Not logged)
-
-<br>
-
-#### DELETE
-
-> ?cart?id=[productId]
-
-###### Removes a product from the user's cart
-
-#### Response
-
-- HTTP 200: successful (product removed from cart (or it already wasn't there))
-
-- HTTP 403: error (Not logged)
-
 ---
 
 ## products.php
 
-`products.php GET`
+### GET
 
 Get the list of products bases on a filter
 
@@ -611,7 +597,7 @@ Pagination:
 
 - Single product: `?id=` (See `products.php?id=` below for details)
 
-#### Response
+##### Response:
 
 - HTTP 200: successful
 
@@ -627,12 +613,12 @@ Response format:
       "title": "My product",
       "description": "...",
       "images": ["...",...],
-      "sellPrice": 43.21, // ONLY sell_price
+      "sell_price": 43.21, // ONLY sell_price
       "quantity": 23, // Products availability
-      "categoryId": 1,
-      "categoryName": "Smartphone",
-      "brandId": 2,
-      "brandName": "Samsung"
+      "category_id": 1,
+      "category": "Smartphone",
+      "brand_id": 2,
+      "brand": "Samsung"
     },
     {
       // One object for each product
@@ -641,21 +627,21 @@ Response format:
 }
 ```
 
-#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
+##### side note: if the user is logged as admin it will return also recommended_price and purchase-price
 
-<br>
+---
 
-`products.phpi?id=[productId] GET`
+> `products.php?id=[productId] GET`
 
-Gets the info of a single product
+#### Gets the info of a single product
 
-#### Response
+##### Response:
 
 - HTTP 200: successful
 
-Response format:
+##### Response: format:
 
-(similar to `products.php GET`, but with all the images)
+(similar to `products.php GET`)
 
 ```jsonc
 {
@@ -668,111 +654,101 @@ Response format:
     "my/image/url2",
     "my/image/url3"
   ],
-  "sellPrice": 43.21, // ONLY sell_price
+  "sell_price": 43.21, // ONLY sell_price
   "quantity": 23, // Products availability
-  "categoryId": 1,
-  "categoryName": "Smartphone",
-  "brandId": 2,
-  "brandName": "Samsung"
+  "category_id": 1,
+  "category": "Smartphone",
+  "brand_id": 2,
+  "brand": "Samsung"
 }
 ```
 
-#### side note: if the user is logged as admin it will return also recommendedPrice and purchasePrice
+##### side note: if the user is logged as admin it will return also recommended_price and purchase_price
 
-<br>
+---
 
-`products.php POST`
+### POST
 
-Adds a new product
+#### Adds a new product (user must be **admin**)
 
-#### Request format
+##### Request: format
 
 ```jsonc
 {
   "title": "My product",
   "description": "...",
-  "purchasePrice": 43.21,
-  "sellPrice": 55.99,
-  "recommendedPrice": 50.0,
+  "purchase_price": 43.21,
+  "sell_price": 55.99,
+  "recommended_price": 50.0,
   "quantity": 23, // Products availability
-  "categoryId": 1,
-  "brandId": 2
+  "category_id": 1,
+  "brand_id": 2
 }
 ```
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-`products.php POST?set-quantity&id=[productId] POST`
+### DELETE
 
-Set quantity of product (user must be logged as admin)
-
-#### Request
-
-```jsonc
-{ "quantity": 3 }
-```
-
-#### Response codes
-
-- HTTP 200: successful (User is logged and is admin)
-
-- HTTP 403: error (Not logged)
-
-<br>
-
-`products.php?id=[productId] DELETE`
+> `products.php?id=[productId]`
 
 Deletes a product and its images from the database
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-`products.php?id=[productId] PATCH`
+### PATCH
 
-Patch data of selected product. You can send only the desired changed values with the **same format** as in POST requests.
+> `products.php?id=[productId] PATCH`
 
-#### Response codes
+#### Patch data of selected product. You can send only the desired changed values with the **same format** as in POST requests.
+
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
 ## products.php?image
 
-`products.php?image&id=[productId] POST`
+### POST
 
-Stores a new image of that product
+> `products.php?image&id=[productId]`
 
-#### Request:
+#### Stores a new image of that product
+
+##### Request:
 
 _// TODO: Define how to send images to the server and store them_
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-`products.php?image&id=[productId] DELETE`
+### DELETE
+
+> `products.php?image&id=[productId]`
 
 Deletes an image from the server
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
@@ -782,11 +758,15 @@ Deletes an image from the server
 
 ## address.php
 
-Get of the regions, provinces and cities of Italy
+### GET
 
-`address.php?regions GET`
+> `address.php?regions`
+
+#### Get of the regions, provinces and cities of Italy
 
 Returns an array with all the regions of Italy
+
+##### Response:
 
 ```jsonc
 [
@@ -804,11 +784,13 @@ Returns an array with all the regions of Italy
 ]
 ```
 
-<br>
+---
 
-`address.php?regions?id=[region-id] GET`
+> `address.php?regions?id=[region-id]`
 
-Returns the region with that id
+#### Returns the region with that id
+
+##### Response:
 
 ```jsonc
 {
@@ -817,11 +799,13 @@ Returns the region with that id
 }
 ```
 
-<br>
+---
 
-`address.php?provinces GET`
+> `address.php?provinces`
 
-Returns an array with all the provinces of Italy
+#### Returns an array with all the provinces of Italy
+
+##### Response:
 
 ```jsonc
 [
@@ -839,11 +823,13 @@ Returns an array with all the provinces of Italy
 ]
 ```
 
-<br>
+---
 
-`address.php?provinces?region=[region-id] GET`
+> `address.php?provinces?region=[region-id]`
 
-Returns an array with all the provinces of a specific region of Italy
+#### Returns an array with all the provinces of a specific region of Italy
+
+##### Response:
 
 ```jsonc
 [
@@ -861,11 +847,13 @@ Returns an array with all the provinces of a specific region of Italy
 ]
 ```
 
-<br>
+---
 
-`address.php?provinces?id=[province-id] GET`
+> `address.php?provinces?id=[province-id]`
 
-Returns the province with that id
+#### Returns the province with that id
+
+##### Response:
 
 ```jsonc
 {
@@ -875,11 +863,13 @@ Returns the province with that id
 }
 ```
 
-<br>
+---
 
-`address.php?cities GET`
+> `address.php?cities`
 
-Returns an array with all the cities of Italy
+#### Returns an array with all the cities of Italy
+
+##### Response:
 
 ```jsonc
 [
@@ -897,11 +887,13 @@ Returns an array with all the cities of Italy
 ]
 ```
 
-<br>
+---
 
-`address.php?cities?province=[province-id] GET`
+> `address.php?cities?province=[province-id]`
 
-Returns an array with all the cities of a specific province
+#### Returns an array with all the cities of a specific province
+
+##### Response:
 
 ```jsonc
 [
@@ -919,11 +911,13 @@ Returns an array with all the cities of a specific province
 ]
 ```
 
-<br>
+---
 
-`address.php?cities?id=[city-id] GET`
+> `address.php?cities?id=[city-id]`
 
-Returns the city with that id
+#### Returns the city with that id
+
+##### Response:
 
 ```jsonc
 {
@@ -937,11 +931,11 @@ Returns the city with that id
 
 ## orders.php
 
-`orders.php GET`
+### GET
 
-Get of the user's orders
+#### Get of the **user**'s orders
 
-#### Response
+##### Response:
 
 ```jsonc
 [
@@ -974,31 +968,33 @@ Get of the user's orders
 ]
 ```
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-`orders.php?purchase GET`
+> `orders.php?purchase`
 
-Add an user's order
+#### Add an user's order
 
-#### Request: empty (no body)
+##### Request: empty (no body)
 
-#### Response codes
+##### Response codes:
 
 - HTTP 200: successful (User is logged and is admin)
 
 - HTTP 403: error (Not logged)
 
-<br>
+---
 
-`orders.php?admin GET`
+> `orders.php?admin`
 
-Get of all the orders
+#### Get of all the orders (user **must** be admin)
+
+##### Response:
 
 ```jsonc
 [
