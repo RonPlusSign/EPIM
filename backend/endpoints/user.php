@@ -59,14 +59,10 @@ switch ($requestMethod) {
     case 'PATCH':
         $json = json_decode(file_get_contents('php://input'));
 
-
-        if (UserHandler::editUser($_GET['id'], $json)) http_response_code(200);
+        if (UserHandler::editUser($json)) http_response_code(200);
         else http_response_code(403);
 
-
         break;
-
-
 
     default:
         header("HTTP/1.0 405 Method Not Allowed");

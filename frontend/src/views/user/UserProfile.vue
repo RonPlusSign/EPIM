@@ -12,11 +12,11 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.name">
               <v-row>
-                <v-col cols="3" class="pt-4">
+                <v-col cols="4" class="pt-4">
                   <!-- Name title -->
                   <span>Nome</span>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="8">
                   <!-- Display the name -->
                   <span class="title">{{ editedUser.name }}</span>
                 </v-col>
@@ -36,7 +36,7 @@
           </v-col>
 
           <!-- Edit / confirm / cancel buttons -->
-          <v-col align="center" justify="center" cols="4" class="py-0">
+          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
             <v-btn
               v-if="!editToggler.name"
               icon
@@ -59,7 +59,7 @@
               </v-btn>
             </div>
           </v-col>
-          <v-col align="center" justify="center">
+          <v-col v-if="errors.name" cols="12" align="center" justify="center">
             <!-- Error message on name modify -->
             <v-alert
               v-model="errors.name"
@@ -92,11 +92,11 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.surname">
               <v-row>
-                <v-col cols="3" class="pt-4">
+                <v-col cols="4" class="pt-4">
                   <!-- surname title -->
                   <span>Cognome</span>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="8">
                   <!-- Display the surname -->
                   <span class="title">{{ editedUser.surname }}</span>
                 </v-col>
@@ -114,7 +114,7 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" cols="4" class="py-0">
+          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
             <!-- Edit / confirm / cancel buttons -->
             <v-btn
               v-if="!editToggler.surname"
@@ -139,7 +139,7 @@
             </div>
           </v-col>
           <!-- Error message on surname modify -->
-          <v-col align="center" justify="center">
+          <v-col v-if="errors.surname" align="center" justify="center">
             <v-alert
               v-model="errors.surname"
               dense
@@ -164,11 +164,12 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.phoneNumber">
               <v-row>
-                <v-col cols="3" class="pt-4">
+                <v-col cols="4" class="pt-4">
                   <!-- phoneNumber title -->
-                  <span>Numero di telefono</span>
+                  <span>Telefono</span>
+                  <v-icon class="ml-2">mdi-phone</v-icon>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="8">
                   <!-- Display the phoneNumber -->
                   <span class="title">{{ editedUser.phoneNumber }}</span>
                 </v-col>
@@ -186,7 +187,7 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" cols="4" class="py-0">
+          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
             <!-- Edit / confirm / cancel buttons -->
             <v-btn
               v-if="!editToggler.phoneNumber"
@@ -211,7 +212,7 @@
             </div>
           </v-col>
           <!-- Error message on phoneNumber modify -->
-          <v-col align="center" justify="center">
+          <v-col v-if="errors.phoneNumber" align="center" justify="center">
             <v-alert
               v-model="errors.phoneNumber"
               dense
@@ -236,11 +237,14 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.email">
               <v-row>
-                <v-col cols="3" class="pt-4">
+                <v-col cols="4" class="pt-4">
                   <!-- email title -->
-                  <span>Numero di telefono</span>
+                  <span>
+                    Email
+                    <v-icon class="ml-2">mdi-email</v-icon>
+                  </span>
                 </v-col>
-                <v-col cols="9">
+                <v-col cols="8">
                   <!-- Display the email -->
                   <span class="title">{{ editedUser.email }}</span>
                 </v-col>
@@ -258,7 +262,7 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" cols="4" class="py-0">
+          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
             <!-- Edit / confirm / cancel buttons -->
             <v-btn
               v-if="!editToggler.email"
@@ -283,7 +287,7 @@
             </div>
           </v-col>
           <!-- Error message on email modify -->
-          <v-col align="center" justify="center">
+          <v-col v-if="errors.email" align="center" justify="center">
             <v-alert
               v-model="errors.email"
               dense
@@ -295,6 +299,9 @@
             >Errore durante la modifica dell'indirizzo email.</v-alert>
           </v-col>
         </v-row>
+      </v-col>
+      <v-col cols="12" class="py-0">
+        <v-divider />
       </v-col>
       <v-col cols="12">
         <!---------------------------->
@@ -417,24 +424,27 @@ export default {
           .then(() => {
             this.loading.name = false;
             this.editToggler.name = false;
+            this.errors.name = false;
           })
           .catch(err => {
+            this.loading.name = false;
             this.errors.name = true;
-
             console.error(err);
           });
       }
     },
 
-    saveSurame() {
+    saveSurname() {
       if (this.$refs.surnameInput.validate()) {
         this.loading.surname = true;
-        this.saveParam({ name: this.editedUser.surname })
+        this.saveParam({ surname: this.editedUser.surname })
           .then(() => {
             this.loading.surname = false;
             this.editToggler.surname = false;
+            this.errors.surname = false;
           })
           .catch(err => {
+            this.loading.surname = false;
             this.errors.surname = true;
             console.error(err);
           });
@@ -444,12 +454,14 @@ export default {
     savePhoneNumber() {
       if (this.$refs.phoneNumberInput.validate()) {
         this.loading.phoneNumber = true;
-        this.saveParam({ name: this.editedUser.phoneNumber })
+        this.saveParam({ phoneNumber: this.editedUser.phoneNumber })
           .then(() => {
             this.loading.phoneNumber = false;
-            this.editToggler.phoneNumberInput = false;
+            this.editToggler.phoneNumber = false;
+            this.errors.phoneNumber = false;
           })
           .catch(err => {
+            this.loading.phoneNumber = false;
             this.errors.phoneNumber = true;
             console.error(err);
           });
@@ -459,12 +471,14 @@ export default {
     saveEmail() {
       if (this.$refs.emailInput.validate()) {
         this.loading.email = true;
-        this.saveParam({ name: this.editedUser.email })
+        this.saveParam({ email: this.editedUser.email })
           .then(() => {
             this.loading.email = false;
-            this.editToggler.emailInput = false;
+            this.editToggler.email = false;
+            this.errors.email = false;
           })
           .catch(err => {
+            this.loading.email = false;
             this.errors.email = true;
             console.error(err);
           });

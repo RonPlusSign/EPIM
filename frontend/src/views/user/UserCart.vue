@@ -1,7 +1,15 @@
 <template>
   <div>
     <v-container>
-      <h2 class="mb-12">Carrello di {{ user.name }}</h2>
+      <!------------------------------------->
+      <!---- Go back to User page button ---->
+      <!------------------------------------->
+      <v-btn absolute right @click="$router.push('/profilo')" text color="secondary">
+        <span class="mt-1">Profilo utente</span>
+        <v-icon class="ml-2">mdi-account</v-icon>
+      </v-btn>
+
+      <h2 class="mb-6 mt-10">Carrello di {{ user.name }}</h2>
       <!---------------------------->
       <!---- Empty cart message ---->
       <!---------------------------->
@@ -13,8 +21,8 @@
       <!---- Cart products list ---->
       <!---------------------------->
       <v-row v-else cols="12" justify="center">
-        <v-row justify="end" class="mr-3 mr-lg-6 mr-xl-12">
-          <v-btn @click="order" relative right color="success">
+        <v-row justify="space-around">
+          <v-btn @click="order" relative right color="success" :disabled="products.length === 0">
             Effettua l'ordine
             <v-icon class="ml-2">mdi-cart</v-icon>
           </v-btn>

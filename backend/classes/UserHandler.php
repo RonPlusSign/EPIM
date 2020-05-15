@@ -96,9 +96,9 @@ class UserHandler
      * 
      * @param stdClass $userData An array containing the JSON with the user
      */
-    public static function editUser($id, $userData)
+    public static function editUser($userData)
     {
-        session_start();
+        // session_start();
 
         if (LoginHandler::isLogged()) {
             $id = $_SESSION["user_id"];
@@ -112,11 +112,11 @@ class UserHandler
                                             WHERE id = :id");
 
                 $data = [
-                    ':email' => $userData->email,
-                    ':name' => $userData->name,
-                    ':surname' => $userData->surname,
-                    ':phone_number' => $userData->phoneNumber,
-                    ':passwordHash' => $userData->password === NULL ? NULL : password_hash(trim($userData->password), PASSWORD_DEFAULT),
+                    ':email' => isset($userData->email) ? $userData->email : NULL,
+                    ':name' => isset($userData->name) ? $userData->name : NULL,
+                    ':surname' => isset($userData->surname) ? $userData->surname : NULL,
+                    ':phone_number' => isset($userData->phoneNumber) ? $userData->phoneNumber : NULL,
+                    ':passwordHash' => isset($userData->password) ? password_hash(trim($userData->password), PASSWORD_DEFAULT) : NULL,
                     ':id' => +$id
                 ];
 
