@@ -30,7 +30,7 @@ Events:
           <!----------------------->
           <!---- Region select ---->
           <!----------------------->
-          <v-select
+          <v-autocomplete
             v-model="selectedRegion"
             :items="regions"
             item-text="name"
