@@ -169,8 +169,8 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!------------------------->
           <!----- Cart actions ------>
           <!------------------------->
-          <v-row cols="12" v-if="cartVersion">
-            <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+          <v-row cols="12" align="center" v-if="cartVersion">
+            <v-col align="center" xs="12" sm="12" md="12" lg="4" xl="4" class="pt-0">
               <!---- Selected quantity ---->
               <ENumberInput
                 :value="product.selectedQuantity"
@@ -180,9 +180,15 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
                 @change="(newValue) => cartQuantity(product.id, newValue)"
               />
             </v-col>
-            <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+            <v-col align="center" xs="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
               <!---- Delete button ---->
-              <v-btn @click="deleteFromCart(product.id)" :loading="deleting" dark color="red">
+              <v-btn
+                @click="deleteFromCart(product.id)"
+                :loading="deleting"
+                dark
+                small
+                color="red lighten-1"
+              >
                 Rimuovi dal carrello
                 <v-icon class="ml-2">mdi-delete</v-icon>
               </v-btn>
@@ -214,9 +220,11 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
 
 <script>
 import Axios from "axios";
+import ENumberInput from "@/components/ENumberInput.vue";
 
 export default {
   name: "EProductListItem",
+  components: { ENumberInput },
   computed: {
     logged() {
       return this.$store.getters.logged;
@@ -234,6 +242,10 @@ export default {
       required: true
     },
     adminVersion: {
+      type: Boolean,
+      default: false
+    },
+    cartVersion: {
       type: Boolean,
       default: false
     }
@@ -293,21 +305,21 @@ export default {
     },
 
     cartQuantity(id, newQuantity) {
-      Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
-        params: {
+      if (this.product.selectedQuantity !== newQuantity) {
+        Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
           id: id,
           quantity: newQuantity
-        }
-      })
-        .then(() => {
-          this.$emit("selected-quantity-changed", {
-            id: id,
-            newQuantity: newQuantity
-          });
         })
-        .catch(err => {
-          console.error(err);
-        });
+          .then(() => {
+            this.$emit("selected-quantity-changed", {
+              id: id,
+              newQuantity: newQuantity
+            });
+          })
+          .catch(err => {
+            console.error(err);
+          });
+      }
     }
   }
 };

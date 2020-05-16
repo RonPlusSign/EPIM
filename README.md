@@ -419,6 +419,8 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 - HTTP 200: successful
 
+- HTTP 400: general error (example: quantity not available)
+
 - HTTP 403: error (Not logged)
 
 ---
@@ -448,7 +450,7 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 ### DELETE
 
-> `?cart?id=[productId]`
+> `?cart&id=[productId]`
 
 #### Removes a product from the user's cart
 
@@ -553,6 +555,8 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 ---
 
 ## user.php?admin
+
+### PATCH
 
 #### An **admin** can add new admins from the existing users (user **must be admin** to perform this action).
 

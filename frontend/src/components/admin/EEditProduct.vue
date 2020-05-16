@@ -155,6 +155,7 @@ import Axios from "axios";
 import ENumberInput from "@/components/ENumberInput.vue";
 
 export default {
+  name: "EEditProduct",
   components: { ENumberInput },
   data() {
     return {
