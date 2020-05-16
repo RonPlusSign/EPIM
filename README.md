@@ -815,11 +815,13 @@ Returns an array with all the regions of Italy
 [
   {
     "id": 2,
-    "name": "Firenze"
+    "name": "Firenze",
+    "region": 12
   },
   {
     "id": 3,
-    "name": "Bologna"
+    "name": "Bologna",
+    "region": 13
   },
   {
     // ... other provinces
@@ -863,7 +865,7 @@ Returns an array with all the regions of Italy
 {
   "id": 2,
   "name": "Firenze",
-  "regionId": 3 // Province's region id
+  "region": 3 // Province's region id
 }
 ```
 
@@ -879,11 +881,13 @@ Returns an array with all the regions of Italy
 [
   {
     "id": 2,
-    "name": "Firenze"
+    "name": "Firenze",
+    "province": 6
   },
   {
     "id": 3,
-    "name": "Arezzo"
+    "name": "Arezzo",
+    "province": 9
   },
   {
     // ... other cities of Italy
@@ -927,7 +931,7 @@ Returns an array with all the regions of Italy
 {
   "id": 2,
   "name": "Scandicci",
-  "provinceId": 3 // City's province id
+  "province": 3 // City's province id
 }
 ```
 

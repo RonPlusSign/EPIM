@@ -487,7 +487,7 @@ export default {
 
     fetchAddresses() {
       this.fetchingAddresses = true;
-      Axios.get(process.env.VUE_APP_API_URL + `address.php`)
+      Axios.get(process.env.VUE_APP_API_URL + `user.php?address`)
         .then(response => {
           this.addresses = response.data;
           this.fetchingAddresses = false;

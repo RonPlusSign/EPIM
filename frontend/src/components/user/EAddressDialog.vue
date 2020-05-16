@@ -30,7 +30,7 @@ Events:
           <!----------------------->
           <!---- Region select ---->
           <!----------------------->
-          <v-select
+          <v-autocomplete
             v-model="selectedRegion"
             :items="regions"
             item-text="name"
@@ -45,13 +45,13 @@ Events:
           <!------------------------->
           <!---- Province select ---->
           <!------------------------->
-          <v-select
+          <v-autocomplete
             v-model="selectedProvince"
             :disabled="provinces.length === 0"
             :items="provinces"
             item-text="name"
             item-value="id"
-            :rules="[rules.required, rules.positive]"
+            :rules="[rules.required]"
             no-data-text="Seleziona una regione"
             prepend-icon="mdi-map-marker-radius"
             label="Provincia"
@@ -61,13 +61,13 @@ Events:
           <!--------------------->
           <!---- City select ---->
           <!--------------------->
-          <v-select
+          <v-autocomplete
             v-model="address.city"
             :disabled="cities.length === 0"
             :items="cities"
             item-text="name"
             item-value="id"
-            :rules="[rules.required, rules.positive]"
+            :rules="[rules.required]"
             no-data-text="Seleziona una provincia"
             prepend-icon="mdi-home-city"
             label="Città"
@@ -237,26 +237,32 @@ export default {
 
     selectedRegion(regionId) {
       this.provinces = [];
-      Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-        params: {
-          provinces: "",
-          id: regionId
-        }
-      })
-        .then(response => (this.provinces = response.data))
-        .catch(err => console.error(err));
+      this.selectedProvince = null;
+      if (regionId != null) {
+        Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+          params: {
+            provinces: "",
+            region: regionId
+          }
+        })
+          .then(response => (this.provinces = response.data))
+          .catch(err => console.error(err));
+      }
     },
 
     selectedProvince(provinceId) {
       this.cities = [];
-      Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-        params: {
-          cities: "",
-          id: provinceId
-        }
-      })
-        .then(response => (this.cities = response.data))
-        .catch(err => console.error(err));
+      this.address.city = null;
+      if (provinceId != null) {
+        Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+          params: {
+            cities: "",
+            province: provinceId
+          }
+        })
+          .then(response => (this.cities = response.data))
+          .catch(err => console.error(err));
+      }
     }
   },
 
