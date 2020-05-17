@@ -2,8 +2,8 @@
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 header("Content-Type: application/json");
-require_once __DIR__ . '/../classes/orderManagementHandler.php';
-$omh = new orderManagementHandler();
+require_once __DIR__ . '/../classes/OrdersHandler.php';
+$omh = new OrdersHandler();
 switch ($requestMethod) {
         /**
      * Handle order management
@@ -22,10 +22,7 @@ switch ($requestMethod) {
 
         if (isset($_GET["id"])) // Get the order with this id
         {
-
-
-            //da far trasformare la risposta in json ancora
-            $omh->getOrderById();
+            echo json_encode($omh->getUserOrders());
         }
         else // Return all the order if you are an Admin
         {
