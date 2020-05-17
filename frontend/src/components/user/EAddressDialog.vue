@@ -156,8 +156,8 @@ Events:
           <!---- Send data button ---->
           <!-------------------------->
           <v-btn
-            @click="submit()"
-            @keyup.enter.exact="submit()"
+            @click="submit"
+            @keyup.enter.exact="submit"
             small
             fab
             :loading="loading"
@@ -184,6 +184,7 @@ export default {
       cities: [],
       selectedRegion: null,
       selectedProvince: null,
+      fetchingData: false,
       loading: false, // Controls the loading effect
       error: false, // Controls the error alert status (open/close)
       rules: {
@@ -197,7 +198,7 @@ export default {
         phoneNumber: value => {
           const pattern = /^[0-9]{9,10}$/;
           return (
-            pattern.test(value.trim()) ||
+            pattern.test(value) ||
             "Il numero inserito deve contenere solo 9 o 10 numeri"
           );
         }
@@ -221,47 +222,117 @@ export default {
   watch: {
     state(value) {
       this.isOpen = value;
+      if (!value) this.$refs.form.reset();
     },
 
     isOpen(value) {
       if (!value) {
-        this.$refs.form.reset();
         this.clearAddress();
       }
       this.$emit("state-changed", value);
     },
 
     startingObject(value) {
-      this.inputValue = value ? value.name : "";
-    },
+      if (value) {
+        // If a starting object is given, fill the form
+        // The starting object only has the city id, so we need to fetch its province and region.
 
-    selectedRegion(regionId) {
-      this.provinces = [];
-      this.selectedProvince = null;
-      if (regionId != null) {
+        this.address = Object.assign({}, value);
+
+        let city = this.address.city;
+        let province = null;
+        let region = null;
+
+        this.fetchingData = true; // Set fetching data to true, so the watchers won't start doing the requests
+
+        // Get the province of the selected city
         Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-          params: {
-            provinces: "",
-            region: regionId
-          }
+          params: { cities: "", id: city }
         })
-          .then(response => (this.provinces = response.data))
+          .then(response => {
+            province = response.data.province;
+
+            // Get the region of the selected province
+            Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+              params: { provinces: "", id: province }
+            })
+              .then(response => {
+                region = response.data.region;
+                this.selectedRegion = region;
+                this.selectedProvince = province;
+                this.address.city = city;
+
+                // Fetch the cities of that province
+                Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+                  params: {
+                    cities: "",
+                    province: province
+                  }
+                })
+                  .then(response => (this.cities = response.data))
+                  .catch(err => console.error(err));
+
+                // Fetch the provinces of that region
+                Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+                  params: {
+                    provinces: "",
+                    region: region
+                  }
+                })
+                  .then(response => (this.provinces = response.data))
+                  .catch(err => console.error(err));
+
+                Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+                  params: {
+                    cities: "",
+                    province: province
+                  }
+                })
+                  .then(response => (this.cities = response.data))
+                  .catch(err => console.error(err));
+
+                setTimeout(() => {
+                  // Set fetching data to false, so the watchers can start to work again
+                  this.fetchingData = false;
+                }, 1000);
+              })
+              .catch(err => console.error(err));
+          })
           .catch(err => console.error(err));
       }
     },
 
+    selectedRegion(regionId) {
+      if (!this.fetchingData) {
+        this.provinces = [];
+        this.selectedProvince = null;
+        if (regionId != null) {
+          Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+            params: {
+              provinces: "",
+              region: regionId
+            }
+          })
+            .then(response => (this.provinces = response.data))
+            .catch(err => console.error(err));
+        }
+      }
+    },
+
     selectedProvince(provinceId) {
-      this.cities = [];
-      this.address.city = null;
-      if (provinceId != null) {
-        Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-          params: {
-            cities: "",
-            province: provinceId
-          }
-        })
-          .then(response => (this.cities = response.data))
-          .catch(err => console.error(err));
+      if (!this.fetchingData) {
+        this.cities = [];
+        this.address.city = null;
+        if (provinceId != null) {
+          Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
+            params: {
+              cities: "",
+              province: provinceId
+            }
+          })
+            .then(response => (this.cities = response.data))
+            .catch(err => console.error(err));
+        }
       }
     }
   },
@@ -271,9 +342,7 @@ export default {
       ? (this.address = this.startingObject)
       : this.clearAddress();
 
-    Axios.get(process.env.VUE_APP_API_URL + `address.php?regions`)
-      .then(response => (this.regions = response.data))
-      .catch(err => console.error(err));
+    this.fetchRegions();
   },
 
   methods: {
@@ -291,8 +360,8 @@ export default {
             .then(() => {
               // Close the dialog
               this.loading = false;
-              this.resetAddress();
               this.isOpen = false;
+              this.clearAddress();
               this.$emit("updated-server-values");
             })
             .catch(err => {
@@ -323,27 +392,35 @@ export default {
         }
       }
     },
+
     clearAddress() {
-      this.selectedRegion = null;
-      this.selectedProvince = null;
+      if (this.startingObject === null) {
+        this.selectedRegion = null;
+        this.selectedProvince = null;
 
-      this.regions = [];
-      this.provinces = [];
-      this.cities = [];
+        this.provinces = [];
+        this.cities = [];
 
-      this.address = {
-        city: -1, // City id
-        street: "",
-        houseNumber: null,
-        postalCode: null,
-        phoneNumber: "" // Phone number associated with that address
-      };
+        this.address = {
+          city: null, // City id
+          street: null,
+          houseNumber: null,
+          postalCode: null,
+          phoneNumber: null // Phone number associated with that address
+        };
+      }
+    },
+
+    fetchRegions() {
+      Axios.get(process.env.VUE_APP_API_URL + `address.php?regions`)
+        .then(response => (this.regions = response.data))
+        .catch(err => console.error(err));
     }
   },
   computed: {
     addressDifferences() {
       // Check the differences only if there's a starting object
-      if (this.startingObject) {
+      if (this.startingObject === null) {
         // Check what attributes changed
         let patch = {};
 

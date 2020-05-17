@@ -33,12 +33,13 @@ Events:
         <!------------------------>
         <v-data-table
           :headers="headers"
-          :items="filteredItems"
+          :items="items"
+          :search="search"
           sort-by="name"
           class="elevation-4"
           :loading="fetchingItems"
           loading-text="Caricamento in corso..."
-          no-data-text="Nessun elemento disponibile!"
+          no-data-text="Nessun indirizzo disponibile!"
         >
           <!---------------------------------------------------------------->
           <!------ Header section (title, search box, Add new button) ------>
@@ -51,7 +52,7 @@ Events:
                 <v-col xl="6" lg="6" md="6" sm="6" xs="6">
                   <!---- Search box ---->
                   <v-text-field
-                    v-model="filter"
+                    v-model="search"
                     append-icon="mdi-magnify"
                     label="Cerca"
                     single-line
@@ -114,7 +115,7 @@ export default {
   components: { EAddressDialog },
   data: () => ({
     dialog: false, // Controls the dialog status (open/close)
-    filter: "", // Filter for search (by name)
+    search: "", // Filter for search of data inside the table
     headers: [
       // Headers of each column of the table
       {
@@ -129,7 +130,7 @@ export default {
         // Name column
         text: "Città",
         sortable: true,
-        value: "city",
+        value: "cityName",
         filterable: true,
         align: "center",
         width: "80"
@@ -148,12 +149,12 @@ export default {
         text: "Civico",
         sortable: false,
         value: "houseNumber",
-        filterable: false,
+        filterable: true,
         align: "center",
         width: "50"
       },
       {
-        // House number column
+        // Postal code column
         text: "CAP",
         sortable: true,
         value: "postalCode",
@@ -162,7 +163,7 @@ export default {
         width: "50"
       },
       {
-        // House number column
+        // Phone number column
         text: "Telefono",
         sortable: true,
         value: "phoneNumber",
@@ -170,7 +171,7 @@ export default {
         align: "center",
         width: "80"
       },
-      // TODO: Add all the other columns
+      
       {
         // Modify column
         text: "Modifica",
@@ -213,13 +214,13 @@ export default {
       return this.editedIndex === -1
         ? `Crea ${this.nameOfItems}`
         : `Modifica ${this.nameOfItems}`;
-    },
-    filteredItems() {
-      // Filter items by the name
-      return this.items.filter(item =>
-        item.name.toUpperCase().includes(this.filter.toUpperCase())
-      );
     }
+    // filteredItems() {
+    //   // Filter items by the name
+    //   return this.items.filter(item =>
+    //     item.name.toUpperCase().includes(this.filter.toUpperCase())
+    //   );
+    // }
   },
 
   watch: {
@@ -236,7 +237,7 @@ export default {
     },
 
     deleteItem(item) {
-      if (confirm(`Sei sicuro di voler eliminare ${item.name}?`)) {
+      if (confirm(`Sei sicuro di voler eliminare questo indirizzo?`)) {
         // DELETE request to the server
         Axios.delete(process.env.VUE_APP_API_URL + `user.php?address`, {
           params: { id: item.id }

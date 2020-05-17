@@ -472,6 +472,7 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 [
   {
     "id": 13, // Address id
+    "cityName": "Firenze", // City name
     "city": 234, // City id
     "street": "Via dei Polli",
     "houseNumber": 123,
@@ -479,6 +480,8 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
     "phoneNumber": "123123123" // Phone number associated with that address
   },
   {
+    "id": 123, // Address id
+    "cityName": "Novara", // City name
     "city": 123, // City id
     "street": "Via delle galline",
     "houseNumber": 321,
@@ -556,7 +559,7 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 ## user.php?admin
 
-### PATCH
+### POST
 
 #### An **admin** can add new admins from the existing users (user **must be admin** to perform this action).
 
