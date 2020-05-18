@@ -1020,7 +1020,7 @@ Returns an array with all the regions of Italy
 
     // user data
     "user": {
-      "id": 33,
+      "user_id": 33,
       "name": "Pippo",
       "surname": "Baudo",
       "email": "pippo@baudo.it"
