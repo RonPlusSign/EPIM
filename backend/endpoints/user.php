@@ -26,6 +26,13 @@ switch ($requestMethod) {
                 } else http_response_code(403);
             } else http_response_code(403);
         }
+
+        // Get the user addresses
+        else if (isset($_GET["address"])) {
+            // TODO
+            echo json_encode(UserHandler::getAddresses());
+        }
+
         // Get all users
         else if (isset($_GET["all"])) {
             $users = UserHandler::getUsers();
@@ -53,6 +60,12 @@ switch ($requestMethod) {
         if (isset($_GET["admin"])) {
             if (!UserHandler::setAdminFlag($json["id"], $json["isAdmin"])) http_response_code(403);
             else http_response_code(200);
+        }
+
+        // Add an address to the user addresses
+        else if (isset($_GET["address"])) {
+            if (UserHandler::addAddress($json["city"], $json["street"], $json["houseNumber"], $json["postalCode"], $json["phoneNumber"])) http_response_code(200);
+            else http_response_code(403);
         }
 
         // Sign-up user
@@ -93,6 +106,14 @@ switch ($requestMethod) {
                 else http_response_code(400);
             } else http_response_code(403);
         }
+
+        // Edit one address from the user addresses
+        else if (isset($_GET["address"]) && isset($_GET["id"])) {
+
+            // NEVER MODIFY AN ADDRESS! MORE ACCOUNTS MAY REFER TO IT
+            // GET THE PREVIOUS ADDRESS AND ADD A NEW ONE WITH THE PATCHED ATTRIBUTES
+        }
+
         // Edit user data
         else {
             try {
@@ -111,6 +132,11 @@ switch ($requestMethod) {
                 if (CartHandler::removeProduct($_SESSION["user_id"], $_GET["id"])) http_response_code(200);
                 else http_response_code(403);
             } else http_response_code(403);
+
+            // Delete an address from the user's addresses
+        } else if (isset($_GET["address"]) && isset($_GET["id"])) {
+            if (UserHandler::removeAddress($_GET["id"])) http_response_code(200);
+            else http_response_code(403);
         }
         break;
     default:

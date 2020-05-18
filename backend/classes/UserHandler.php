@@ -9,6 +9,10 @@ require_once __DIR__ . '/../classes/LoginHandler.php';
 
 class UserHandler
 {
+    // ------------------------------------------------------- //
+    //                        User methods                     //
+    // ------------------------------------------------------- //
+
     /**
      * Sign-up a new user
      */
@@ -128,5 +132,153 @@ class UserHandler
         } else {
             return false;
         }
+    }
+
+    // ---------------------------------------------------------- //
+    //                        Address methods                     //
+    // ---------------------------------------------------------- //
+
+    /**
+     * Adds an address to the address table (if not present) and to the user's address list
+     */
+    public static function addAddress($city, $street, $houseNumber, $postalCode, $phoneNumber)
+    {
+        if (LoginHandler::isLogged()) {
+            $userId = $_SESSION["user_id"];
+            try {
+                // Check if the address is already present in the database
+                $stm = Database::$pdo->prepare("SELECT id FROM address
+                                            WHERE street = :street
+                                            AND city = :city
+                                            AND house_number = :houseNumber
+                                            AND postal_code = :postalCode
+                                            ");
+
+                $data = [
+                    "street" => $street,
+                    "city" => $city,
+                    "houseNumber" => $houseNumber,
+                    "postalCode" => $postalCode
+                ];
+
+                $stm->execute($data);
+                // If the query returns some value, the address is already into the database
+                if ($stm->rowCount() > 0) {
+                    // Add the address into user_address table
+                    $addressId = $stm->fetch(PDO::FETCH_ASSOC);
+
+                    $query = "INSERT INTO user_address (address, user, phone_number)  VALUES (:addressId, :userId, :phoneNumber)";
+
+                    $data = [
+                        "addressId" => $addressId,
+                        "userId" => $userId,
+                        "phoneNumber" => $phoneNumber
+                    ];
+
+                    $stm = Database::$pdo->prepare($query);
+
+                    $stm->execute($data);
+
+                    return $stm->rowCount();
+                }
+                // Add the address into the address table, then to the address list
+                else {
+                    // Check if the address is already present in the database
+                    $stm = Database::$pdo->prepare("INSERT INTO address(street, city, house_number, postal_code)
+                        VALUES (:street, :city, :houseNumber, :postalCode)");
+
+                    $data = [
+                        "street" => $street,
+                        "city" => $city,
+                        "houseNumber" => $houseNumber,
+                        "postalCode" => $postalCode
+                    ];
+
+                    $stm->execute($data);
+
+                    // Check if the adding was done correctly
+                    if ($stm->rowCount() > 0) {
+                        // Insert the address to the user's addresses
+
+                        $addressId = Database::$pdo->lastInsertId();
+
+                        $query = "INSERT INTO user_address (address, user, phone_number)  VALUES (:addressId, :userId, :phoneNumber)";
+
+                        $data = [
+                            "addressId" => $addressId,
+                            "userId" => $userId,
+                            "phoneNumber" => $phoneNumber
+                        ];
+
+                        $stm = Database::$pdo->prepare($query);
+
+                        $stm->execute($data);
+
+                        return $stm->rowCount();
+                    } else return false;
+                }
+            } catch (\Exception $e) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+    }
+
+    /**
+     * Adds an address to the address table (if not present) and to the user's address list
+     */
+    public static function getAddresses()
+    {
+        $addresses = [];
+
+        if (LoginHandler::isLogged()) {
+            $userId = $_SESSION["user_id"];
+
+            $stm = Database::$pdo->prepare("SELECT
+                    address.id,
+                    address.city,
+                    city.name AS cityName,
+                    street,
+                    house_number AS houseNumber,
+                    postal_code AS postalCode,
+                    phone_number AS phoneNumber
+                FROM address
+                INNER JOIN user_address
+                    ON address.id = user_address.address
+                INNER JOIN city
+                    ON city.id = address.city
+                WHERE user_address.user = :userId");
+
+            $stm->bindParam(":userId", $userId);
+            $stm->execute();
+
+            $addresses = $stm->fetchAll(PDO::FETCH_ASSOC);
+
+            if (empty($addresses)) return [];
+            else return $addresses;
+        } else return false;
+    }
+
+    public static function removeAddress($addressId)
+    {
+        if (LoginHandler::isLogged()) {
+            $userId = $_SESSION["user_id"];
+
+
+            $stm = Database::$pdo->prepare("DELETE FROM user_address 
+                WHERE
+                address = :addressId AND
+                user = :userId");
+
+            $data = [
+                "addressId" => $addressId,
+                "userId" => $userId,
+            ];
+
+            $stm->execute($data);
+
+            return $stm->rowCount();
+        } else return false;
     }
 }

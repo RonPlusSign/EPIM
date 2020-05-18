@@ -1,6 +1,8 @@
 CREATE DATABASE IF NOT EXISTS epim;
 USE ideeinbi_epim;
 
+ALTER DATABASE epim CHARACTER SET utf8 COLLATE utf8_general_ci;
+
 -- Name conventions:
 -- Table names and attributes: lowercase and snake_case
 
@@ -138,11 +140,11 @@ CREATE TABLE IF NOT EXISTS city
 
 CREATE TABLE IF NOT EXISTS address
 (
-    id           INT(10) UNSIGNED NOT NULL AUTO_INCREMENT,
-    street       VARCHAR(128)     NOT NULL,
-    house_number INT(10) UNSIGNED NOT NULL,
-    postal_code  INT(10) UNSIGNED NOT NULL,
-    city         INT(10) UNSIGNED NOT NULL,
+    id           INT(10)     UNSIGNED NOT NULL AUTO_INCREMENT,
+    street       VARCHAR(128)         NOT NULL,
+    house_number VARCHAR(8)           NOT NULL,
+    postal_code  INT(10)     UNSIGNED NOT NULL,
+    city         INT(10)     UNSIGNED NOT NULL,
 
     CONSTRAINT `address_unique` UNIQUE (street, house_number, postal_code, city),
     CONSTRAINT `address_pk` PRIMARY KEY (id),

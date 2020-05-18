@@ -472,6 +472,7 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 [
   {
     "id": 13, // Address id
+    "cityName": "Firenze", // City name
     "city": 234, // City id
     "street": "Via dei Polli",
     "houseNumber": 123,
@@ -479,6 +480,8 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
     "phoneNumber": "123123123" // Phone number associated with that address
   },
   {
+    "id": 123, // Address id
+    "cityName": "Novara", // City name
     "city": 123, // City id
     "street": "Via delle galline",
     "houseNumber": 321,
@@ -556,7 +559,7 @@ _Same as products.php `GET`, but with the field "selectedQuantity"that represent
 
 ## user.php?admin
 
-### PATCH
+### POST
 
 #### An **admin** can add new admins from the existing users (user **must be admin** to perform this action).
 
@@ -815,11 +818,13 @@ Returns an array with all the regions of Italy
 [
   {
     "id": 2,
-    "name": "Firenze"
+    "name": "Firenze",
+    "region": 12
   },
   {
     "id": 3,
-    "name": "Bologna"
+    "name": "Bologna",
+    "region": 13
   },
   {
     // ... other provinces
@@ -863,7 +868,7 @@ Returns an array with all the regions of Italy
 {
   "id": 2,
   "name": "Firenze",
-  "regionId": 3 // Province's region id
+  "region": 3 // Province's region id
 }
 ```
 
@@ -879,11 +884,13 @@ Returns an array with all the regions of Italy
 [
   {
     "id": 2,
-    "name": "Firenze"
+    "name": "Firenze",
+    "province": 6
   },
   {
     "id": 3,
-    "name": "Arezzo"
+    "name": "Arezzo",
+    "province": 9
   },
   {
     // ... other cities of Italy
@@ -927,7 +934,7 @@ Returns an array with all the regions of Italy
 {
   "id": 2,
   "name": "Scandicci",
-  "provinceId": 3 // City's province id
+  "province": 3 // City's province id
 }
 ```
 
