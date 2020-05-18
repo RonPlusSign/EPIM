@@ -92,8 +92,18 @@ class CartHandler
             $products = $stm->fetchAll(PDO::FETCH_ASSOC);
 
             $productHandler = new ProductsHandler();
-            foreach ($products as &$product) {
+            foreach ($products as $index => &$product) {
+                // Get the product images
                 $product["images"] = $productHandler->getProductImages($product["id"]);
+
+                // Check if the selected quantity of a product is available
+
+                if (+$product["quantity"] === 0) {
+                    self::removeProduct($userId, $product["id"]);
+                    unset($products[$index]);
+                } else if (+$product["quantity"] > 0 && +$product["quantity"] < +$product["selectedQuantity"]) {
+                    $product["selectedQuantity"] = +$product["quantity"];
+                };
             }
 
             return $products;

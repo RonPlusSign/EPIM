@@ -1,7 +1,7 @@
-CREATE DATABASE IF NOT EXISTS epim;
-USE epim;
+CREATE DATABASE IF NOT EXISTS ideeinbi_epim;
+USE ideeinbi_epim;
 
-ALTER DATABASE epim CHARACTER SET utf8 COLLATE utf8_general_ci;
+ALTER DATABASE ideeinbi_epim CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 -- Name conventions:
 -- Table names and attributes: lowercase and snake_case

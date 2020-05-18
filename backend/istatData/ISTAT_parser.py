@@ -14,7 +14,7 @@ import codecs
 f = codecs.open(r"..\..\database\x_istat_data.sql","w+", "utf-8")
 
 
-f.write("USE epim;\n\n")
+f.write("USE ideeinbi_epim;\n\n")
 f.write("-- regions\n")
 
 # regions
