@@ -1,4 +1,4 @@
-USE epim;
+USE ideeinbi_epim;
 
 -- regions
 INSERT INTO region VALUES(1, "Piemonte");

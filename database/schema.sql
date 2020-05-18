@@ -1,5 +1,5 @@
 CREATE DATABASE IF NOT EXISTS epim;
-USE epim;
+USE ideeinbi_epim;
 
 -- Name conventions:
 -- Table names and attributes: lowercase and snake_case
