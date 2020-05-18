@@ -44,17 +44,16 @@ class OrdersHandler
                     if($trovato = false)
                     {
                         $datatime = new DateTime($orders['timestamp']);
-                        $user = [
-                            "id" => $orders['user'],
-                            "name" => $orders['name'],
-                            "surname" => $orders['surname'],
-                            "email" => $orders['email']
-                        ];
-                        $array['user'][] = $user;
                         $nuovoOggetto = [
                             "id" => $orders['id'],
                             "date" => $datatime->format('d-m-Y'),
                             "hour" => $datatime->format('H:i:s'),
+
+                            "user_id" => $orders['user'],
+                            "name" => $orders['name'],
+                            "surname" => $orders['surname'],
+                            "email" => $orders['email'],
+
                             "address" => $orders['address'],
                             "phoneNumber" => $orders['phone_number'],
                             "shippingCost" => $orders['shipping_cost'],
