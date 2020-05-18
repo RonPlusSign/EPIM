@@ -381,6 +381,8 @@ export default {
     if (!this.logged) this.$store.commit("openLoginDialog", true);
 
     this.editedUser = this.user ? Object.assign({}, this.user) : {};
+
+    this.fetchAddresses();
   },
 
   watch: {
