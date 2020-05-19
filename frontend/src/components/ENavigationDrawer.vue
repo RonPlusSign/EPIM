@@ -37,7 +37,7 @@ This component requires one prop:
       </div>
 
       <!-- Logout list item -->
-      <v-list-item @click="logout()" class="py-1" link>
+      <v-list-item v-if="logged" @click="logout()" class="py-1" link>
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>

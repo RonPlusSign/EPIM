@@ -11,12 +11,7 @@ example:
   <!---------------------->
   <!------- Dialog ------->
   <!---------------------->
-  <v-dialog
-    v-model="isDialogActive"
-    align="center"
-    justify="center"
-    width="600"
-  >
+  <v-dialog v-model="isDialogActive" align="center" justify="center" width="600">
     <v-card class="pb-5" :loading="loading">
       <!--------------------->
       <!------- Title ------->
@@ -27,9 +22,9 @@ example:
         Registrati
         <v-spacer />
         <!-- Close button -->
-        <v-btn @click="isDialogActive = !isDialogActive" icon color="white"
-          ><v-icon>mdi-close</v-icon></v-btn
-        >
+        <v-btn @click="isDialogActive = !isDialogActive" icon color="white">
+          <v-icon>mdi-close</v-icon>
+        </v-btn>
       </v-card-title>
       <!-------------------->
       <!------- Body ------->
@@ -121,9 +116,7 @@ example:
           type="error"
           border="top"
           color="red darken-1"
-        >
-          Errore durante la registrazione.
-        </v-alert>
+        >Errore durante la registrazione.</v-alert>
       </v-card-text>
       <!----------------------->
       <!------- Buttons ------->
@@ -150,7 +143,7 @@ import Axios from "axios";
 export default {
   name: "ERegisterDialog",
   props: {
-    isOpen: { type: Boolean, required: true },
+    isOpen: { type: Boolean, required: true }
   },
   data() {
     return {
@@ -160,35 +153,35 @@ export default {
         email: "",
         phoneNumber: "",
         password: "",
-        confirmPassword: "",
+        confirmPassword: ""
       },
       loading: false,
       isDialogActive: false,
       isPasswordVisible: false,
       error: false,
       rules: {
-        required: (value) => !!value || "Inserisci questo parametro",
-        email: (value) => {
+        required: value => !!value || "Inserisci questo parametro",
+        email: value => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "E-mail non valida";
         },
-        password: (value) => {
-          const pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/;
+        password: value => {
+          const pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-<>.]).{8,}$/;
           return (
             pattern.test(value) ||
             "La password deve contenere almeno una lettera maiuscola e minuscola, un numero, un carattere speciale e avere almeno 8 caratteri"
           );
         },
-        confirmPassword: (value) =>
+        confirmPassword: value =>
           value === this.user.password || "La password non corrisponde",
-        phoneNumber: (value) => {
-          const pattern = /^[0-9]{9,10}$/;
+        phoneNumber: value => {
+          const pattern = /^[0-9]{7,12}$/;
           return (
             pattern.test(value.trim()) ||
-            "Il numero inserito deve contenere solo 9 o 10 numeri"
+            "Il numero inserito deve essere lungo dalle 7 a 12 cifre"
           );
-        },
-      },
+        }
+      }
     };
   },
   watch: {
@@ -197,7 +190,7 @@ export default {
     },
     isDialogActive() {
       this.$emit("status-changed", this.isDialogActive);
-    },
+    }
   },
 
   methods: {
@@ -213,21 +206,21 @@ export default {
           surname: this.user.surname,
           email: this.user.email,
           phoneNumber: this.user.phoneNumber.trim(),
-          password: this.user.password,
+          password: this.user.password
         })
           .then((/*response*/) => {
             // Disable loading effect after the server response
             this.loading = false;
             this.isDialogActive = false;
           })
-          .catch((error) => {
+          .catch(error => {
             // Disable loading effect after the server response
             this.loading = false;
             this.error = true;
             console.error(error);
           });
       }
-    },
-  },
+    }
+  }
 };
 </script>
