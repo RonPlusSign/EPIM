@@ -9,7 +9,7 @@
       class="bottom-nav-btn"
       v-for="item in navItems"
       :key="item.title"
-      @click="$router.replace(item.route).catch((err) => {})"
+      :to="item.route"
     >
       <span>{{ item.title }}</span>
       <v-icon>{{ item.icon }}</v-icon>
