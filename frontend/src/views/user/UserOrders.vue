@@ -10,18 +10,36 @@
     <!--------------->
     <!---- Title ---->
     <!--------------->
-    <h2 class="my-3">Ordini di {{ user.name }}</h2>
-    <h4 class="subtitle-1">Stiamo lavorando per aggiungere questa funzione! Abbi pazienza...</h4>
+    <h2 class="my-3">Ordini di {{ user ?user.name : "" }}</h2>
+    <v-row cols="12" justify="center">
+      <v-col v-if="orders.length > 0" xl="8" lg="8" md="10" sm="12" xs="12">
+        <!--------------------->
+        <!---- Orders list ---->
+        <!--------------------->
+        <EOrdersList :orders="orders" />
+      </v-col>
+      <v-col v-else align="center">
+        <h3>Nessun ordine presente!</h3>
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
 import Axios from "axios";
 import userMixin from "@/mixins/userMixin";
+import EOrdersList from "@/components/EOrdersList.vue";
 
 export default {
   name: "UserOrders",
-  mixins: [ userMixin ],
+  mixins: [userMixin],
+  components: { EOrdersList },
+
+  data() {
+    return {
+      orders: []
+    };
+  },
 
   created() {
     if (this.logged) this.fetchOrders();
@@ -35,8 +53,14 @@ export default {
 
   methods: {
     fetchOrders() {
-      // TODO: Fetch user orders
-      Axios;
+      // Get the user orders
+      Axios.get(process.env.VUE_APP_API_URL + `orders.php`)
+        .then(response => {
+          this.orders = response.data;
+        })
+        .catch(err => {
+          console.error(err);
+        });
     }
   }
 };

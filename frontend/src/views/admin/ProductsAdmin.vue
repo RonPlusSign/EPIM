@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <div v-if="logged">
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
@@ -70,7 +70,7 @@
       :length="numberOfPages"
       total-visible="7"
     />
-  </v-container>
+  </div>
 </template>
 
 <script>

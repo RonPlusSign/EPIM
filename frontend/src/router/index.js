@@ -108,6 +108,11 @@ const routes = [
       ),
   },
 
+  // {
+  // // It should not catch the Axios requests to the endpoints when deployed
+  //   path: "/api/endpoints/*.php",
+  // },
+
   {
     // will match everything (for 404 errors, pages not found)
     path: "/404",

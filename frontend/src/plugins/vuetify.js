@@ -13,7 +13,7 @@ export default new Vuetify({
     themes: {
       light: {
         primary: colors.green.darken1,
-        accent: colors.orange,
+        accent: colors.orange.darken2,
       },
     },
   },

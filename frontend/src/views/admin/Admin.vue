@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="logged">
     <!---------------------------->
     <!---- Title and subtitle ---->
     <!---------------------------->
@@ -24,10 +24,7 @@
         xs="12"
       >
         <!-- Button -->
-        <v-btn
-          @click="$router.push(page.route).catch((err) => {})"
-          color="accent"
-        >
+        <v-btn @click="$router.push(page.route).catch((err) => {})" color="accent">
           {{ page.title }}
           <v-icon class="ml-3">{{ page.icon }}</v-icon>
         </v-btn>
@@ -47,25 +44,25 @@ export default {
         {
           title: "Ordini",
           icon: "mdi-truck",
-          route: "/admin/ordini",
+          route: "/admin/ordini"
         },
         {
           title: "Prodotti",
           icon: "mdi-package-variant",
-          route: "/admin/prodotti",
+          route: "/admin/prodotti"
         },
         {
           title: "Marche",
           icon: "mdi-tag",
-          route: "/admin/marche",
+          route: "/admin/marche"
         },
         {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
-          route: "/admin/categorie",
-        },
-      ],
+          route: "/admin/categorie"
+        }
+      ]
     };
-  },
+  }
 };
 </script>

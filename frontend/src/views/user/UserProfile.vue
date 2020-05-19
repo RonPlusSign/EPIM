@@ -73,12 +73,14 @@
           </v-col>
         </v-row>
       </v-col>
+
       <!-- Vertical divider (large screens) -->
       <v-col cols="1" class="hidden-sm-and-down py-0 my-2">
         <v-spacer />
         <v-divider class="py-8 mx-lg-9 mx-md-3" vertical />
         <v-spacer />
       </v-col>
+
       <!-- Horizontal divider (small screens) -->
       <v-col cols="12" class="d-md-none py-0">
         <v-divider />
@@ -156,6 +158,7 @@
       <v-col cols="12" class="py-0">
         <v-divider />
       </v-col>
+
       <!------------------------>
       <!----- Phone number ----->
       <!------------------------>
@@ -229,6 +232,7 @@
       <v-col cols="12" class="py-0">
         <v-divider />
       </v-col>
+
       <!----------------->
       <!----- Email ----->
       <!----------------->
@@ -300,9 +304,25 @@
           </v-col>
         </v-row>
       </v-col>
+
       <v-col cols="12" class="py-0">
         <v-divider />
       </v-col>
+
+      <v-col cols="12" align="center">
+        <!--------------------------->
+        <!---- Go to orders page ---->
+        <!--------------------------->
+        <v-btn @click="$router.push('/profilo/ordini')" outlined color="secondary">
+          <span class="mt-1">Visualizza i tuoi ordini</span>
+          <v-icon class="ml-2">mdi-truck</v-icon>
+        </v-btn>
+      </v-col>
+
+      <v-col cols="12" class="py-0">
+        <v-divider />
+      </v-col>
+
       <v-col cols="12">
         <!---------------------------->
         <!---- CRUD address table ---->

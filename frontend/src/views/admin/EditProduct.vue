@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="logged">
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
@@ -35,6 +35,7 @@ export default {
   created() {
     // Get the product to edit
     Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
+      // ID = id: this.$router.history.current.params.id
       params: { id: this.$router.history.current.params.id }
     })
       .then(response => {
@@ -43,7 +44,6 @@ export default {
       .catch(err => {
         console.error(err);
       });
-    // ID = id: this.$router.history.current.params.id
   }
 };
 </script>

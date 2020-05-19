@@ -165,7 +165,7 @@ export default {
             });
         } else {
           // Override the starting Object
-          Axios.patch(process.env.VUE_APP_API_URL + this.endpoint, {
+          Axios.put(process.env.VUE_APP_API_URL + this.endpoint, {
             id: this.startingObject.id,
             name: this.inputValue,
           })
