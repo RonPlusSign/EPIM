@@ -125,8 +125,10 @@ export default {
       };
       // Check if the user is logged
       if (this.logged) {
+        // If the user is logged, perform the request to add the product
         task();
       } else {
+        // If the user is NOT logged, open the login dialog (and then, if the login is ok, run the task)
         this.$store.commit("openLoginDialog");
         this.$store.commit("setActionAfterLogin", task);
       }

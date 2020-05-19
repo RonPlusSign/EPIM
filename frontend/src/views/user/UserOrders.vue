@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="logged">
     <!------------------------------------->
     <!---- Go back to User page button ---->
     <!------------------------------------->
@@ -17,35 +17,19 @@
 
 <script>
 import Axios from "axios";
+import userMixin from "@/mixins/userMixin";
 
 export default {
   name: "UserOrders",
-  computed: {
-    logged() {
-      return this.$store.getters.logged;
-    },
-    user() {
-      return this.$store.getters.user;
-    }
-  },
+  mixins: [ userMixin ],
+
   created() {
-    // Persistent login dialog (if not logged)
-    if (!this.logged) this.$store.commit("openLoginDialog", true);
-    else {
-      this.fetchOrders();
-    }
+    if (this.logged) this.fetchOrders();
   },
 
   watch: {
     logged(value) {
-      // Persistent login dialog (if not logged)
-      if (!value) this.$store.commit("openLoginDialog", true);
-      // Close login dialog if the user is logged
-      // Must do this because the view when created doesn't see logged === true and opens the dialog
-      else {
-        this.$store.commit("closeLoginDialog");
-        this.fetchOrders();
-      }
+      if (value) this.fetchOrders();
     }
   },
 

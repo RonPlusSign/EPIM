@@ -8,7 +8,8 @@
       <span class="mt-1">Torna alla pagina di admin</span>
     </v-btn>
 
-    <br /><br />
+    <br />
+    <br />
     <!--------------->
     <!---- Title ---->
     <!--------------->
@@ -44,7 +45,7 @@ export default {
   data() {
     return {
       brands: [],
-      loading: false,
+      loading: false
     };
   },
   created() {
@@ -55,14 +56,14 @@ export default {
     getBrands() {
       this.loading = true;
       Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-        .then((response) => {
+        .then(response => {
           this.brands = response.data;
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
-    },
-  },
+    }
+  }
 };
 </script>
