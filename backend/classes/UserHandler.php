@@ -226,7 +226,7 @@ class UserHandler
     }
 
     /**
-     * Adds an address to the address table (if not present) and to the user's address list
+     * Add an address to the address table (if not present) and to the user's address list
      */
     public static function getAddresses()
     {
@@ -260,6 +260,10 @@ class UserHandler
         } else return false;
     }
 
+
+    /**
+     * Remove an address from the user's address list
+     */
     public static function removeAddress($addressId)
     {
         if (LoginHandler::isLogged()) {
@@ -280,5 +284,75 @@ class UserHandler
 
             return $stm->rowCount();
         } else return false;
+    }
+
+
+    /**
+     * Modify a user address
+     * If the address is in the user_address table, we can modify it (otherwise it just returns false)
+     * We NEVER modify an address inside the address table, because more user_address rows could reference it
+     * We have to add a new address similar to the previous one, but with the changes in it.
+     */
+    public static function modifyUserAddress($userId, $changes)
+    {
+        try {
+            $addressId = $changes->id;
+
+            // Check if the user has that address
+
+            $stm = Database::$pdo->prepare("SELECT address FROM user_address WHERE user = :userId AND address = :addressId");
+
+            $stm->bindParam(":userId", $userId);
+            $stm->bindParam(":addressId", $addressId);
+            $stm->execute();
+
+            if ($stm->rowCount()) { // Address found
+                // Get the address info
+                $stm = Database::$pdo->prepare("SELECT address.*, user_address.phone_number
+                FROM address
+                INNER JOIN user_address
+                ON user_address.address = address.id
+                WHERE address.id = :addressId");
+
+                $stm->bindParam(":addressId", $addressId);
+                $stm->execute();
+
+                $address = $stm->fetch(PDO::FETCH_ASSOC);
+
+                // Check for changes from the previous address 
+
+                if (isset($changes->city)) {
+                    $address["city"] = $changes->city;
+                }
+
+                if (isset($changes->street)) {
+                    $address["street"] = $changes->street;
+                }
+
+                if (isset($changes->houseNumber)) {
+                    $address["houseNumber"] = $changes->houseNumber;
+                }
+
+                if (isset($changes->postalCode)) {
+                    $address["postalCode"] = $changes->postalCode;
+                }
+
+                if (isset($changes->phoneNumber)) {
+                    $address["phone_number"] = $changes->phoneNumber;
+                }
+
+                // Delete the user address from user_address and add the new one
+                $stm = Database::$pdo->prepare("DELETE FROM user_address WHERE user = :userId AND address = :addressId");
+                $stm->bindParam(":userId", $userId);
+                $stm->bindParam(":addressId", $addressId);
+                $stm->execute();
+
+                // Add the address to the user addresses
+                return self::addAddress($address["city"], $address["street"], $address["house_number"], $address["postal_code"], $address["phone_number"]);
+            } else return false;    // The address the user is trying to modify is not in the user addresses
+        } catch (\Throwable $th) {
+            echo json_encode($th);
+            return false;
+        }
     }
 }

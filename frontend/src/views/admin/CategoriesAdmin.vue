@@ -7,7 +7,8 @@
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       <span class="mt-1">Torna alla pagina di admin</span>
     </v-btn>
-    <br /><br />
+    <br />
+    <br />
 
     <!--------------->
     <!---- Title ---->
@@ -46,7 +47,7 @@ export default {
   data() {
     return {
       categories: [],
-      loading: false,
+      loading: false
     };
   },
   created() {
@@ -57,14 +58,14 @@ export default {
     getCategories() {
       this.loading = true;
       Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-        .then((response) => {
+        .then(response => {
           this.categories = response.data;
           this.loading = false;
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
-    },
-  },
+    }
+  }
 };
 </script>

@@ -7,6 +7,7 @@
 
 require_once __DIR__ . '/../classes/UserHandler.php';
 require_once __DIR__ . '/../classes/CartHandler.php';
+require_once __DIR__ . '/../classes/LoginHandler.php';
 
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 header("Content-Type: application/json");
@@ -17,7 +18,7 @@ switch ($requestMethod) {
 
         // Get the products inside the cart
         if (isset($_GET["cart"])) {
-            if (isset($_SESSION["user_id"])) {
+            if (LoginHandler::isLogged()) {
                 $products = CartHandler::getCart($_SESSION["user_id"]);
 
                 if ($products) {
@@ -29,7 +30,6 @@ switch ($requestMethod) {
 
         // Get the user addresses
         else if (isset($_GET["address"])) {
-            // TODO
             echo json_encode(UserHandler::getAddresses());
         }
 
@@ -78,7 +78,7 @@ switch ($requestMethod) {
         }
         // Add a product to the cart
         else if (isset($_GET["cart"])) {
-            if (isset($_SESSION["user_id"])) {
+            if (LoginHandler::isLogged()) {
                 if (CartHandler::addToCart(
                     $_SESSION["user_id"],
                     $json["id"],
@@ -97,7 +97,7 @@ switch ($requestMethod) {
 
         // Edit the product quantity inside the cart
         if (isset($_GET["cart"])) {
-            if (isset($_SESSION["user_id"])) {
+            if (LoginHandler::isLogged()) {
                 if (CartHandler::addToCart(
                     $_SESSION["user_id"],
                     $json->id,
@@ -108,10 +108,13 @@ switch ($requestMethod) {
         }
 
         // Edit one address from the user addresses
-        else if (isset($_GET["address"]) && isset($_GET["id"])) {
-
-            // NEVER MODIFY AN ADDRESS! MORE ACCOUNTS MAY REFER TO IT
-            // GET THE PREVIOUS ADDRESS AND ADD A NEW ONE WITH THE PATCHED ATTRIBUTES
+        else if (isset($_GET["address"])) {
+            if (LoginHandler::isLogged()) {
+                // NEVER MODIFY AN ADDRESS! MORE ACCOUNTS MAY REFER TO IT
+                // GET THE PREVIOUS ADDRESS AND ADD A NEW ONE WITH THE PATCHED ATTRIBUTES
+                if (UserHandler::modifyUserAddress($_SESSION["user_id"], $json)) http_response_code(200);
+                else http_response_code(400);
+            } else http_response_code(403);
         }
 
         // Edit user data
@@ -128,7 +131,7 @@ switch ($requestMethod) {
     case 'DELETE':
         // Delete a product from the user cart
         if (isset($_GET["cart"]) && isset($_GET["id"])) {
-            if (isset($_SESSION["user_id"])) {
+            if (LoginHandler::isLogged()) {
                 if (CartHandler::removeProduct($_SESSION["user_id"], $_GET["id"])) http_response_code(200);
                 else http_response_code(403);
             } else http_response_code(403);

@@ -8,7 +8,8 @@
       <span class="mt-1">torna alla pagina di admin</span>
     </v-btn>
 
-    <br /><br />
+    <br />
+    <br />
     <!--------------->
     <!---- Title ---->
     <!--------------->
@@ -25,6 +26,6 @@ export default {
     return {
       //
     };
-  },
+  }
 };
 </script>

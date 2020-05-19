@@ -374,7 +374,7 @@ export default {
           // Override the starting Object
           Axios.patch(process.env.VUE_APP_API_URL + `user.php?address`, {
             id: this.startingObject.id,
-            address: this.addressDifferences
+            ...this.addressDifferences
           })
             .then(() => {
               // Close the dialog
@@ -420,7 +420,7 @@ export default {
   computed: {
     addressDifferences() {
       // Check the differences only if there's a starting object
-      if (this.startingObject === null) {
+      if (this.startingObject !== null) {
         // Check what attributes changed
         let patch = {};
 
@@ -430,17 +430,11 @@ export default {
         if (this.address.street !== this.startingObject.street)
           patch["street"] = this.address.street;
 
-        if (
-          Number.parseInt(this.address.houseNumber) !==
-          Number.parseInt(this.startingObject.houseNumber)
-        )
-          patch["houseNumber"] = Number.parseInt(this.address.houseNumber);
+        if (this.address.houseNumber !== this.startingObject.houseNumber)
+          patch["houseNumber"] = this.address.houseNumber;
 
-        if (
-          Number.parseInt(this.address.postralCode) !==
-          Number.parseInt(this.startingObject.postralCode)
-        )
-          patch["postralCode"] = this.address.postralCode;
+        if (this.address.postalCode !== this.startingObject.postalCode)
+          patch["postalCode"] = this.address.postalCode;
 
         if (this.address.phoneNumber !== this.startingObject.phoneNumber)
           patch["phoneNumber"] = this.address.phoneNumber;

@@ -25,6 +25,6 @@ import EEditProduct from "@/components/admin/EEditProduct.vue";
 export default {
   name: "CreateProduct",
   mixins: [adminMixin],
-  components: { EEditProduct },
+  components: { EEditProduct }
 };
 </script>

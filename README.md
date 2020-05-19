@@ -981,13 +981,15 @@ Returns an array with all the regions of Italy
 
 ##### Response codes:
 
-- HTTP 200: successful (User is logged and is admin)
+- HTTP 200: successful
 
 - HTTP 403: error (Not logged)
 
 ---
 
-> `orders.php?purchase`
+> `orders.php?purchase&address=id`
+
+###### address=id is the id of the user address
 
 #### Add an user's order
 
@@ -995,7 +997,7 @@ Returns an array with all the regions of Italy
 
 ##### Response codes:
 
-- HTTP 200: successful (User is logged and is admin)
+- HTTP 200: successful
 
 - HTTP 403: error (Not logged)
 
@@ -1018,7 +1020,7 @@ Returns an array with all the regions of Italy
 
     // user data
     "user": {
-      "id": 33,
+      "user_id": 33,
       "name": "Pippo",
       "surname": "Baudo",
       "email": "pippo@baudo.it"

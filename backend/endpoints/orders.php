@@ -26,10 +26,7 @@ switch ($requestMethod) {
         }
         else // Return all the order if you are an Admin
         {
-
-
-            //da far trasformare la risposta in json ancora
-            $omh->getAllOrders();
+            echo json_encode( $omh->getAllOrders());
         }
         break;
 

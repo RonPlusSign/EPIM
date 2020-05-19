@@ -177,7 +177,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
                 :min="0"
                 :max="product.quantity"
                 :caption="'Quantità'"
-                @change="(newValue) => cartQuantity(product.id, newValue)"
+                @change="(newValue) => cartQuantity(newValue)"
               />
             </v-col>
             <v-col align="center" xs="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
@@ -288,6 +288,7 @@ export default {
         });
     },
 
+    // Delete an item from the cart
     deleteFromCart(id) {
       this.deleting = true;
       Axios.delete(process.env.VUE_APP_API_URL + `user.php?cart`, {
@@ -304,21 +305,28 @@ export default {
         });
     },
 
-    cartQuantity(id, newQuantity) {
+    // Change the selected quantity of a product. If the new quantity is 0, remove the product from the cart
+    cartQuantity(newQuantity) {
       if (this.product.selectedQuantity !== newQuantity) {
-        Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
-          id: id,
-          quantity: newQuantity
-        })
-          .then(() => {
-            this.$emit("selected-quantity-changed", {
-              id: id,
-              newQuantity: newQuantity
-            });
+        if (newQuantity === 0) {
+          // If the quantity is 0, remove the item from the cart
+          this.deleteFromCart(this.product.id);
+        } else {
+          // Request to change the selected quantity on server side
+          Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
+            id: this.product.id,
+            quantity: newQuantity
           })
-          .catch(err => {
-            console.error(err);
-          });
+            .then(() => {
+              this.$emit("selected-quantity-changed", {
+                id: this.product.id,
+                newQuantity: newQuantity
+              });
+            })
+            .catch(err => {
+              console.error(err);
+            });
+        }
       }
     }
   }

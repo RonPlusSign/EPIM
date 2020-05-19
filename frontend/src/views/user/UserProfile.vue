@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container v-if="logged">
     <h2>Profilo utente</h2>
     <br />
     <v-divider />
@@ -322,12 +322,15 @@
 
 <script>
 import Axios from "axios";
+import userMixin from "@/mixins/userMixin";
 
 import EAddressCRUDTable from "@/components/user/EAddressCRUDTable.vue";
 
 export default {
   name: "UserProfile",
+  mixins: [userMixin],
   components: { EAddressCRUDTable },
+
   data() {
     return {
       fetchingAddresses: false,
@@ -368,30 +371,16 @@ export default {
       }
     };
   },
-  computed: {
-    logged() {
-      return this.$store.getters.logged;
-    },
-    user() {
-      return this.$store.getters.user;
-    }
-  },
-  created() {
-    // Persistent login dialog (if not logged)
-    if (!this.logged) this.$store.commit("openLoginDialog", true);
 
-    this.editedUser = this.user ? Object.assign({}, this.user) : {};
+  created() {
+    if (this.logged) {
+      this.editedUser = this.user ? Object.assign({}, this.user) : {};
+
+      this.fetchAddresses();
+    }
   },
 
   watch: {
-    logged(value) {
-      // Persistent login dialog (if not logged)
-      if (!value) this.$store.commit("openLoginDialog", true);
-      // Close login dialog if the user is logged
-      // Must do this because the view when created doesn't see logged === true and opens the dialog
-      else this.$store.commit("closeLoginDialog");
-    },
-
     user() {
       this.editedUser = Object.assign({}, this.user);
 

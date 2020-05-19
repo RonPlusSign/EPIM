@@ -151,13 +151,10 @@ export default {
       // If the filters are empty, look for best sellers
       let salesString = this.filtersEmpty ? "?sales&desc" : "";
 
-      Axios.get(
-        process.env.VUE_APP_API_URL + `products.php` + salesString,
-        {
-          // Add the filters (query string params)
-          params: this.filtersEmpty ? {} : this.$route.query
-        }
-      )
+      Axios.get(process.env.VUE_APP_API_URL + `products.php` + salesString, {
+        // Add the filters (query string params)
+        params: this.filtersEmpty ? {} : this.$route.query
+      })
         .then(response => {
           // Parse the response from the server
           /*
