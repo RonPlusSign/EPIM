@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-CREATE DATABASE IF NOT EXISTS epim;
-=======
 CREATE DATABASE IF NOT EXISTS ideeinbi_epim;
->>>>>>> 25a07e2bd9bf22b9d7436dc44ffe4dc87f25d258
 USE ideeinbi_epim;
 
 ALTER DATABASE ideeinbi_epim CHARACTER SET utf8 COLLATE utf8_general_ci;

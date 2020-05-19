@@ -117,25 +117,25 @@ class ProductsHandler
         if ($countResults) {
             $query = "SELECT count(*) as number_of_products FROM product as p";
         } else {
-            $query = "SELECT p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
+            $query = "SELECT p.id, p.title, p.description, p.sell_price, p.quantity";
 
             if (LoginHandler::isAdmin()) {
                 $query .= ", p.purchase_price, p.recommended_price";
             }
 
-            $query .= ", brand.name as brand, brand.id as brand_id, category.name as category, category.id as category_id FROM product as p";
+            $query .= ", b.name as brand, b.id as brand_id, c.name as category, c.id as category_id FROM product as p";
         }
 
-        $query .= " INNER JOIN category ON p.category=category.id
-                    INNER JOIN brand ON p.brand=brand.id
+        $query .= " INNER JOIN category as c ON p.category=c.id
+                    INNER JOIN brand as b ON p.brand=b.id
                     WHERE MATCH (" . $filter . ") AGAINST (:filterString IN NATURAL LANGUAGE MODE)";
 
 
         // Check for extra filter
         if ($this->extraFilter == 'category') {
-            $query .= " AND category.name = :extraFilter";
+            $query .= " AND c.name = :extraFilter";
         } else if ($this->extraFilter == 'brand') {
-            $query .= " AND brand.name = :extraFilter";
+            $query .= " AND b.name = :extraFilter";
         }
 
         // Check for price filter
@@ -208,17 +208,18 @@ class ProductsHandler
      */
     public function getProduct($id)
     {
+        
         try {
-            $query = "SELECT brand.name as brand, brand.id as brand_id, 
-            category.name as category, category.id as category_id, p.id, p.title, p.description, p.sell_price, p.quantity, p.category, p.brand";
+            $query = "SELECT b.name as brand, b.id as brand_id, 
+            c.name as category, c.id as category_id, p.id, p.title, p.description, p.sell_price, p.quantity";
 
             if (LoginHandler::isAdmin()) {
                 $query .= ", p.purchase_price, p.recommended_price ";
             }
 
             $query .= " FROM product as p
-            INNER JOIN category ON p.category=category.id
-            INNER JOIN brand ON p.brand=brand.id
+            INNER JOIN category as c ON p.category=c.id
+            INNER JOIN brand as b ON p.brand=b.id
             WHERE p.id=:id";
 
             $stm = Database::$pdo->prepare($query);
@@ -370,7 +371,7 @@ class ProductsHandler
                 $stm->execute($data);
                 return $stm->rowCount();
             } catch (\Exception $e) {
-                echo $e;
+                return false;
             }
         } else {
             return false;

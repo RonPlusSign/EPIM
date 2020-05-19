@@ -7,7 +7,6 @@ require_once __DIR__ . '/../lib/Bootstrap.php';
 
 class LoginHandler
 {
-
     /**
      * Checks if the user exists and sets the $_SESSION["logged"] & $_SESSION["user_id"]
      * @return TRUE if the login was successful, FALSE otherwise
@@ -15,6 +14,9 @@ class LoginHandler
     static public function loginUser($email, $password)
     {
         try {
+            session_start();
+
+
             $stm = Database::$pdo->prepare("SELECT * FROM user
                                             WHERE user.email = :email");
             $stm->bindParam(':email', $email);
@@ -42,6 +44,9 @@ class LoginHandler
      */
     static public function isLogged()
     {
+        session_start();
+
+    
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             // user is logged
             return true;
@@ -55,6 +60,8 @@ class LoginHandler
     static public function isAdmin()
     {
         try {
+            session_start();
+
             $stm = Database::$pdo->prepare("SELECT user.is_admin FROM user
                                             WHERE user.id = :id");
             $stm->bindParam(':id', $_SESSION["user_id"]);
@@ -76,5 +83,4 @@ class LoginHandler
         session_destroy();
         http_response_code(200);
     }
-
 }

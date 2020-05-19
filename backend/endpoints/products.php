@@ -80,9 +80,7 @@ switch ($requestMethod) {
                 "productsPerPage" => $ph->getResultPerPageLimit(),
                 "data" => $ph->getByTitle($_GET['q'])
             ));
-        }
-
-        else if (isset($_GET['images']) && isset($_GET['id'])) {
+        } else if (isset($_GET['images']) && isset($_GET['id'])) {
             echo json_encode($ph->getProductImages($_GET["id"]));
         }
 
@@ -130,13 +128,11 @@ switch ($requestMethod) {
 
         // Set product's quantity
         if (isset($_GET['set-quantity']) && isset($_GET['id'])) {
-            echo json_encode(array(
-                "success" => $ph->setQuantity($_GET['id'], $json->quantity) == 1 ? true : false
-            ));
-        } else {
-            echo json_encode(array(
-                "success" => $ph->addProduct($json) == 1 ? true : false
-            ));
+            $ph->setQuantity($_GET['id'], $json->quantity) == 1 ? http_response_code(200) : http_response_code(403);
+        }
+        // Add new product
+        else {
+            $ph->addProduct($json) == 1 ? http_response_code(200) : http_response_code(403);
         }
 
         break;
@@ -149,10 +145,7 @@ switch ($requestMethod) {
         $json = json_decode(file_get_contents('php://input'));
 
         if (isset($_GET['id'])) {
-            // -------------- TODO: Also delete the images of that product -------------- //
-            echo json_encode(array(
-                "success" => $ph->deleteProduct($_GET['id']) == 1 ? true : false
-            ));
+            $ph->deleteProduct($_GET['id']) == 1 ? http_response_code(200) : http_response_code(403);
         }
 
         break;
@@ -168,9 +161,7 @@ switch ($requestMethod) {
         $json = json_decode(file_get_contents('php://input'));
 
         if (isset($_GET['id'])) {
-            echo json_encode(array(
-                "success" => $ph->editProduct($_GET['id'], $json) == 1 ? true : false
-            ));
+            $ph->editProduct($_GET['id'], $json) == 1 ? http_response_code(200) : http_response_code(403);
         }
 
         break;
