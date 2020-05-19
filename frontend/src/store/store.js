@@ -11,7 +11,7 @@ const store = new Vuex.Store({
     // data of the Store
     logged: false,
     isAdmin: false,
-    user: null, // TODO: make a request to user.php to get user info
+    user: null,
 
     // Login dialog status
     isLoginDialogActive: false,
@@ -69,9 +69,8 @@ const store = new Vuex.Store({
      */
     setLogged(state, isLogged) {
       if (isLogged) {
-        // TODO: Make a request to user.php to get user data
-        // Use the getUserData action?
         state.logged = isLogged;
+        state.dispatch("getUserData");
       } else state.commit("clearAll");
     },
 
