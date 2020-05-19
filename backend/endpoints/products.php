@@ -90,7 +90,7 @@ switch ($requestMethod) {
 
             if (!$product) {
                 echo json_encode(["success" => false, "info" => "Product not found"]);
-                http_response_code(404);
+                http_response_code(400);
             } else echo json_encode($product);
         }
 

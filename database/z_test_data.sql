@@ -1,5 +1,6 @@
 USE ideeinbi_epim;
 
+
 INSERT INTO brand (name) VALUES ('Samsung');
 INSERT INTO brand (name) VALUES ('LG');
 INSERT INTO brand (name) VALUES ('Apple');

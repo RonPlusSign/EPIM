@@ -208,7 +208,7 @@ class ProductsHandler
      */
     public function getProduct($id)
     {
-        
+
         try {
             $query = "SELECT b.name as brand, b.id as brand_id, 
             c.name as category, c.id as category_id, p.id, p.title, p.description, p.sell_price, p.quantity";
@@ -228,7 +228,9 @@ class ProductsHandler
             $stm->execute();
             $product = $stm->fetch(PDO::FETCH_ASSOC);
 
-            $product["images"] = $this->getProductImages($id);
+            $images = $this->getProductImages($id);
+
+            if ($images) $product["images"] = $images;
 
             return $product;
         } catch (\Exception $e) {
