@@ -1,9 +1,13 @@
 <?php
 
-$requestMethod = $_SERVER["REQUEST_METHOD"];
-header("Content-Type: application/json");
 require_once __DIR__ . '/../classes/OrdersHandler.php';
+
+header("Content-Type: application/json");
+session_start();
+
+$requestMethod = $_SERVER["REQUEST_METHOD"];
 $omh = new OrdersHandler();
+
 switch ($requestMethod) {
         /**
      * Handle order management

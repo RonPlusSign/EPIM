@@ -11,7 +11,7 @@ require_once __DIR__ . '/../classes/ProductsHandler.php';
 $ph = new ProductsHandler();
 $requestMethod = $_SERVER["REQUEST_METHOD"];
 header("Content-Type: application/json");
-
+session_start();
 
 switch ($requestMethod) {
         /**

@@ -108,10 +108,12 @@ const routes = [
       ),
   },
 
-  // {
-  // // It should not catch the Axios requests to the endpoints when deployed
-  //   path: "/api/endpoints/*.php",
-  // },
+  {
+    path: "/admin/utenti",
+    name: "usersAdmin",
+    component: () =>
+      import(/* webpackChunkName: "admin" */ "../views/admin/UsersAdmin.vue"),
+  },
 
   {
     // will match everything (for 404 errors, pages not found)

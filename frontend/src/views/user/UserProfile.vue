@@ -12,13 +12,13 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.name">
               <v-row>
-                <v-col cols="4" class="pt-4">
+                <v-col cols="4" align="center">
                   <!-- Name title -->
                   <span>Nome</span>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="8" align="center">
                   <!-- Display the name -->
-                  <span class="title">{{ editedUser.name }}</span>
+                  <span class="subtitle-1">{{ editedUser.name }}</span>
                 </v-col>
               </v-row>
             </div>
@@ -37,13 +37,7 @@
 
           <!-- Edit / confirm / cancel buttons -->
           <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
-            <v-btn
-              v-if="!editToggler.name"
-              icon
-              color="grey"
-              class="mt-3"
-              @click="editToggler.name = true"
-            >
+            <v-btn v-if="!editToggler.name" icon color="grey" @click="editToggler.name = true">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <div v-if="editToggler.name" class="pt-2">
@@ -94,13 +88,13 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.surname">
               <v-row>
-                <v-col cols="4" class="pt-4">
+                <v-col cols="4" align="center">
                   <!-- surname title -->
                   <span>Cognome</span>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="8" align="center">
                   <!-- Display the surname -->
-                  <span class="title">{{ editedUser.surname }}</span>
+                  <span class="subtitle-1">{{ editedUser.surname }}</span>
                 </v-col>
               </v-row>
             </div>
@@ -122,7 +116,6 @@
               v-if="!editToggler.surname"
               icon
               color="grey"
-              class="mt-3"
               @click="editToggler.surname = true"
             >
               <v-icon>mdi-pencil</v-icon>
@@ -167,14 +160,14 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.phoneNumber">
               <v-row>
-                <v-col cols="4" class="pt-4">
+                <v-col cols="4" align="center">
                   <!-- phoneNumber title -->
                   <span>Telefono</span>
                   <v-icon class="ml-2">mdi-phone</v-icon>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="8" align="center">
                   <!-- Display the phoneNumber -->
-                  <span class="title">{{ editedUser.phoneNumber }}</span>
+                  <span class="subtitle-1">{{ editedUser.phoneNumber }}</span>
                 </v-col>
               </v-row>
             </div>
@@ -196,7 +189,6 @@
               v-if="!editToggler.phoneNumber"
               icon
               color="grey"
-              class="mt-3"
               @click="editToggler.phoneNumber = true"
             >
               <v-icon>mdi-pencil</v-icon>
@@ -241,16 +233,16 @@
           <v-col align="center" justify="center" class="py-0" cols="8">
             <div v-if="!editToggler.email">
               <v-row>
-                <v-col cols="4" class="pt-4">
+                <v-col cols="4" align="center">
                   <!-- email title -->
                   <span>
                     Email
                     <v-icon class="ml-2">mdi-email</v-icon>
                   </span>
                 </v-col>
-                <v-col cols="8">
+                <v-col cols="8" align="center">
                   <!-- Display the email -->
-                  <span class="title">{{ editedUser.email }}</span>
+                  <span class="subtitle-1">{{ editedUser.email }}</span>
                 </v-col>
               </v-row>
             </div>
@@ -268,13 +260,7 @@
           </v-col>
           <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
             <!-- Edit / confirm / cancel buttons -->
-            <v-btn
-              v-if="!editToggler.email"
-              icon
-              color="grey"
-              class="mt-3"
-              @click="editToggler.email = true"
-            >
+            <v-btn v-if="!editToggler.email" icon color="grey" @click="editToggler.email = true">
               <v-icon>mdi-pencil</v-icon>
             </v-btn>
             <div v-if="editToggler.email" class="pt-2">

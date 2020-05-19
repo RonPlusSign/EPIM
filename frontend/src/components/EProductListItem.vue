@@ -174,10 +174,10 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
               <!---- Selected quantity ---->
               <ENumberInput
                 :value="product.selectedQuantity"
-                :min="0"
+                :min="1"
                 :max="product.quantity"
                 :caption="'Quantità'"
-                @change="(newValue) => cartQuantity(newValue)"
+                @change="(newValue) => updateCartQuantity(newValue)"
               />
             </v-col>
             <v-col align="center" xs="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
@@ -306,7 +306,7 @@ export default {
     },
 
     // Change the selected quantity of a product. If the new quantity is 0, remove the product from the cart
-    cartQuantity(newQuantity) {
+    updateCartQuantity(newQuantity) {
       if (this.product.selectedQuantity !== newQuantity) {
         if (newQuantity === 0) {
           // If the quantity is 0, remove the item from the cart

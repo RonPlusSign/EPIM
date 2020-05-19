@@ -6,6 +6,7 @@
 */
 
 require_once __DIR__ . '/../classes/BrandsCategoriesHandler.php';
+session_start();
 
 $bch = new BrandsCategoriesHandler();
 header("Content-Type: application/json");

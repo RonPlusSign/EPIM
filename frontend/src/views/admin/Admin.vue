@@ -60,6 +60,12 @@ export default {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
           route: "/admin/categorie"
+        },
+
+        {
+          title: "Utenti",
+          icon: "mdi-account",
+          route: "/admin/utenti"
         }
       ]
     };

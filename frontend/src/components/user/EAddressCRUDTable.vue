@@ -40,6 +40,7 @@ Events:
           :loading="fetchingItems"
           loading-text="Caricamento in corso..."
           no-data-text="Nessun indirizzo disponibile!"
+          no-results-text="Nessun indirizzo corrisponde ai criteri di ricerca"
         >
           <!---------------------------------------------------------------->
           <!------ Header section (title, search box, Add new button) ------>
@@ -171,7 +172,6 @@ export default {
         align: "center",
         width: "80"
       },
-      
       {
         // Modify column
         text: "Modifica",

@@ -7,10 +7,23 @@
   RewriteRule . /index.html [L]
 
   # Block all requests containing '../'
-    RewriteRule ".*\.\.\/.*" "/" [F]
+  RewriteRule ".*\.\.\/.*" "/" [F]
 
-    # Block all requests to the 'api/' folder that don't end in '.php'
-    RewriteRule "^api\/endpoints\/.*(?<!\.php)$" [R=404,L]
+  # Block all requests to the 'api/' folder that don't end in '.php'
+  RewriteRule "^endpoints\/.*(?<!\.php)$" [R=404,L]
+
+	RewriteRule ^credentials/?$ - [F,L]
+
 
     ErrorDocument 404 /404
 </IfModule>
+
+Order Allow,Deny 
+Deny from all 
+
+<FilesMatch "\.(jpg|gif|png|php)$">
+Order Deny,Allow
+   Allow from all
+</FilesMatch>
+
+FallbackResource /index.html
