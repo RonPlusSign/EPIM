@@ -7,6 +7,9 @@ require_once __DIR__ . '/../lib/Bootstrap.php';
 
 class LoginHandler
 {
+
+    private const SESSION_TIMEOUT = 7200; // 2 hours timeout
+
     /**
      * Checks if the user exists and sets the $_SESSION["logged"] & $_SESSION["user_id"]
      * @return TRUE if the login was successful, FALSE otherwise
@@ -15,8 +18,8 @@ class LoginHandler
     {
         try {
             session_start();
-
-
+            self::handleSessionTimeout();
+            
             $stm = Database::$pdo->prepare("SELECT * FROM user
                                             WHERE user.email = :email");
             $stm->bindParam(':email', $email);
@@ -45,8 +48,8 @@ class LoginHandler
     static public function isLogged()
     {
         session_start();
+        self::handleSessionTimeout();
 
-    
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
             // user is logged
             return true;
@@ -61,6 +64,8 @@ class LoginHandler
     {
         try {
             session_start();
+
+            self::handleSessionTimeout();
 
             $stm = Database::$pdo->prepare("SELECT user.is_admin FROM user
                                             WHERE user.id = :id");
@@ -82,5 +87,16 @@ class LoginHandler
     {
         session_destroy();
         http_response_code(200);
+    }
+
+
+    static public function handleSessionTimeout()
+    {
+        if (!isset($_SESSION['CREATED'])) {
+            $_SESSION['CREATED'] = time();
+        } else if (time() - $_SESSION['CREATED'] > self::SESSION_TIMEOUT) {
+            session_regenerate_id(true);    // change session ID for the current session and invalidate old session ID
+            $_SESSION['CREATED'] = time();  // update creation time
+        }
     }
 }

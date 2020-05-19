@@ -46,7 +46,7 @@ switch ($requestMethod) {
         // Get current user
         else {
             $user = UserHandler::getUser($_SESSION["user_id"]);
-
+            
             if ($user) echo json_encode($user);
             else http_response_code(403);
         }

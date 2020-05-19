@@ -81,6 +81,8 @@ class UserHandler
      */
     public static function getUser($id)
     {
+        LoginHandler::handleSessionTimeout();
+        
         try {
             $stm = Database::$pdo->prepare("SELECT id, email, name, surname, phone_number as phoneNumber, is_admin as isAdmin from user WHERE id = :id");
 
@@ -88,7 +90,7 @@ class UserHandler
             $stm->execute();
             return $stm->fetch(PDO::FETCH_ASSOC);
         } catch (\Exception $e) {
-            echo $e;
+            return false;
         }
     }
 

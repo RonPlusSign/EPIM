@@ -23,6 +23,7 @@ docker-compose -f "docker-compose.yml" up  --build
 ```
 
 #### ⚠️ The first time the containers are started you should wait a few minutes to let mariadb initialize the database.
+*this time grows with the number of .sql data to import (due to the auto-import functionality)*
 
 <br>
 
