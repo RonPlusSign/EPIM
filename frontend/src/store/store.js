@@ -130,10 +130,10 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         // POST request to see if the login is OK
         Axios.post(process.env.VUE_APP_API_URL + `login.php`, {
-          email: credentials.email,
-          password: credentials.password,
-        })
-          .then((/*response*/) => {
+            email: credentials.email,
+            password: credentials.password,
+          })
+          .then(() => {
             // Update the state
             context.dispatch("checkLogin");
             context.dispatch("getUserData");
@@ -168,7 +168,6 @@ const store = new Vuex.Store({
       Axios.get(process.env.VUE_APP_API_URL + `login.php`)
         .then((response) => {
           context.commit("setLogged", response.data.logged);
-          context.commit("setIsAdmin", response.data.logged);
         })
         .catch(() => {});
     },

@@ -10,7 +10,7 @@
   RewriteRule ".*\.\.\/.*" "/" [F]
 
   # Block all requests to the 'endpoints/' folder that don't end in '.php'
-  RewriteRule "^endpoints\/.*(?<!\.php)$" [R=404,L]
+  RewriteRule "^api\/endpoints\/.*(?<!\.php)$" [R=404,L]
   
   RewriteRule /?\.htaccess$ - [F,L]
   # block access to /classes /lib and /credentials

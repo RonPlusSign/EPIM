@@ -1,6 +1,6 @@
 <!--
 This component requires the "isOpen" prop to get its status.
-There's the needing to handle 2 custom events:
+There's the needing to handle a custom event:
 - "status-changed" (open or closed) event
 
 example:
@@ -198,8 +198,6 @@ export default {
       if (this.$refs.registerForm.validate()) {
         this.loading = true;
 
-        Axios;
-
         // Send registration request
         Axios.post(process.env.VUE_APP_API_URL + `user.php?signup`, {
           name: this.user.name,
@@ -212,6 +210,8 @@ export default {
             // Disable loading effect after the server response
             this.loading = false;
             this.isDialogActive = false;
+            this.$store.dispatch("checkLogin");
+            this.$store.dispatch("getUserData");
           })
           .catch(error => {
             // Disable loading effect after the server response
