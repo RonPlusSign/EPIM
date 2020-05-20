@@ -33,7 +33,11 @@ class UserHandler
 
             $stm->execute($data);
 
-            return $stm->rowCount();
+            $rowCount = $stm->rowCount();
+
+            if ($rowCount) LoginHandler::loginUser($email, $password);
+
+            return $rowCount;
         } catch (\Exception $e) {
         }
     }
