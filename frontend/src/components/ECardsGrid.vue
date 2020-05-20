@@ -25,12 +25,7 @@
           </v-card-title>
           <v-card-actions>
             <v-spacer></v-spacer>
-            <v-btn
-              class="mr-2 mb-2"
-              outlined
-              color="accent"
-              :to="routeToProductsWithFilter(item)"
-            >
+            <v-btn class="mr-2 mb-2" outlined color="accent" :to="routeToProductsWithFilter(item)">
               Esplora
               <v-icon class="ml-2">mdi-arrow-right</v-icon>
             </v-btn>
@@ -55,7 +50,8 @@ export default {
 
   methods: {
     routeToProductsWithFilter(item) {
-      var param = item.type === "category" ? { c: item.id } : { b: item.id };
+      var param =
+        item.type === "category" ? { c: item.name } : { b: item.name };
       return { path: "/prodotti", query: param };
     }
   }

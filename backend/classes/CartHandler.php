@@ -106,7 +106,8 @@ class CartHandler
                 };
             }
 
-            return $products;
+            // Check if the list of products is empty
+            return empty($products) ? [] : $products;
         } else return false;
     }
 

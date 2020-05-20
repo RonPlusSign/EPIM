@@ -143,6 +143,16 @@ export default {
   watch: {
     productSearchQuery() {
       this.filtersChanged = true;
+    },
+
+    $route() {
+      // Title
+      if (
+        this.$route.query.q !== undefined &&
+        this.$route.query.q !== this.productSearchQuery
+      )
+        this.productSearchQuery = this.$route.query.q;
+      else this.productSearchQuery = "";
     }
   },
   created() {

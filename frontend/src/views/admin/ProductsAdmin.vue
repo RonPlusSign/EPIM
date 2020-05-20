@@ -193,8 +193,15 @@ export default {
     },
 
     $route() {
-      this.fetchProducts();
+      // Title
+      if (
+        this.$route.query.q !== undefined &&
+        this.$route.query.q !== this.productSearchQuery
+      )
+        this.productSearchQuery = this.$route.query.q;
+      else this.productSearchQuery = "";
     },
+
     selectedPage(value) {
       // Empty the products list
       //in that way the page automatically scrolls up and you see the loading effect

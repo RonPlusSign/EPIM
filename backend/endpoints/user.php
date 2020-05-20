@@ -19,12 +19,9 @@ switch ($requestMethod) {
         // Get the products inside the cart
         if (isset($_GET["cart"])) {
             if (LoginHandler::isLogged()) {
-                $products = CartHandler::getCart($_SESSION["user_id"]);
+                http_response_code(200);
 
-                if ($products) {
-                    echo json_encode($products);
-                    http_response_code(200);
-                } else http_response_code(403);
+                echo json_encode(CartHandler::getCart($_SESSION["user_id"]));
             } else http_response_code(403);
         }
 
@@ -46,7 +43,7 @@ switch ($requestMethod) {
         // Get current user
         else {
             $user = UserHandler::getUser($_SESSION["user_id"]);
-            
+
             if ($user) echo json_encode($user);
             else http_response_code(403);
         }

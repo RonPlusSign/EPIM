@@ -82,7 +82,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <v-card-subtitle class="pb-0">
           di
           <router-link
-            :to="{ path: '/prodotti', query: { b: product.brand_id } }"
+            :to="{ path: '/prodotti', query: { b: product.brand } }"
           >{{ product.brand }}</router-link>
         </v-card-subtitle>
         <!-------------------------->
@@ -91,7 +91,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <v-row cols="12" v-if="adminVersion">
           <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
             <!---- Edit button ---->
-            <v-btn :to="{name: 'editProduct',params: { id: product.id }}" dark color="blue">
+            <v-btn :to="{name: 'editProduct', params: { id: product.id }}" dark color="blue">
               Modifica
               <v-icon class="ml-2">mdi-pencil</v-icon>
             </v-btn>
@@ -188,7 +188,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <p class="body mb-2">
             Categoria:
             <router-link
-              :to="{ path: '/prodotti', query: { c: product.category_id } }"
+              :to="{ path: '/prodotti', query: { c: product.category } }"
             >{{ product.category }}</router-link>
           </p>
           <!------------------------>
@@ -317,8 +317,10 @@ export default {
 </script>
 
 <style scoped>
-.product-card:hover{
-  background-color: grey;
+.product-card:hover {
+  box-shadow: 0 6px 7px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12),
+    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+  transition: 0.15s;
 }
 
 .productTitle,

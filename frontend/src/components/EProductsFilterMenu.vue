@@ -54,7 +54,7 @@ Example of usage:
         <!-- Category -->
         <v-select
           clearable
-          v-model="activeFilters.selectedCategory"
+          v-model="activeFilters.selectedCategoryId"
           :items="categories"
           item-text="name"
           item-value="id"
@@ -66,7 +66,7 @@ Example of usage:
         <!-- Brand -->
         <v-select
           clearable
-          v-model="activeFilters.selectedBrand"
+          v-model="activeFilters.selectedBrandId"
           :items="brands"
           item-text="name"
           item-value="id"
@@ -141,7 +141,7 @@ export default {
       priceRange: {
         min: 0,
         max: 500,
-        interval: 25
+        interval: 10
       },
       // Order types
       typesOfSorting: [
@@ -180,8 +180,8 @@ export default {
       ],
 
       activeFilters: {
-        selectedCategory: null,
-        selectedBrand: null,
+        selectedCategoryId: null,
+        selectedBrandId: null,
         priceRange: [0, 500],
         selectedSortingMethodId: 1
       }
@@ -197,8 +197,8 @@ export default {
 
     filtersEmpty() {
       return (
-        this.activeFilters.selectedCategory === null &&
-        this.activeFilters.selectedBrand === null &&
+        this.activeFilters.selectedCategoryId === null &&
+        this.activeFilters.selectedBrandId === null &&
         this.activeFilters.priceRange[0] === 0 &&
         this.activeFilters.priceRange[1] === 500 &&
         this.activeFilters.selectedSortingMethodId === 1
@@ -206,34 +206,48 @@ export default {
     }
   },
   created() {
-    // query to get all categories (to fill filters)
+    // Fill the selected filters values depending on the current query string
+
+    // query to get all categories (and fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then(response => (this.categories = response.data))
+      .then(response => {
+        this.categories = response.data;
+
+        // Set the values of category and brand depending on the current route query string
+        if (this.$route.query.c !== undefined) {
+          console.log(this.$route.query.c);
+          
+          this.activeFilters.selectedCategoryId = +this.categories.find(
+            category => category.name === this.$route.query.c
+          ).id;
+        }
+      })
       .catch(error => {
         console.error(error);
       });
 
-    // query to get all brands (to fill filters)
+    // query to get all brands (and fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then(response => (this.brands = response.data))
+      .then(response => {
+        this.brands = response.data;
+        // Brand
+        if (this.$route.query.b !== undefined) {
+          console.log(this.$route.query.b);
+
+          this.activeFilters.selectedBrandId = +this.brands.find(
+            brand => brand.name === this.$route.query.b
+          ).id;
+        }
+      })
       .catch(error => {
         console.error(error);
       });
 
-    // fill the selected filters values depending on the current query string
+    // Restore the price range
     if (this.$route.query.ps !== undefined)
       this.activeFilters.priceRange[0] = this.$route.query.ps;
     if (this.$route.query.pe !== undefined)
       this.activeFilters.priceRange[1] = this.$route.query.pe;
-    // Category
-
-    // TODO: Set the values of category and brand depending on the current route query string (currently not working)
-    if (this.$route.query.c !== undefined)
-      this.activeFilters.selectedCategory = this.$route.query.c;
-
-    // Brand
-    if (this.$route.query.b !== undefined)
-      this.activeFilters.selectedBrand = this.$route.query.b;
 
     this.savedFiltersFromURI = true;
   },
@@ -254,13 +268,17 @@ export default {
       // Also check if the filters are defined and not null
       var formattedFilters = {};
       // Category
-      if (this.activeFilters.selectedCategory !== null) {
-        formattedFilters.c = this.activeFilters.selectedCategory;
+      if (this.activeFilters.selectedCategoryId !== null) {
+        formattedFilters.c = this.categories.find(
+          category => category.id === this.activeFilters.selectedCategoryId
+        ).name;
       }
 
       // Brand
-      if (this.activeFilters.selectedBrand !== null) {
-        formattedFilters.b = this.activeFilters.selectedBrand;
+      if (this.activeFilters.selectedBrandId !== null) {
+        formattedFilters.b = this.brands.find(
+          brand => brand.id === this.activeFilters.selectedBrandId
+        ).name;
       }
 
       // Price range
@@ -297,8 +315,8 @@ export default {
     },
     clearFilters() {
       this.activeFilters = {
-        selectedCategory: null,
-        selectedBrand: null,
+        selectedCategoryId: null,
+        selectedBrandId: null,
         priceRange: [0, 500],
         selectedSortingMethodId: 1
       };

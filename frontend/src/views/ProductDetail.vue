@@ -2,19 +2,20 @@
 <template>
   <div>
     <v-row cols="12">
-      <v-col justify="center" align="center" xs="12" sm="12" md="6" lg="5" xl="4">
+      <v-col cols="1" class="hidden-md-and-down">
+        <v-spacer />
+      </v-col>
+      <v-col justify="center" align="center" cols="12" md="6" lg="5" xl="4">
         <!-- Product images carousel -->
         <EImagesCarousel :images="product.images" />
       </v-col>
-      <v-col xs="12" sm="12" md="6" lg="7" xl="8">
+      <v-col cols="12" md="6" lg="6" xl="7">
         <!-- Title -->
         <h3 class="title">{{ product.title }}</h3>
         <!-- Brand -->
         <p class="subtitle-2 mb-2">
           di
-          <router-link
-            :to="{ path: '/prodotti', query: { b: product.brand_id } }"
-          >{{ product.brand }}</router-link>
+          <router-link :to="{ path: '/prodotti', query: { b: product.brand } }">{{ product.brand }}</router-link>
         </p>
         <!-- Price -->
         <p class="subtitle-1 mb-2">
@@ -25,7 +26,7 @@
         <p class="body mb-2">
           Categoria:
           <router-link
-            :to="{ path: '/prodotti', query: { c: product.category_id } }"
+            :to="{ path: '/prodotti', query: { c: product.category } }"
           >{{ product.category }}</router-link>
         </p>
         <!-- Quantity available -->
@@ -33,7 +34,7 @@
 
         <v-row cols="12">
           <!-- Select quantity input -->
-          <v-col xs="12" sm="3" md="4" lg="2" xl="2">
+          <v-col cols="12" sm="4" md="4" lg="4" xl="3">
             <ENumberInput
               :value="selectedQuantity"
               :min="0"
@@ -43,7 +44,7 @@
             />
           </v-col>
           <!-- Add to cart button -->
-          <v-col justify-self="start" align-self="end" xs="12" sm="6" md="8" lg="10" xl="10">
+          <v-col justify-self="start" align-self="end" cols="12" sm="6" md="8" lg="8" xl="9">
             <v-btn
               color="success"
               @click="addToCart(product.id, selectedQuantity)"
