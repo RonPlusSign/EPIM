@@ -148,7 +148,7 @@ class ProductsHandler
 
         // Check for price filter
         if ($this->isPriceRangeFilter) {
-            $query .= " AND product.sell_price >= :minPrice AND product.sell_price <= :maxPrice";
+            $query .= " AND p.sell_price >= :minPrice AND p.sell_price <= :maxPrice";
         }
 
         // check if sort 'activated' 
@@ -253,8 +253,8 @@ class ProductsHandler
     {
         try {
             $stm = Database::$pdo->prepare("SELECT product_image.url FROM product
-                                            INNER JOIN product_image ON product_image.product=product.id
-                                            WHERE product.id=:id");
+                                            INNER JOIN product_image ON product_image.product=p.id
+                                            WHERE p.id=:id");
             $stm->bindParam(':id', $id);
             $stm->execute();
             $resultArray = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -336,7 +336,7 @@ class ProductsHandler
     {
         if (LoginHandler::isAdmin()) {
             try {
-                $stm = Database::$pdo->prepare("DELETE FROM product WHERE product.id=:id");
+                $stm = Database::$pdo->prepare("DELETE FROM product WHERE p.id=:id");
                 $stm->bindParam(':id', $id);
                 $stm->execute();
                 return $stm->rowCount();
@@ -349,7 +349,7 @@ class ProductsHandler
     }
 
     /**
-     * Edit a product.
+     * Edit a p.
      * It will patch every parameter it will receive.
      * Every other parameter will remain unchanged.
      * 
