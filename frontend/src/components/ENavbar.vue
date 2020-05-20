@@ -35,8 +35,6 @@
         light
         v-model="productSearchQuery"
         label="Cerca"
-        outlined
-        rounded
         solo
         hide-details
         dense

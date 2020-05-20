@@ -108,10 +108,12 @@ class ProductsHandler
      * 
      * @param string $filter The column name on which to search (available: title)
      * @param string $filterString The string to search for
+     * @param boolean $countResults If true the query return the number of total rows
+     * @param boolean $disableStringFilter If true the query ignores the filters and returns all products (still limited by the page count)
      * 
      * @return Array Filtered data
      */
-    private function queryByFilterString($filter, $filterString, $countResults = false)
+    public function queryByFilterString($filter, $filterString, $countResults = false, $disableStringFilter = true)
     {
         // Query
         if ($countResults) {
@@ -119,6 +121,7 @@ class ProductsHandler
         } else {
             $query = "SELECT p.id, p.title, p.description, p.sell_price, p.quantity";
 
+            // If admin add purchase and recommended price
             if (LoginHandler::isAdmin()) {
                 $query .= ", p.purchase_price, p.recommended_price";
             }
@@ -127,8 +130,13 @@ class ProductsHandler
         }
 
         $query .= " INNER JOIN category as c ON p.category=c.id
-                    INNER JOIN brand as b ON p.brand=b.id
-                    WHERE MATCH (" . $filter . ") AGAINST (:filterString IN NATURAL LANGUAGE MODE)";
+                    INNER JOIN brand as b ON p.brand=b.id";
+
+        if (!$disableStringFilter) {
+            $query .= " WHERE MATCH (" . $filter . ") AGAINST (:filterString IN NATURAL LANGUAGE MODE)";
+        }
+        else if ($this->isSort || $this->extraFilter !== NULL) $query .= " WHERE 1 ";
+
 
 
         // Check for extra filter
@@ -155,8 +163,9 @@ class ProductsHandler
         if (!$countResults) $query .= ' LIMIT :limitOffset, :productsPerPage';
 
         $stm = Database::$pdo->prepare($query);
-        $stm->bindParam(':filterString', $filterString);
+        if (!$disableStringFilter) $stm->bindParam(':filterString', $filterString);
 
+        // check if countResult is disabled
         if (!$countResults) {
             $stm->bindParam(':productsPerPage', self::$productsPerPage);
             $limitOffset = $this->pageNumber * self::$productsPerPage;
@@ -174,7 +183,7 @@ class ProductsHandler
         $stm->execute();
         $products = $stm->fetchAll(PDO::FETCH_ASSOC);
 
-
+        // Add products images
         if (!$countResults) {
             foreach ($products as &$product) {
                 $product["images"] = $this->getProductImages($product["id"]);
@@ -188,14 +197,15 @@ class ProductsHandler
      * This function does a similar query to "getByTitle" 
      * but it returns only the total number of rows (without any limit)
      */
-    public function getNumberOfProducts($title)
+    public function getNumberOfProducts($title = NULL)
     {
-        return self::queryByFilterString('title', $title, true)[0]["number_of_products"];
+        if ($title) return self::queryByFilterString('title', $title, true, false)[0]["number_of_products"];
+        else return self::queryByFilterString('', '', true, true)[0]["number_of_products"]; 
     }
 
     public function getByTitle($title)
     {
-        return self::queryByFilterString('title', $title);
+        return self::queryByFilterString('title', $title, false, false);
     }
 
 
@@ -409,7 +419,12 @@ class ProductsHandler
             $stm->bindParam(':limitOffset', $limitOffset);
 
             $stm->execute();
-            return $stm->fetch(PDO::FETCH_ASSOC);
+            $bySales = $stm->fetch(PDO::FETCH_ASSOC);
+
+            // If the "best sales" array is empty return the first 10 products form the db
+            if (!$bySales) {
+                return self::queryByFilterString("", "", false, true);
+            } else return $bySales;
         } catch (\Exception $e) {
             echo $e;
         }

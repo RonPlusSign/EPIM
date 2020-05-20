@@ -101,9 +101,17 @@ switch ($requestMethod) {
             echo json_encode($products);
         }
 
+        else {
+            echo json_encode(array(
+                "totalResults" => $ph->getNumberOfProducts(),
+                "productsPerPage" => $ph->getResultPerPageLimit(),
+                "data" => $ph->queryByFilterString("", "", false, true)
+            ));
+        }
+
 
         // Display help message
-        else {
+        if (empty($_GET)) {
             http_response_code(400);
             echo "Missing queries. Options:\n";
             echo "\n?q= | ?c= | ?b | ?ps=x&pe=x | ?sales";
