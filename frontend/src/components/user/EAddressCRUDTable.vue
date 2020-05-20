@@ -59,9 +59,9 @@ Events:
                     single-line
                     hide-details
                     class="mt-1"
-                  ></v-text-field>
+                  />
                 </v-col>
-                <v-spacer />
+                <v-spacer class="hidden-sm-and-down" />
                 <v-col align="right" xl="6" lg="6" md="6" sm="6" xs="6">
                   <!---- "Add new" button ---->
                   <v-btn @click="dialog = true" dark color="blue">

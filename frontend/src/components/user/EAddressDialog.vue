@@ -196,10 +196,10 @@ export default {
           return pattern.test(value) || "Il valore inserito non è un numero";
         },
         phoneNumber: value => {
-          const pattern = /^[0-9]{9,10}$/;
+          const pattern = /^[0-9]{7,12}$/;
           return (
             pattern.test(value) ||
-            "Il numero inserito deve contenere solo 9 o 10 numeri"
+            "Il numero inserito deve essere lungo dalle 7 a 12 cifre"
           );
         }
       }

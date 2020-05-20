@@ -7,7 +7,7 @@
       <!---------------->
       <!----- Name ----->
       <!---------------->
-      <v-col xl="3" lg="4" md="5" sm="12" class="pa-0">
+      <v-col xl="3" lg="4" md="5" sm="12">
         <v-row cols="12" align="center" no-gutters>
           <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.name">
@@ -88,7 +88,7 @@
       <!------------------->
       <!----- Surname ----->
       <!------------------->
-      <v-col xl="3" lg="4" md="5" sm="12" class="pa-0">
+      <v-col xl="3" lg="4" md="5" sm="12">
         <v-row cols="12" align="center" no-gutters>
           <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.surname">
@@ -310,7 +310,7 @@
         <!---- Go to orders page ---->
         <!--------------------------->
         <v-btn :to="'/profilo/ordini'" outlined color="secondary">
-          <span class="pt-1">Visualizza i tuoi ordini</span>
+          <span>Visualizza i tuoi ordini</span>
           <v-icon class="ml-2">mdi-truck</v-icon>
         </v-btn>
       </v-col>
