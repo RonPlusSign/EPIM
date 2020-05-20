@@ -11,19 +11,14 @@
 
   # Block all requests to the 'endpoints/' folder that don't end in '.php'
   RewriteRule "^endpoints\/.*(?<!\.php)$" [R=404,L]
+  
+  RewriteRule /?\.htaccess$ - [F,L]
+  # block access to /classes /lib and /credentials
+  RewriteRule ^/?(classes|lib|credentials)/.+$ - [F,L]
 
-	RewriteRule ^credentials/?$ - [F,L]
-
-
-    ErrorDocument 404 /404
+  ErrorDocument 404 /404
 </IfModule>
 
-Order Allow,Deny 
-Deny from all 
 
-<FilesMatch "\.(jpg|gif|png|php)$">
-Order Deny,Allow
-   Allow from all
-</FilesMatch>
 
 FallbackResource /index.html
