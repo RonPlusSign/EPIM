@@ -11,12 +11,7 @@
       <!--------------->
       <!---- Logo ----->
       <!--------------->
-      <v-btn
-        @click="$router.push('/').catch((err) => {})"
-        text
-        height="44px"
-        class="px-0"
-      >
+      <v-btn :to="'/'" text height="44px" class="px-0">
         <v-img
           alt="EPIM Logo"
           class="shrink"
@@ -29,6 +24,7 @@
         <h1 class="hidden-sm-and-down ml-2">EPIM</h1>
       </v-btn>
 
+      <v-spacer class="hidden-xs-only" />
       <v-spacer class="hidden-xs-only" />
 
       <!--------------------->
@@ -62,42 +58,26 @@
       <!----------------------------------------------------->
       <!---- User profile / login buttons / cart button ----->
       <!----------------------------------------------------->
-      <div class="hidden-xs-only d-flex">
-        <div v-if="logged" class="hidden-sm-and-down">
-          <!-- User profile button -->
-          <v-btn
-            @click="$router.replace('/profilo').catch((err) => {})"
-            target="_blank"
-            class="mt-2"
-            text
-          >
-            <span class="mr-2">Profilo di {{ user ? user.name : "" }}</span>
+      <v-row class="hidden-xs-only mr-0">
+        <v-col v-if="logged" class="pa-0 text-right">
+          <!-- User profile button & Cart button -->
+          <v-btn :to="'/profilo'" text class="mr-1">
+            <span class="hidden-sm-and-down mr-2">Profilo di {{ user ? user.name : "" }}</span>
+            <v-icon>mdi-account</v-icon>
           </v-btn>
-        </div>
+          <v-btn :to="'/carrello'" icon>
+            <v-icon>mdi-cart-outline</v-icon>
+          </v-btn>
+        </v-col>
 
-        <div v-else>
+        <v-col v-else class="pa-0 text-right">
           <!-- Login button -->
-          <v-btn
-            target="_blank"
-            @click="$store.commit('openLoginDialog')"
-            class="px-0 mx-0"
-            text
-          >
-            <h4 class="pt-1">Login</h4>
+          <v-btn @click="$store.commit('openLoginDialog')" text>
+            <span class="pt-1">Login</span>
             <v-icon class="ml-2 hidden-xs-only">mdi-account</v-icon>
           </v-btn>
-        </div>
-
-        <!-- Cart button -->
-        <v-btn
-          v-if="logged"
-          @click="$router.replace('/carrello').catch((err) => {})"
-          target="_blank"
-          icon
-        >
-          <v-icon>mdi-cart-outline</v-icon>
-        </v-btn>
-      </div>
+        </v-col>
+      </v-row>
     </v-app-bar>
     <!---------------------------->
     <!---- Navigation drawer ----->
@@ -123,7 +103,7 @@ export default {
       // Research filters
       productSearchQuery: "",
       filtersChanged: false,
-      filters: {},
+      filters: {}
     };
   },
   computed: {
@@ -132,7 +112,7 @@ export default {
     },
     user() {
       return this.$store.getters.user;
-    },
+    }
   },
 
   methods: {
@@ -148,7 +128,7 @@ export default {
 
         this.$router.push({
           name: "products",
-          query: { q, ...this.filters },
+          query: { q, ...this.filters }
         });
       }
       this.filtersChanged = false;
@@ -159,17 +139,17 @@ export default {
         this.filtersChanged = true;
         this.filters = newFilters;
       }
-    },
+    }
   },
 
   watch: {
     productSearchQuery() {
       this.filtersChanged = true;
-    },
+    }
   },
   created() {
     if (this.$route.query.q !== undefined)
       this.productSearchQuery = this.$route.query.q;
-  },
+  }
 };
 </script>

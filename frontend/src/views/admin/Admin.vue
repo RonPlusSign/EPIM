@@ -24,7 +24,7 @@
         xs="12"
       >
         <!-- Button -->
-        <v-btn @click="$router.push(page.route).catch((err) => {})" color="accent">
+        <v-btn :to="page.route" color="accent">
           {{ page.title }}
           <v-icon class="ml-3">{{ page.icon }}</v-icon>
         </v-btn>

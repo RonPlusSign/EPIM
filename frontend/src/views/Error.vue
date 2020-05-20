@@ -12,7 +12,7 @@
         class="title font-weight-regular"
       >La pagina che stai cercando non esiste o al momento non è disponibile.</p>
       <!-- Go to homepage button -->
-      <v-btn large color="primary" @click="$router.push('/').catch((err) => {})">Torna alla home</v-btn>
+      <v-btn large color="primary" :to="'/'">Torna alla home</v-btn>
     </v-col>
   </v-row>
 </template>

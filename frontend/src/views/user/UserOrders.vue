@@ -3,7 +3,7 @@
     <!------------------------------------->
     <!---- Go back to User page button ---->
     <!------------------------------------->
-    <v-btn @click="$router.push('/profilo')" text color="secondary">
+    <v-btn :to="'/profilo'" exact text color="secondary">
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       <span class="mt-1">Torna al profilo utente</span>
     </v-btn>

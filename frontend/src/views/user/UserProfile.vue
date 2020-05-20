@@ -7,9 +7,9 @@
       <!---------------->
       <!----- Name ----->
       <!---------------->
-      <v-col xl="3" lg="4" md="5" sm="12" xs="12" class="py-0 my-2">
-        <v-row cols="12">
-          <v-col align="center" justify="center" class="py-0" cols="8">
+      <v-col xl="3" lg="4" md="5" sm="12" class="pa-0">
+        <v-row cols="12" align="center" no-gutters>
+          <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.name">
               <v-row>
                 <v-col cols="4" align="center">
@@ -24,6 +24,7 @@
             </div>
             <!-- Name input (if editToggler.name is true) -->
             <v-text-field
+              hide-details="auto"
               filled
               ref="nameInput"
               v-model="editedUser.name"
@@ -36,11 +37,15 @@
           </v-col>
 
           <!-- Edit / confirm / cancel buttons -->
-          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
-            <v-btn v-if="!editToggler.name" icon color="grey" @click="editToggler.name = true">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <div v-if="editToggler.name" class="pt-2">
+          <v-col align="center" justify="center" cols="4">
+            <v-row v-if="!editToggler.name">
+              <v-col>
+                <v-btn icon color="grey" @click="editToggler.name = true">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <div v-if="editToggler.name">
               <v-btn icon color="primary" @click="saveName" :loading="loading.name">
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
@@ -83,9 +88,9 @@
       <!------------------->
       <!----- Surname ----->
       <!------------------->
-      <v-col xl="3" lg="4" md="5" sm="12" xs="12" class="py-0 my-2">
-        <v-row cols="12">
-          <v-col align="center" justify="center" class="py-0" cols="8">
+      <v-col xl="3" lg="4" md="5" sm="12" class="pa-0">
+        <v-row cols="12" align="center" no-gutters>
+          <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.surname">
               <v-row>
                 <v-col cols="4" align="center">
@@ -100,6 +105,7 @@
             </div>
             <!-- surname input (if editToggler.surname is true) -->
             <v-text-field
+              hide-details="auto"
               filled
               ref="surnameInput"
               v-model="editedUser.surname"
@@ -110,17 +116,16 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
-            <!-- Edit / confirm / cancel buttons -->
-            <v-btn
-              v-if="!editToggler.surname"
-              icon
-              color="grey"
-              @click="editToggler.surname = true"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <div v-if="editToggler.surname" class="pt-2">
+          <!-- Edit / confirm / cancel buttons -->
+          <v-col align="center" justify="center" cols="4">
+            <v-row v-if="!editToggler.surname">
+              <v-col>
+                <v-btn icon color="grey" @click="editToggler.surname = true">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <div v-if="editToggler.surname">
               <v-btn icon color="primary" @click="saveSurname" :loading="loading.surname">
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
@@ -155,15 +160,15 @@
       <!------------------------>
       <!----- Phone number ----->
       <!------------------------>
-      <v-col cols="12" class="py-0 my-2">
-        <v-row cols="12">
-          <v-col align="center" justify="center" class="py-0" cols="8">
+      <v-col cols="12">
+        <v-row cols="12" align="center" no-gutters>
+          <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.phoneNumber">
               <v-row>
                 <v-col cols="4" align="center">
                   <!-- phoneNumber title -->
                   <span>Telefono</span>
-                  <v-icon class="ml-2">mdi-phone</v-icon>
+                  <v-icon class="ml-2 hidden-sm-and-down">mdi-phone</v-icon>
                 </v-col>
                 <v-col cols="8" align="center">
                   <!-- Display the phoneNumber -->
@@ -173,6 +178,7 @@
             </div>
             <!-- phoneNumber input (if editToggler.phoneNumber is true) -->
             <v-text-field
+              hide-details="auto"
               filled
               ref="phoneNumberInput"
               v-model="editedUser.phoneNumber"
@@ -183,17 +189,16 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
-            <!-- Edit / confirm / cancel buttons -->
-            <v-btn
-              v-if="!editToggler.phoneNumber"
-              icon
-              color="grey"
-              @click="editToggler.phoneNumber = true"
-            >
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <div v-if="editToggler.phoneNumber" class="pt-2">
+          <!-- Edit / confirm / cancel buttons -->
+          <v-col align="center" justify="center" cols="4">
+            <v-row v-if="!editToggler.phoneNumber">
+              <v-col>
+                <v-btn icon color="grey" @click="editToggler.phoneNumber = true">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <div v-if="editToggler.phoneNumber">
               <v-btn icon color="primary" @click="savePhoneNumber" :loading="loading.phoneNumber">
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
@@ -228,16 +233,16 @@
       <!----------------->
       <!----- Email ----->
       <!----------------->
-      <v-col cols="12" class="py-0 my-2">
-        <v-row cols="12">
-          <v-col align="center" justify="center" class="py-0" cols="8">
+      <v-col cols="12">
+        <v-row cols="12" align="center" no-gutters>
+          <v-col align="center" justify="center" cols="8">
             <div v-if="!editToggler.email">
               <v-row>
                 <v-col cols="4" align="center">
                   <!-- email title -->
                   <span>
                     Email
-                    <v-icon class="ml-2">mdi-email</v-icon>
+                    <v-icon class="ml-2 hidden-sm-and-down">mdi-email</v-icon>
                   </span>
                 </v-col>
                 <v-col cols="8" align="center">
@@ -248,6 +253,7 @@
             </div>
             <!-- email input (if editToggler.email is true) -->
             <v-text-field
+              hide-details="auto"
               filled
               ref="emailInput"
               v-model="editedUser.email"
@@ -258,12 +264,16 @@
               class="pt-0"
             />
           </v-col>
-          <v-col align="center" justify="center" xl="4" lg="4" md="3" sm="2" xs="1" class="py-0">
-            <!-- Edit / confirm / cancel buttons -->
-            <v-btn v-if="!editToggler.email" icon color="grey" @click="editToggler.email = true">
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-            <div v-if="editToggler.email" class="pt-2">
+          <!-- Edit / confirm / cancel buttons -->
+          <v-col align="center" justify="center" cols="4">
+            <v-row v-if="!editToggler.email">
+              <v-col>
+                <v-btn icon color="grey" @click="editToggler.email = true">
+                  <v-icon>mdi-pencil</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+            <div v-if="editToggler.email">
               <v-btn icon color="primary" @click="saveEmail" :loading="loading.email">
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
@@ -295,12 +305,12 @@
         <v-divider />
       </v-col>
 
-      <v-col cols="12" align="center">
+      <v-col cols="12" align="center" class="my-2">
         <!--------------------------->
         <!---- Go to orders page ---->
         <!--------------------------->
-        <v-btn @click="$router.push('/profilo/ordini')" outlined color="secondary">
-          <span class="mt-1">Visualizza i tuoi ordini</span>
+        <v-btn :to="'/profilo/ordini'" outlined color="secondary">
+          <span class="pt-1">Visualizza i tuoi ordini</span>
           <v-icon class="ml-2">mdi-truck</v-icon>
         </v-btn>
       </v-col>

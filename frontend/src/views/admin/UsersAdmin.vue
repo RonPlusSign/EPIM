@@ -3,7 +3,7 @@
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
-    <v-btn @click="$router.push('/admin')" text color="secondary">
+    <v-btn :to="'/admin'" exact text color="secondary">
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       <span class="mt-1">Torna alla pagina di admin</span>
     </v-btn>

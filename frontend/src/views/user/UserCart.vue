@@ -3,7 +3,7 @@
     <!------------------------------------->
     <!---- Go back to User page button ---->
     <!------------------------------------->
-    <v-btn absolute right @click="$router.push('/profilo')" text color="secondary">
+    <v-btn absolute right :to="'/profilo'" text color="secondary">
       <span class="mt-1">Profilo utente</span>
       <v-icon class="ml-2">mdi-account</v-icon>
     </v-btn>
@@ -13,7 +13,7 @@
     <!---- Empty cart message ---->
     <!---------------------------->
     <v-row v-if="products.length === 0" cols="12" justify="center">
-      <h2>Nessun prodotto nel carrello.</h2>
+      <h2>Nessun prodotto nel carrello</h2>
     </v-row>
 
     <!---------------------------->

@@ -26,7 +26,7 @@ Events:
       <!-- "minus" button -->
       <v-icon
         class="minus"
-        @click="decrease()"
+        @click="decrease"
         :disabled="this.number === this.min"
         color="gray darken-4"
       >mdi-minus</v-icon>
@@ -37,7 +37,7 @@ Events:
       <!-- "plus" button -->
       <v-icon
         class="plus"
-        @click="increase()"
+        @click="increase"
         :disabled="this.number === this.max"
         color="gray darken-4"
       >mdi-plus</v-icon>

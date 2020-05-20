@@ -37,14 +37,14 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
 
  -->
 <template>
-  <v-card :loading="deleting">
+  <v-card :loading="deleting" class="product-card">
     <v-row cols="12">
       <!------------------------>
       <!---- Product image ----->
       <!------------------------>
       <v-col xl="3" lg="4" md="4" sm="5" xs="12" align="center">
         <v-avatar
-          class="ml-1"
+          class="ml-1 productPreview"
           size="200"
           tile
           image
@@ -81,11 +81,9 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <!---------------->
         <v-card-subtitle class="pb-0">
           di
-          <a
-            @click="
-              $router.push({ path: '/prodotti', query: { b: product.brand_id } })
-            "
-          >{{ product.brand }}</a>
+          <router-link
+            :to="{ path: '/prodotti', query: { b: product.brand_id } }"
+          >{{ product.brand }}</router-link>
         </v-card-subtitle>
         <!-------------------------->
         <!----- Admin buttons ------>
@@ -93,16 +91,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <v-row cols="12" v-if="adminVersion">
           <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
             <!---- Edit button ---->
-            <v-btn
-              @click="
-                $router.push({
-                  name: 'editProduct',
-                  params: { id: product.id },
-                })
-              "
-              dark
-              color="blue"
-            >
+            <v-btn :to="{name: 'editProduct',params: { id: product.id }}" dark color="blue">
               Modifica
               <v-icon class="ml-2">mdi-pencil</v-icon>
             </v-btn>
@@ -137,9 +126,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!---------------->
           <p v-if="!adminVersion" class="subtitle-1 mb-2">
             Prezzo:
-            <span
-              class="font-weight-medium accent--text text--darken-3"
-            >{{ product.sell_price }} €</span>
+            <span class="font-weight-medium accent--text">{{ product.sell_price }} €</span>
           </p>
 
           <!----------------------------->
@@ -149,19 +136,19 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
             <p class="subtitle-1 mb-2">
               Prezzo di vendita:
               <span
-                class="font-weight-medium accent--text text--darken-3"
+                class="font-weight-medium accent--text"
               >{{ product.sell_price }} €</span>
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo di acquisto:
               <span
-                class="font-weight-medium accent--text text--darken-3"
+                class="font-weight-medium accent--text"
               >{{ product.purchase_price }} €</span>
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo consigliato:
               <span
-                class="font-weight-medium accent--text text--darken-3"
+                class="font-weight-medium accent--text"
               >{{ product.recommended_price }} €</span>
             </p>
           </div>
@@ -200,13 +187,9 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!------------------>
           <p class="body mb-2">
             Categoria:
-            <a
-              @click="
-                $router
-                  .push({ path: '/prodotti', query: { c: product.category_id } })
-                  .catch((err) => {})
-              "
-            >{{ product.category }}</a>
+            <router-link
+              :to="{ path: '/prodotti', query: { c: product.category_id } }"
+            >{{ product.category }}</router-link>
           </p>
           <!------------------------>
           <!-- Quantity available -->
@@ -334,7 +317,12 @@ export default {
 </script>
 
 <style scoped>
-.productTitle {
+.product-card:hover{
+  background-color: grey;
+}
+
+.productTitle,
+.productPreview {
   cursor: pointer;
 }
 

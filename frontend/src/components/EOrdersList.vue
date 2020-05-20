@@ -108,9 +108,7 @@
                 >
                   <v-card-title class="subtitle-1 font-weight-bold">
                     <!-- Product title -->
-                    <span
-                      @click="$router.push('/prodotti/' + product.productId).catch((err) => console.error(err))"
-                    >{{product.productTitle}}</span>
+                    <router-link :to="'/prodotti/' + product.productId">{{product.productTitle}}</router-link>
                   </v-card-title>
                   <v-card-text>
                     <v-simple-table>

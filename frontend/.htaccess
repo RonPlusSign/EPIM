@@ -9,7 +9,7 @@
   # Block all requests containing '../'
   RewriteRule ".*\.\.\/.*" "/" [F]
 
-  # Block all requests to the 'api/' folder that don't end in '.php'
+  # Block all requests to the 'endpoints/' folder that don't end in '.php'
   RewriteRule "^endpoints\/.*(?<!\.php)$" [R=404,L]
 
 	RewriteRule ^credentials/?$ - [F,L]

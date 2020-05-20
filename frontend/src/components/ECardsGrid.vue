@@ -29,8 +29,7 @@
               class="mr-2 mb-2"
               outlined
               color="accent"
-              @click="routeToProductsWithFilter(item)"
-              target="_blank"
+              :to="routeToProductsWithFilter(item)"
             >
               Esplora
               <v-icon class="ml-2">mdi-arrow-right</v-icon>
@@ -54,15 +53,10 @@ export default {
     }
   },
 
-  data() {
-    return {
-      //
-    };
-  },
   methods: {
     routeToProductsWithFilter(item) {
       var param = item.type === "category" ? { c: item.id } : { b: item.id };
-      this.$router.push({ path: "/prodotti", query: param }).catch(() => {});
+      return { path: "/prodotti", query: param };
     }
   }
 };

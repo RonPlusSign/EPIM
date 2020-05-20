@@ -3,7 +3,7 @@
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
-    <v-btn @click="$router.push('/admin')" text color="secondary">
+    <v-btn :to="'/admin'" exact text color="secondary">
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       <span class="mt-1">torna alla pagina di admin</span>
     </v-btn>
@@ -15,7 +15,7 @@
     <!--------------->
     <h2>Gestione dei prodotti</h2>
 
-    <v-btn @click="$router.push({ name: 'createProduct' })" color="blue" dark class="my-3">
+    <v-btn :to="{ name: 'createProduct' }" color="blue" dark class="my-3">
       Crea nuovo
       <v-icon class="ml-2">mdi-plus</v-icon>
     </v-btn>
@@ -46,7 +46,7 @@
         <!------------------------------------------------->
         <EProductsFilterMenu
           @filters-changed="(newFilters) => checkFilters(newFilters)"
-          @search="searchProducts()"
+          @search="searchProducts"
         />
       </v-col>
     </v-row>
@@ -202,7 +202,7 @@ export default {
 
       value -= 1; // Page index starts from 0, but the first page is shown as page 1
 
-      this.$router.replace({
+      this.$router.push({
         path: "/prodotti",
         query: {
           ...this.$route.query,

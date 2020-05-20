@@ -19,7 +19,7 @@ export default {
     if (!this.logged) this.openLogin();
 
     this.$store.dispatch("checkLoginAdmin").catch(() => {
-      this.$router.replace("/");
+      this.$router.push("/");
     });
   },
 
@@ -31,7 +31,7 @@ export default {
       } else {
         if (!this.isAdmin) {
           this.$store.dispatch("checkLoginAdmin").catch(() => {
-            this.$router.replace("/");
+            this.$router.push("/");
           });
           // Close login dialog if the user is logged but is not admin
         }
@@ -42,9 +42,9 @@ export default {
     isAdmin(isAdminVal) {
       if (!this.logged) {
         this.$store.commit("clearAll");
-        this.$router.replace("/");
+        this.$router.push("/");
       } else if (this.logged && !isAdminVal) {
-        this.$router.replace("/");
+        this.$router.push("/");
       }
     },
   },
@@ -53,7 +53,7 @@ export default {
     openLogin() {
       const checkLogin = (context) => {
         context.dispatch("checkLoginAdmin").catch(() => {
-          this.$router.replace("/");
+          this.$router.push("/");
         });
       };
 

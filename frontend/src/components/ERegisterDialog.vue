@@ -124,8 +124,8 @@ example:
       <v-card-actions class="px-5">
         <v-spacer />
         <v-btn
-          @click="handleRegistration()"
-          @keyup.enter="handleRegistration()"
+          @click="handleRegistration"
+          @keyup.enter="handleRegistration"
           :loading="loading"
           color="primary"
         >

@@ -70,8 +70,8 @@ Events:
           <!---- Send data button ---->
           <!-------------------------->
           <v-btn
-            @click="submit()"
-            @keyup.enter.exact="submit()"
+            @click="submit"
+            @keyup.enter.exact="submit"
             small
             fab
             :loading="loading"

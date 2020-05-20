@@ -12,29 +12,21 @@
         <!-- Brand -->
         <p class="subtitle-2 mb-2">
           di
-          <a
-            @click="
-              $router.push({ path: '/prodotti', query: { b: product.brand_id } })
-            "
-          >{{ product.brand }}</a>
+          <router-link
+            :to="{ path: '/prodotti', query: { b: product.brand_id } }"
+          >{{ product.brand }}</router-link>
         </p>
         <!-- Price -->
         <p class="subtitle-1 mb-2">
           Prezzo:
-          <span
-            class="font-weight-medium accent--text"
-          >{{ product.sell_price }} €</span>
+          <span class="font-weight-medium accent--text">{{ product.sell_price }} €</span>
         </p>
         <!-- Category -->
         <p class="body mb-2">
           Categoria:
-          <a
-            @click="
-              $router
-                .push({ path: '/prodotti', query: { c: product.category_id } })
-                .catch((err) => {})
-            "
-          >{{ product.category }}</a>
+          <router-link
+            :to="{ path: '/prodotti', query: { c: product.category_id } }"
+          >{{ product.category }}</router-link>
         </p>
         <!-- Quantity available -->
         <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
@@ -85,7 +77,7 @@ export default {
         id: this.$router.history.current.params.id,
         title: "Oh no! Il prodotto non è stato trovato!",
         description:
-          "Ci dispiace, questo prodotto non è disponibile su questo sito. Riprova in un altro momento.",
+          "Ci dispiace, questo prodotto non è disponibile al momento. Riprova in un altro momento.",
         // list to all the images of a product
         images: [],
         sell_price: 0,

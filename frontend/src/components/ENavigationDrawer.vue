@@ -9,44 +9,40 @@ This component requires one prop:
   <!------ Drawer (side menu) ------->
   <!--------------------------------->
   <v-navigation-drawer light v-model="isExpanded" app>
-    <v-container width="100%" class="headline">{{
+    <v-container width="100%" class="headline">
+      {{
       logged ? `Ciao, ${user ? user.name : ""}!` : "Benvenuto!"
-    }}</v-container>
-    <v-divider></v-divider>
+      }}
+    </v-container>
+    <v-divider />
 
     <!-- List of items -->
     <v-list dense nav class="py-0">
       <!-- Dynamic routes (from data()) -->
       <div v-for="item in drawerItems" :key="item.title">
-        <v-list-item
-          @click="$router.replace(item.route).catch((err) => {})"
-          class="py-1"
-          link
-        >
+        <v-list-item :to="item.route" class="py-1 mb-0" link>
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
 
-          <v-list-item-content>
-            <v-list-item-title class="subtitle-1">{{
-              item.title
-            }}</v-list-item-title>
+          <v-list-item-content class="py-0">
+            <v-list-item-title class="subtitle-2">{{item.title}}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-divider></v-divider>
+        <v-divider />
       </div>
 
       <!-- Logout list item -->
-      <v-list-item v-if="logged" @click="logout()" class="py-1" link>
+      <v-list-item v-if="logged" @click="logout" class="py-1 mb-0" link>
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
 
         <v-list-item-content>
-          <v-list-item-title class="subtitle-1">Logout</v-list-item-title>
+          <v-list-item-title class="subtitle-2">Logout</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-divider></v-divider>
+      <v-divider v-if="logged" />
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -57,8 +53,8 @@ export default {
   props: {
     drawerExpanded: {
       type: Boolean,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
@@ -70,10 +66,10 @@ export default {
         {
           title: "Categorie",
           icon: "mdi-format-list-bulleted-square",
-          route: "/categorie",
+          route: "/categorie"
         },
-        { title: "Marche", icon: "mdi-tag", route: "/marche" },
-      ],
+        { title: "Marche", icon: "mdi-tag", route: "/marche" }
+      ]
     };
   },
   computed: {
@@ -82,7 +78,7 @@ export default {
     },
     user() {
       return this.$store.getters.user;
-    },
+    }
   },
 
   created() {
@@ -96,15 +92,15 @@ export default {
     },
     isExpanded(value) {
       this.$emit("toggle", value);
-    },
+    }
   },
 
   methods: {
     logout() {
       this.$store.dispatch("logout");
 
-      this.$router.replace("/");
-    },
-  },
+      this.$router.push("/");
+    }
+  }
 };
 </script>

@@ -108,7 +108,7 @@ export default {
 
       value -= 1; // Page index starts from 0, but the first page is shown as page 1
 
-      this.$router.replace({
+      this.$router.push({
         path: "/prodotti",
         query: {
           ...this.$route.query,
