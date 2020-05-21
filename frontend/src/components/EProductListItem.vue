@@ -42,7 +42,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
       <!------------------------>
       <!---- Product image ----->
       <!------------------------>
-      <v-col xl="3" lg="4" md="4" sm="5" xs="12" align="center">
+      <v-col xl="3" lg="4" md="4" sm="5" cols="12" align="center">
         <v-avatar
           class="ml-1 productPreview"
           size="200"
@@ -65,7 +65,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
       <!----------------------->
       <!---- Product data ----->
       <!----------------------->
-      <v-col xl="9" lg="8" md="8" sm="7" xs="12">
+      <v-col xl="9" lg="8" md="8" sm="7" cols="12">
         <!---------------->
         <!---- Title ----->
         <!---------------->
@@ -81,22 +81,20 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <!---------------->
         <v-card-subtitle class="pb-0">
           di
-          <router-link
-            :to="{ path: '/prodotti', query: { b: product.brand } }"
-          >{{ product.brand }}</router-link>
+          <router-link :to="{ path: '/prodotti', query: { b: product.brand } }">{{ product.brand }}</router-link>
         </v-card-subtitle>
         <!-------------------------->
         <!----- Admin buttons ------>
         <!-------------------------->
         <v-row cols="12" v-if="adminVersion">
-          <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+          <v-col align="center" cols="12" sm="12" md="6" lg="4" xl="4">
             <!---- Edit button ---->
             <v-btn :to="{name: 'editProduct', params: { id: product.id }}" dark color="blue">
               Modifica
               <v-icon class="ml-2">mdi-pencil</v-icon>
             </v-btn>
           </v-col>
-          <v-col align="center" xs="12" sm="12" md="6" lg="4" xl="4">
+          <v-col align="center" cols="12" sm="12" md="6" lg="4" xl="4">
             <!---- Delete button ---->
             <v-btn @click="deleteProduct(product.id)" :loading="deleting" dark color="red">
               Cancella
@@ -157,7 +155,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!----- Cart actions ------>
           <!------------------------->
           <v-row cols="12" align="center" v-if="cartVersion">
-            <v-col align="center" xs="12" sm="12" md="12" lg="4" xl="4" class="pt-0">
+            <v-col align="center" cols="12" sm="12" md="12" lg="4" xl="4" class="pt-0">
               <!---- Selected quantity ---->
               <ENumberInput
                 :value="product.selectedQuantity"
@@ -167,7 +165,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
                 @change="(newValue) => updateCartQuantity(newValue)"
               />
             </v-col>
-            <v-col align="center" xs="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
+            <v-col align="center" cols="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
               <!---- Delete button ---->
               <v-btn
                 @click="deleteFromCart(product.id)"

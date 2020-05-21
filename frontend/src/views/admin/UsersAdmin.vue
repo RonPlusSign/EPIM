@@ -1,5 +1,5 @@
 <template>
-  <div v-if="logged">
+  <div v-if="isAdmin">
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
@@ -13,7 +13,7 @@
     <!--------------->
     <!---- Title ---->
     <!--------------->
-    <h2>Gestione delle marche</h2>
+    <h2>Gestione degli utenti</h2>
 
     <v-spacer class="my-3" />
 

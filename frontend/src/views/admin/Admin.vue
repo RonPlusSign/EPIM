@@ -1,5 +1,5 @@
 <template>
-  <div v-if="logged">
+  <div v-if="isAdmin">
     <!---------------------------->
     <!---- Title and subtitle ---->
     <!---------------------------->
@@ -21,7 +21,7 @@
         lg="3"
         md="4"
         sm="6"
-        xs="12"
+        cols="12"
       >
         <!-- Button -->
         <v-btn :to="page.route" color="accent">

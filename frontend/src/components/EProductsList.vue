@@ -13,7 +13,7 @@
       <v-row cols="12" v-for="product in products" :key="product.id">
         <v-spacer class="hidden-xs-only" />
 
-        <v-col xl="6" lg="8" md="9" sm="10" xs="12" align-self="center">
+        <v-col xl="6" lg="8" md="9" sm="10" cols="12" align-self="center">
           <!------------------------->
           <!-- Single product item -->
           <!------------------------->

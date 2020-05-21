@@ -23,7 +23,8 @@ docker-compose -f "docker-compose.yml" up  --build
 ```
 
 #### ⚠️ The first time the containers are started you should wait a few minutes to let mariadb initialize the database.
-*this time grows with the number of .sql data to import (due to the auto-import functionality)*
+
+_this time grows with the number of .sql data to import (due to the auto-import functionality)_
 
 <br>
 
@@ -988,22 +989,6 @@ Returns an array with all the regions of Italy
 
 ---
 
-> `orders.php?purchase&address=id`
-
-###### address=id is the id of the user address
-
-#### Add an user's order
-
-##### Request: empty (no body)
-
-##### Response codes:
-
-- HTTP 200: successful
-
-- HTTP 403: error (Not logged)
-
----
-
 > `orders.php?admin`
 
 #### Get of all the orders (user **must** be admin)
@@ -1032,3 +1017,27 @@ Returns an array with all the regions of Italy
   }
 ]
 ```
+
+### POST
+
+> `orders.php?purchase`
+
+#### Add an user's order
+
+##### Request:
+
+```jsonc
+{
+  "address": 7 // id of the user's address
+}
+```
+
+##### Response codes:
+
+- HTTP 200: successful
+
+- HTTP 400: general error
+
+- HTTP 403: Forbidden (Not logged)
+
+---

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="logged">
+  <div v-if="isAdmin">
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
@@ -16,7 +16,7 @@
     <h2 class="pb-6">Gestione degli ordini</h2>
 
     <v-row cols="12" justify="center">
-      <v-col xl="8" lg="8" md="10" sm="12" xs="12">
+      <v-col xl="8" lg="8" md="10" cols="12">
         <!--------------------->
         <!---- Orders list ---->
         <!--------------------->

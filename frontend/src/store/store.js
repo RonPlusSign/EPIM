@@ -5,12 +5,12 @@ import Axios from "axios";
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  strict: true, // Forces to use getters and mutations to access and change state data
+  strict: process.env.NODE_ENV !== "production", // Forces to use getters and mutations to access and change state data
 
   state: {
     // data of the Store
-    logged: false,
-    isAdmin: false,
+    logged: null,
+    isAdmin: null,
     user: null,
 
     // Login dialog status
@@ -130,9 +130,9 @@ const store = new Vuex.Store({
       return new Promise((resolve, reject) => {
         // POST request to see if the login is OK
         Axios.post(process.env.VUE_APP_API_URL + `login.php`, {
-            email: credentials.email,
-            password: credentials.password,
-          })
+          email: credentials.email,
+          password: credentials.password,
+        })
           .then(() => {
             // Update the state
             context.dispatch("checkLogin");

@@ -20,7 +20,7 @@
       <v-divider class="my-3" />
 
       <v-row cols="12">
-        <v-col xl="4" lg="4" md="6" sm="12" xs="12" align="center">
+        <v-col xl="4" lg="4" md="6" cols="12" align="center">
           <!-------------------->
           <!---- Sell price ---->
           <!-------------------->
@@ -32,7 +32,7 @@
             @change="(value) => (product.sell_price = value)"
           />
         </v-col>
-        <v-col xl="4" lg="4" md="6" sm="12" xs="12" align="center">
+        <v-col xl="4" lg="4" md="6" cols="12" align="center">
           <!------------------------>
           <!---- Purchase Price ---->
           <!------------------------>
@@ -44,7 +44,7 @@
             @change="(value) =>  (product.purchase_price = value)"
           />
         </v-col>
-        <v-col xl="4" lg="4" md="12" sm="12" xs="12" align="center">
+        <v-col xl="4" lg="4" cols="12" align="center">
           <!--------------------------->
           <!---- Recommended price ---->
           <!--------------------------->
@@ -238,9 +238,6 @@ export default {
           // Check what attributes changed
           let patch = {};
 
-          // console.log(this.product);
-          // console.log(this.productObject);
-
           if (this.product.title !== this.productObject.title)
             patch["title"] = this.product.title;
 
@@ -268,7 +265,6 @@ export default {
           )
             patch["recommended_price"] = this.product.recommended_price;
 
-          // console.log(patch);
           Axios.patch(
             process.env.VUE_APP_API_URL + `products.php?id=${this.product.id}`,
             patch

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="logged">
+  <div v-if="isAdmin">
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->

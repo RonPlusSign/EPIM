@@ -17,19 +17,20 @@
     <v-layout cols="12" row wrap>
       <v-flex class="mt-5 mb-3" xs12 sm6 md6 lg4 xl3 v-for="item in elements" :key="item.id">
         <v-card class="mx-auto" max-width="330">
-          <v-img class="white--text align-end" :src="item.imageUrl ? item.imageUrl : ''"></v-img>
+          <v-img v-if="item.imageUrl" :src="item.imageUrl" max-height="200px" />
+          <v-img v-else src="@/assets/Product Not Found.png" max-height="200px" contain />
           <v-card-title class="pt-3 pb-1">
-            <v-spacer></v-spacer>
+            <v-spacer />
             {{item.name}}
-            <v-spacer></v-spacer>
+            <v-spacer />
           </v-card-title>
           <v-card-actions>
-            <v-spacer></v-spacer>
+            <v-spacer />
             <v-btn class="mr-2 mb-2" outlined color="accent" :to="routeToProductsWithFilter(item)">
               Esplora
               <v-icon class="ml-2">mdi-arrow-right</v-icon>
             </v-btn>
-            <v-spacer></v-spacer>
+            <v-spacer />
           </v-card-actions>
         </v-card>
       </v-flex>

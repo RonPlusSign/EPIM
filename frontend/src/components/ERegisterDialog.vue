@@ -83,7 +83,7 @@ example:
             label="Password"
             name="password"
             prepend-icon="mdi-lock"
-            :rules="[rules.required, rules.password]"
+            :rules="[rules.required, rules.noSpaces, rules.password]"
             :append-icon="isPasswordVisible ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
@@ -166,11 +166,15 @@ export default {
           return pattern.test(value) || "E-mail non valida";
         },
         password: value => {
-          const pattern = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-<>.]).{8,}$/;
+          const pattern = /^.{8,}$/;
           return (
             pattern.test(value) ||
-            "La password deve contenere almeno una lettera maiuscola e minuscola, un numero, un carattere speciale e avere almeno 8 caratteri"
+            "La password deve contenere almeno 8 caratteri"
           );
+        },
+        noSpaces: value => {
+          const pattern = /\s/;
+          return !pattern.test(value) || "La password non deve contenere spazi";
         },
         confirmPassword: value =>
           value === this.user.password || "La password non corrisponde",

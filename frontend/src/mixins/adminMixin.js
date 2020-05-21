@@ -41,8 +41,8 @@ export default {
 
     isAdmin(isAdminVal) {
       if (!this.logged) {
-        this.$store.commit("clearAll");
         this.$router.push("/");
+        this.$store.commit("clearAll");
       } else if (this.logged && !isAdminVal) {
         this.$router.push("/");
       }
