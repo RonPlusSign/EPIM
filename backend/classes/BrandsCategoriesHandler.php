@@ -55,6 +55,7 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
+                http_response_code(200);
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -64,6 +65,7 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
+                http_response_code(200);
             } catch (\Exception $e) {
                 echo $e;
             }
