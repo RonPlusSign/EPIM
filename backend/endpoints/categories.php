@@ -33,14 +33,14 @@ switch ($requestMethod) {
         break;
 
     case 'POST':
-        $json = json_decode(file_get_contents('php://input'));
+        $json = json_decode(file_get_contents('php://input' , true));
 
         $bch->setPlatform("category");
         $bch->addRecord($json["name"]);    // We have to take the name from the input JSON
         break;
 
     case 'DELETE':
-        $json = json_decode(file_get_contents('php://input'));
+        $json = json_decode(file_get_contents('php://input' , true));
 
         $bch->setPlatform("category");
         $bch->deleteRecord($json["id"]);    // We have to take the id from the input JSON
