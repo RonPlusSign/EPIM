@@ -56,8 +56,15 @@ switch ($requestMethod) {
         {
             if(LoginHandler::isLogged())
             {
-                $omh->newOrder($json["address"]);
-                http_response_code(200);
+                $response = $omh->newOrder($json["address"]);
+                if($response === true)
+                {
+                    http_response_code(200);
+                }
+                else
+                {
+                    http_response_code(400);
+                }
             }
             else
             {

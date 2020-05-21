@@ -135,7 +135,7 @@ class OrdersHandler
         $cart = $stm->fetchAll(PDO::FETCH_ASSOC); 
         if(empty($cart))
         {
-            http_response_code(403);
+            return false;
         }
         else
         {
@@ -147,7 +147,7 @@ class OrdersHandler
             $addressid = $stm->fetch(PDO::FETCH_ASSOC);
             if(empty($addressid))
             {
-                http_response_code(403);
+                return false;
             }
             else
             {
@@ -176,6 +176,7 @@ class OrdersHandler
                     $stm = Database::$pdo->prepare("DELETE FROM cart WHERE cart.user=:id");
                     $stm->bindParam(':id', $_SESSION["user_id"]);
                     $stm->execute();
+                    return true;
                 } catch (\Exception $e) {
                     echo $e;
                 }
