@@ -177,20 +177,13 @@ Adds a new category, if the user is logged AND is an admin
 }
 ```
 
-##### Response:
-
-```jsonc
-[
-  { "id": 1, "name": "TV" },
-  { "id": 2, "name": "Smartphone" },
-  { "id": 3, "name": "Phon" }
-  // An object for every category
-]
-```
+##### Response codes:
 
 - HTTP 200: successful
 
-- HTTP 403: error
+- HTTP 400: General error
+
+- HTTP 403: Forbidden (not logged/not admin)
 
 ---
 
@@ -205,11 +198,13 @@ Renames one category, if the user is logged AND is an admin
 }
 ```
 
-##### Response:
+##### Response codes:
 
 - HTTP 200: successful
 
-- HTTP 403: error
+- HTTP 404: Category not found
+
+- HTTP 403: Forbidden (not logged/not admin)
 
 ---
 
@@ -219,11 +214,13 @@ Renames one category, if the user is logged AND is an admin
 
 Deletes a category, the user **must** be admin
 
-##### Response:
+##### Response codes:
 
 - HTTP 200: successful
 
-- HTTP 403: error
+- HTTP 404: Category not found
+
+- HTTP 403: Forbidden (not logged/not admin)
 
 ---
 
