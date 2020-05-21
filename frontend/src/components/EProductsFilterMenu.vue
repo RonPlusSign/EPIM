@@ -102,15 +102,15 @@ Example of usage:
         />
 
         <v-row cols="12" class="mx-1 mb-3 mt-2">
-          <v-col xl="5" lg="5" md="5" sm="12" xs="12" align="center">
+          <v-col xl="5" lg="5" md="5" sm="12" cols="12" align="center">
             <!-- Filters Clear button -->
             <v-btn color="red lighten-1" dark @click="clearFilters">
               Cancella filtri
               <v-icon class="ml-2" dark>mdi-delete</v-icon>
             </v-btn>
           </v-col>
-          <v-col class="hidden-sm-and-down" xl="3" lg="3" md="3" sm="12" xs="12"></v-col>
-          <v-col xl="4" lg="4" md="4" sm="12" xs="12" align="center">
+          <v-col class="hidden-sm-and-down" xl="3" lg="3" md="3" cols="12"></v-col>
+          <v-col xl="4" lg="4" md="4" cols="12" align="center">
             <!-- Filters OK button -->
             <v-btn dark color="blue" @click="searchProducts">
               Cerca
@@ -215,8 +215,7 @@ export default {
 
         // Set the values of category and brand depending on the current route query string
         if (this.$route.query.c !== undefined) {
-          console.log(this.$route.query.c);
-          
+
           this.activeFilters.selectedCategoryId = +this.categories.find(
             category => category.name === this.$route.query.c
           ).id;
@@ -232,7 +231,6 @@ export default {
         this.brands = response.data;
         // Brand
         if (this.$route.query.b !== undefined) {
-          console.log(this.$route.query.b);
 
           this.activeFilters.selectedBrandId = +this.brands.find(
             brand => brand.name === this.$route.query.b

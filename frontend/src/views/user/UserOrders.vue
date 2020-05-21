@@ -12,7 +12,7 @@
     <!--------------->
     <h2 class="my-3">Ordini di {{ user ?user.name : "" }}</h2>
     <v-row cols="12" justify="center">
-      <v-col v-if="orders.length > 0" xl="8" lg="8" md="10" sm="12" xs="12">
+      <v-col v-if="orders.length > 0" xl="8" lg="8" md="10" cols="12">
         <!--------------------->
         <!---- Orders list ---->
         <!--------------------->

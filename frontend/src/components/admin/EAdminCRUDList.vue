@@ -26,7 +26,7 @@ Events:
 <template>
   <v-container>
     <v-row cols="12" justify="center">
-      <v-col xl="8" lg="8" md="8" sm="9" xs="12">
+      <v-col xl="8" lg="8" md="8" sm="9" cols="12">
         <!------------------------>
         <!------ Data table ------>
         <!------------------------>
@@ -47,7 +47,7 @@ Events:
             <h3 class="pt-4 pl-6">Lista di {{ nameOfItems }}</h3>
             <v-toolbar flat color="white">
               <v-row cols="12">
-                <v-col xl="6" lg="6" md="6" sm="6" xs="6">
+                <v-col cols="6">
                   <!---- Search box ---->
                   <v-text-field
                     v-model="filter"
@@ -59,7 +59,7 @@ Events:
                   ></v-text-field>
                 </v-col>
                 <v-spacer />
-                <v-col align="right" xl="6" lg="6" md="6" sm="6" xs="6">
+                <v-col align="right" cols="6">
                   <!---- "Add new" button ---->
                   <v-btn @click="dialog = true" dark color="blue">
                     <span class="subtitle-2">Aggiungi</span>

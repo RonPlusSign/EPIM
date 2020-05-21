@@ -124,9 +124,7 @@ import ERegisterDialog from "./ERegisterDialog.vue";
 
 export default {
   name: "ELoginDialog",
-  components: {
-    ERegisterDialog
-  },
+  components: { ERegisterDialog },
   data() {
     return {
       // Input values
@@ -221,7 +219,9 @@ export default {
     resetForm() {
       this.user.email = "";
       this.user.password = "";
-      this.$refs.loginForm.reset();
+
+      // Reset the form valdiation if it has been created
+      if (this.$refs.loginForm) this.$refs.loginForm.reset();
     }
   }
 };
