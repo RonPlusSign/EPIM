@@ -17,9 +17,9 @@ class LoginHandler
     static public function loginUser($email, $password)
     {
         try {
-            session_start();
+            if (!isset($_SESSION)) session_start();
             self::handleSessionTimeout();
-            
+
             $stm = Database::$pdo->prepare("SELECT * FROM user
                                             WHERE user.email = :email");
             $stm->bindParam(':email', $email);
@@ -47,7 +47,7 @@ class LoginHandler
      */
     static public function isLogged()
     {
-        session_start();
+        if (!isset($_SESSION)) session_start();
         self::handleSessionTimeout();
 
         if (isset($_SESSION["logged"]) && $_SESSION["logged"] === true) {
@@ -63,7 +63,7 @@ class LoginHandler
     static public function isAdmin()
     {
         try {
-            session_start();
+            if (!isset($_SESSION)) session_start();
 
             self::handleSessionTimeout();
 

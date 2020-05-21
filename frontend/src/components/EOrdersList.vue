@@ -37,17 +37,17 @@
               <tr v-if="isAdmin">
                 <!-- User id -->
                 <td>ID utente</td>
-                <td>{{order.user.user_id}}</td>
+                <td>{{order.user_id}}</td>
               </tr>
               <tr v-if="isAdmin">
                 <!-- User name and surname -->
                 <td>Acquirente</td>
-                <td>{{order.user.name + " " + order.user.surname}}</td>
+                <td>{{order.name + " " + order.surname}}</td>
               </tr>
               <tr v-if="isAdmin">
                 <!-- User email -->
                 <td>E-mail acquirente</td>
-                <td>{{order.user.email}}</td>
+                <td>{{order.email}}</td>
               </tr>
               <tr>
                 <!-- Order date -->

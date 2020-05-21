@@ -30,13 +30,11 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':id', $id);
                 $stm->execute();
                 $category = $stm->fetch(PDO::FETCH_ASSOC);
-                if($stm->rowCount()>0){
-                    return $category; 
-                }
-                else {
+                if ($stm->rowCount() > 0) {
+                    return $category;
+                } else {
                     return false;
                 }
-              
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -46,10 +44,9 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':id', $id);
                 $stm->execute();
                 $brand = $stm->fetch(PDO::FETCH_ASSOC);
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return $brand;
-                }
-                else {
+                } else {
                     return false;
                 }
             } catch (\Exception $e) {
@@ -62,18 +59,15 @@ class BrandsCategoriesHandler
     {
         if ($this->platform === 'category') {
 
-            try { 
+            try {
                 $stm = Database::$pdo->prepare("SELECT * FROM category");
                 $stm->execute();
                 $allCategories = $stm->fetchAll(PDO::FETCH_ASSOC);
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return $allCategories;
-                }
-                else {
+                } else {
                     return [];
                 }
-
-                 
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -82,17 +76,15 @@ class BrandsCategoriesHandler
                 $stm = Database::$pdo->prepare("SELECT * FROM brand");
                 $stm->execute();
                 $allBrands = $stm->fetchAll(PDO::FETCH_ASSOC);
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return $allBrands;
-                }
-                else {
+                } else {
                     return [];
                 }
             } catch (\Exception $e) {
                 echo $e;
             }
         }
-
     }
 
 
@@ -109,13 +101,11 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->execute();
 
-                if($stm->rowCount() > 0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
-
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -126,13 +116,11 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->execute();
 
-                if($stm->rowCount() > 0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
-
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -148,13 +136,11 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
-                
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -164,13 +150,11 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else {
+                } else {
                     return false;
                 }
-                
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -190,13 +174,11 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
-
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -210,10 +192,9 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                if($stm->rowCount()>0){
+                if ($stm->rowCount() > 0) {
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
             } catch (\Exception $e) {

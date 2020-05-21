@@ -1,6 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../classes/OrdersHandler.php';
+require_once __DIR__ . '/../classes/LoginHandler.php';
 
 header("Content-Type: application/json");
 session_start();
@@ -26,24 +27,18 @@ switch ($requestMethod) {
 
         if (isset($_GET["admin"])) // Get the order with this id
         {
-            if(LoginHandler::isAdmin())
-            {
-                echo json_encode( $omh->getAllOrders());
+            if (LoginHandler::isAdmin()) {
+                echo json_encode($omh->getAllOrders());
                 http_response_code(200);
-            }
-            else
-            {
+            } else {
                 http_response_code(403);
             }
-        }
-        else // Return all the order if you are an Admin
+        } else // Return all the order if you are an Admin
         {
-            if(LoginHandler::isLogged()){
+            if (LoginHandler::isLogged()) {
                 echo json_encode($omh->getUserOrders());
                 http_response_code(200);
-            }
-            else
-            {
+            } else {
                 http_response_code(403);
             }
         }
@@ -52,26 +47,19 @@ switch ($requestMethod) {
         $json = json_decode(file_get_contents('php://input'), true);
 
 
-        if(isset($_GET(["purchase"])))
-        {
-            if(LoginHandler::isLogged())
-            {
+        if (isset($_GET["purchase"])) {
+            if (LoginHandler::isLogged()) {
                 $response = $omh->newOrder($json["address"]);
-                if($response === true)
-                {
+                if ($response === true) {
                     http_response_code(200);
-                }
-                else
-                {
+                } else {
                     http_response_code(400);
                 }
-            }
-            else
-            {
+            } else {
                 http_response_code(403);
             }
         }
-    break;
+        break;
 
     default:
         http_response_code(405);
