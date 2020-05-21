@@ -21,6 +21,83 @@ class BrandsCategoriesHandler
         $this->platform = $platform;
     }
 
+    public function getBrandsCategoriesID($id)
+    {
+        if ($this->platform === 'category') {
+
+            try {
+                $stm = Database::$pdo->prepare("SELECT * FROM category WHERE :id = category.id");
+                $stm->bindParam(':id', $id);
+                $stm->execute();
+                $category = $stm->fetch(PDO::FETCH_ASSOC);
+                if($stm->rowCount()>0){
+                    return $category; 
+                }
+                else {
+                    return false;
+                }
+              
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        } else if ($this->platform === 'brand') {
+            try {
+                $stm = Database::$pdo->prepare("SELECT  * FROM brand WHERE :id = brand.id");
+                $stm->bindParam(':id', $id);
+                $stm->execute();
+                $brand = $stm->fetch(PDO::FETCH_ASSOC);
+                if($stm->rowCount()>0){
+                    return $brand;
+                }
+                else {
+                    return false;
+                }
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        }
+    }
+
+    public function getBrandsCategories()
+    {
+        if ($this->platform === 'category') {
+
+            try { 
+                $stm = Database::$pdo->prepare("SELECT * FROM category");
+                $stm->execute();
+                $allCategories = $stm->fetchAll(PDO::FETCH_ASSOC);
+                if($stm->rowCount()>0){
+                    return $allCategories;
+                }
+                else {
+                    return [];
+                }
+
+                 
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        } else if ($this->platform === 'brand') {
+            try {
+                $stm = Database::$pdo->prepare("SELECT * FROM brand");
+                $stm->execute();
+                $allBrands = $stm->fetchAll(PDO::FETCH_ASSOC);
+                if($stm->rowCount()>0){
+                    return $allBrands;
+                }
+                else {
+                    return [];
+                }
+            } catch (\Exception $e) {
+                echo $e;
+            }
+        }
+
+    }
+
+
+
+
     public function addRecord($name)
     {
 
@@ -31,6 +108,14 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':name', $name);
                 $stm->execute();
+
+                if($stm->rowCount() > 0){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -40,6 +125,14 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':name', $name);
                 $stm->execute();
+
+                if($stm->rowCount() > 0){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -55,7 +148,13 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                http_response_code(200);
+                if($stm->rowCount()>0){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+                
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -65,7 +164,13 @@ class BrandsCategoriesHandler
 
                 $stm->bindParam(':id', $id);
                 $stm->execute();
-                http_response_code(200);
+                if($stm->rowCount()>0){
+                    return true;
+                }
+                else {
+                    return false;
+                }
+                
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -85,6 +190,13 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->bindParam(':id', $id);
                 $stm->execute();
+                if($stm->rowCount()>0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+
             } catch (\Exception $e) {
                 echo $e;
             }
@@ -98,6 +210,12 @@ class BrandsCategoriesHandler
                 $stm->bindParam(':name', $name);
                 $stm->bindParam(':id', $id);
                 $stm->execute();
+                if($stm->rowCount()>0){
+                    return true;
+                }
+                else{
+                    return false;
+                }
             } catch (\Exception $e) {
                 echo $e;
             }
