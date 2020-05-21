@@ -15,29 +15,56 @@ switch ($requestMethod) {
      * Methods:
      * 
      *      GET:
-     *          - default return all the order if you are an admin
-     *          - by id return all the order about the user with the logged id
-     * 
-     *      POST:
+     *          - default return all the order about the user with the logged id
      *          
+     *          - by id return all the order if you are an admin
+     *      POST:
+     *          - by purchase add all the order of the cart
      * 
      */
     case 'GET':
 
-        if (isset($_GET["id"])) // Get the order with this id
+        if (isset($_GET["admin"])) // Get the order with this id
         {
-            echo json_encode($omh->getUserOrders());
+            if(LoginHandler::isAdmin())
+            {
+                echo json_encode( $omh->getAllOrders());
+                http_response_code(200);
+            }
+            else
+            {
+                http_response_code(403);
+            }
         }
         else // Return all the order if you are an Admin
         {
-            echo json_encode( $omh->getAllOrders());
+            if(LoginHandler::isLogged()){
+                echo json_encode($omh->getUserOrders());
+                http_response_code(200);
+            }
+            else
+            {
+                http_response_code(403);
+            }
         }
         break;
-
     case 'POST':
+        $json = json_decode(file_get_contents('php://input'), true);
 
 
-        break;
+        if(isset($_GET(["purchase"])))
+        {
+            if(LoginHandler::isLogged())
+            {
+                $omh->newOrder($json["address"]);
+                http_response_code(200);
+            }
+            else
+            {
+                http_response_code(403);
+            }
+        }
+    break;
 
     default:
         http_response_code(405);
