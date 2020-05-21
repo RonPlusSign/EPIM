@@ -98,9 +98,13 @@ switch ($requestMethod) {
         else if (isset($_GET['sales'])) {
             $products = $ph->getBestSelling();
 
-            echo json_encode($products);
+            echo json_encode(array(
+                "totalResults" => count($products),
+                "productsPerPage" => $ph->getResultPerPageLimit(),
+                "data" => $products
+            ));
         }
-
+        
         else {
             echo json_encode(array(
                 "totalResults" => $ph->getNumberOfProducts(),

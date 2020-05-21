@@ -42,7 +42,7 @@ class ProductsHandler
 
     public function getResultPerPageLimit()
     {
-        return self::$productsPerPage;
+        return +self::$productsPerPage;
     }
 
     /**
