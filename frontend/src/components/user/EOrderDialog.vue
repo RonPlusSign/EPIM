@@ -233,11 +233,8 @@ export default {
     order() {
       this.ordering = true;
       this.products = [];
-      Axios.get(process.env.VUE_APP_API_URL + `orders.php`, {
-        params: {
-          purchase: "",
-          address: this.selectedAddress[0].id
-        }
+      Axios.post(process.env.VUE_APP_API_URL + `orders.php?purchase`, {
+        address: this.selectedAddress[0].id
       })
         .then(() => {
           setTimeout(() => {
