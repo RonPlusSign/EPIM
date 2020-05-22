@@ -7,7 +7,7 @@
       </v-col>
       <v-col justify="center" align="center" cols="12" md="6" lg="5" xl="4">
         <!-- Product images carousel -->
-        <EImagesCarousel :images="product.images" />
+        <EImagesCarousel :images="product.images ? product.images : []" />
       </v-col>
       <v-col cols="12" md="6" lg="6" xl="7">
         <!-- Title -->

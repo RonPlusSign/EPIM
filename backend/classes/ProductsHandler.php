@@ -134,8 +134,7 @@ class ProductsHandler
 
         if (!$disableStringFilter) {
             $query .= " WHERE MATCH (" . $filter . ") AGAINST (:filterString IN NATURAL LANGUAGE MODE)";
-        }
-        else if ($this->isSort || $this->extraFilter !== NULL) $query .= " WHERE 1 ";
+        } else if ($this->isSort || $this->extraFilter !== NULL) $query .= " WHERE 1 ";
 
 
 
@@ -200,7 +199,7 @@ class ProductsHandler
     public function getNumberOfProducts($title = NULL)
     {
         if ($title) return self::queryByFilterString('title', $title, true, false)[0]["number_of_products"];
-        else return self::queryByFilterString('', '', true, true)[0]["number_of_products"]; 
+        else return self::queryByFilterString('', '', true, true)[0]["number_of_products"];
     }
 
     public function getByTitle($title)
@@ -398,12 +397,14 @@ class ProductsHandler
      */
     public function getBestSelling()
     {
-
         try {
-            $query = "SELECT COUNT(*) as product_sales FROM product p 
+            $query = "SELECT p.*, COUNT(*) as product_sales, b.name as brand, b.id as brand_id, c.name as category, c.id as category_id FROM product as p
                       INNER JOIN order_detail od ON p.id = od.product_id 
+                      INNER JOIN category as c ON p.category=c.id
+                      INNER JOIN brand as b ON p.brand=b.id
                       GROUP BY p.id
                       ORDER BY product_sales ";
+
 
             // If no sort settings -> DESC
             $this->isSort && $this->isOrderAsc ? $query .= "ASC" : $query .= "DESC";
@@ -419,12 +420,19 @@ class ProductsHandler
             $stm->bindParam(':limitOffset', $limitOffset);
 
             $stm->execute();
-            $bySales = $stm->fetch(PDO::FETCH_ASSOC);
+            $bySales = $stm->fetchAll(PDO::FETCH_ASSOC);
 
             // If the "best sales" array is empty return the first 10 products form the db
             if (!$bySales) {
                 return self::queryByFilterString("", "", false, true);
-            } else return $bySales;
+            } else {
+                // Add the product images
+                foreach ($bySales as &$product) {
+                    $product["images"] = $this->getProductImages($product["id"]);
+                }
+
+                return $bySales;
+            }
         } catch (\Exception $e) {
             echo $e;
         }
