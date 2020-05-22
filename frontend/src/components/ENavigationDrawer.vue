@@ -8,32 +8,92 @@ This component requires one prop:
   <!--------------------------------->
   <!------ Drawer (side menu) ------->
   <!--------------------------------->
-  <v-navigation-drawer light v-model="isExpanded" app>
+  <v-navigation-drawer light v-model="isExpanded" app disable-resize-watcher>
     <v-container width="100%" class="headline">
-      {{
-      logged ? `Ciao, ${user ? user.name : ""}!` : "Benvenuto!"
-      }}
+      <span v-if="logged">
+        Ciao,
+        <span class="secondary--text">{{user.name}}</span>!
+      </span>
+      <span v-else>Benvenuto!</span>
     </v-container>
     <v-divider />
 
     <!-- List of items -->
     <v-list dense nav class="py-0">
-      <!-- Dynamic routes (from data()) -->
-      <div v-for="item in drawerItems" :key="item.title">
-        <v-list-item :to="item.route" class="py-1 mb-0" link>
-          <v-list-item-icon>
-            <v-icon>{{ item.icon }}</v-icon>
-          </v-list-item-icon>
+      <!-- Home route -->
+      <v-list-item @click="isExpanded=false" :to="'/'" class="py-1 mb-0" link>
+        <v-list-item-icon>
+          <v-icon>mdi-home</v-icon>
+        </v-list-item-icon>
 
-          <v-list-item-content class="py-0">
-            <v-list-item-title class="subtitle-2">{{item.title}}</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
-        <v-divider />
-      </div>
+        <v-list-item-content class="py-0">
+          <v-list-item-title class="subtitle-2">Home</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
+
+      <!-- "Your account" route -->
+      <v-list-item @click="isExpanded=false" :to="'/profilo'" class="py-1 mb-0" link v-if="logged">
+        <v-list-item-icon>
+          <v-icon>mdi-account</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content class="py-0">
+          <v-list-item-title class="subtitle-2">Il tuo profilo</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider v-if="logged" />
+
+      <!-- Login list item -->
+      <v-list-item v-if="!logged" @click="login(); isExpanded = false;" class="py-1 mb-0" link>
+        <v-list-item-icon>
+          <v-icon>mdi-login</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title class="subtitle-2">Accedi</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider v-if="!logged" />
+
+      <!-- Products route -->
+      <v-list-item @click="isExpanded=false" :to="'/prodotti'" class="py-1 mb-0" link>
+        <v-list-item-icon>
+          <v-icon>mdi-package-variant</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title class="subtitle-2">Prodotti</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
+
+      <!-- Categories route -->
+      <v-list-item @click="isExpanded=false" :to="'/categorie'" class="py-1 mb-0" link>
+        <v-list-item-icon>
+          <v-icon>mdi-format-list-bulleted-square</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title class="subtitle-2">Categorie</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
+
+      <!-- Brands route -->
+      <v-list-item @click="isExpanded=false" :to="'/marche'" class="py-1 mb-0" link>
+        <v-list-item-icon>
+          <v-icon>mdi-tag</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title class="subtitle-2">Marche</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      <v-divider />
 
       <!-- Logout list item -->
-      <v-list-item v-if="logged" @click="logout" class="py-1 mb-0" link>
+      <v-list-item v-if="logged" @click="logout(); isExpanded = false;" class="py-1 mb-0" link>
         <v-list-item-icon>
           <v-icon>mdi-logout</v-icon>
         </v-list-item-icon>
@@ -58,18 +118,7 @@ export default {
   },
   data() {
     return {
-      isExpanded: false,
-      drawerItems: [
-        { title: "Home", icon: "mdi-home", route: "/" },
-        { title: "Il tuo profilo", icon: "mdi-account", route: "/profilo" },
-        { title: "Prodotti", icon: "mdi-package-variant", route: "/prodotti" },
-        {
-          title: "Categorie",
-          icon: "mdi-format-list-bulleted-square",
-          route: "/categorie"
-        },
-        { title: "Marche", icon: "mdi-tag", route: "/marche" }
-      ]
+      isExpanded: false
     };
   },
   computed: {
@@ -100,6 +149,9 @@ export default {
       this.$store.dispatch("logout");
 
       this.$router.push("/");
+    },
+    login() {
+      this.$store.commit("openLoginDialog");
     }
   }
 };

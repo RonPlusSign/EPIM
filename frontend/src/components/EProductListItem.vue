@@ -327,13 +327,12 @@ export default {
 }
 
 .product-card:hover .productTitle {
-  padding-left: 20px;
+  transform: translateX(20px);
   color: #6b00b6;
   transition: 0.3s;
 }
 
 .productTitle:not(:hover) {
-  padding-left: 0;
   transition: 0.3s;
 }
 </style>

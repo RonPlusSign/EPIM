@@ -7,16 +7,16 @@
         <!-------------------------------------------------->
         <v-row no-gutters align="center">
           <!---- Date ---->
-          <v-col cols="4">{{order.date}}</v-col>
+          <v-col cols="4" class="font-weight-bold">{{order.date}}</v-col>
           <v-col cols="4" align="center">
             <!---- Order status ---->
             <v-chip class="accent">{{order.status}}</v-chip>
           </v-col>
           <v-col cols="4" align="center">
             <!---- Total price ---->
-            <v-chip class="pr-4">
+            <v-chip class="pr-4" color="secondary">
               {{orderTotalPrice(order.id)}}
-              <v-icon small color="secondary" right>mdi-currency-eur</v-icon>
+              <v-icon small right>mdi-currency-eur</v-icon>
             </v-chip>
           </v-col>
         </v-row>
@@ -131,7 +131,7 @@
                         <tr>
                           <!---- Price for each product ---->
                           <td>Prezzo per singolo articolo</td>
-                          <td>{{product.price}}</td>
+                          <td>{{Number(product.price).toLocaleString("it-IT", {minimumFractionDigits: 2})}} €</td>
                         </tr>
                       </tbody>
                     </v-simple-table>
