@@ -15,7 +15,8 @@ class OrdersHandler
         try {
             $stm = Database::$pdo->prepare("SELECT order_detail.order_id,order_detail.product_id, order_detail.quantity, order_detail.product_title, order_detail.product_price, order_detail.brand_name, order_history.*, user.email, user.name, user.surname FROM order_detail
                                             INNER JOIN order_history ON order_detail.order_id = order_history.id
-                                            INNER JOIN user ON order_history.user = user.id");
+                                            INNER JOIN user ON order_history.user = user.id
+                                            ORDER BY order_history.timestamp DESC");
             $stm->execute();
             $allOrder = $stm->fetchAll(PDO::FETCH_ASSOC);
             $array = [];
@@ -70,7 +71,8 @@ class OrdersHandler
         try {
             $stm = Database::$pdo->prepare("SELECT order_detail.order_id,order_detail.product_id, order_detail.quantity, order_detail.product_title, order_detail.product_price, order_detail.brand_name, order_history.* FROM order_detail
                                             INNER JOIN order_history ON order_detail.order_id = order_history.id
-                                            WHERE order_history.user = :id");
+                                            WHERE order_history.user = :id
+                                            ORDER BY order_history.timestamp DESC");
             $stm->bindParam(':id', $_SESSION["user_id"]);
             $stm->execute();
             $orderById = $stm->fetchAll(PDO::FETCH_ASSOC);
@@ -112,10 +114,10 @@ class OrdersHandler
         }
     }
 
-    public function newOrder($addressID)
+    public function newOrder($addressId)
     {
         // Get the products inside the user cart
-        $stm = Database::$pdo->prepare("SELECT cart.user, cart.product, cart.quantity as numbertot, product.* FROM cart
+        $stm = Database::$pdo->prepare("SELECT cart.user, cart.product, cart.quantity as cartQuantity, product.* FROM cart
                                         INNER JOIN product ON cart.product = product.id
                                         WHERE cart.user = :id");
         $stm->bindParam(':id', $_SESSION["user_id"]);
@@ -127,12 +129,24 @@ class OrdersHandler
             // User cart is empty
             return false;
         } else {
+            // Check if there are enough products available (product.quantity >= cart.quantity)
+            foreach ($cart as $product) {
+                $stm = Database::$pdo->prepare("SELECT product.quantity FROM product
+                                        WHERE id = :id");
+
+                $stm->bindParam(':id', $product['id']);
+                $stm->execute();
+                $quantity = $stm->fetch(PDO::FETCH_ASSOC);
+
+                if ($quantity['quantity'] - $product['cartQuantity'] < 0) return false;
+            }
+
             // Check if the user has the address received from the request 
             $stm = Database::$pdo->prepare("SELECT user_address.* FROM user_address
                                             WHERE user_address.user = :id AND user_address.address = :address");
 
             $stm->bindParam(':id', $_SESSION["user_id"]);
-            $stm->bindParam(':address', $addressID);
+            $stm->bindParam(':address', $addressId);
             $stm->execute();
 
             $address = $stm->fetch(PDO::FETCH_ASSOC);
@@ -147,47 +161,34 @@ class OrdersHandler
                                                 VALUES (:id, :address, :phone, NOW(), 5, 'spedito')");
 
                 $stm->bindParam(':id', $_SESSION["user_id"]);
-                $stm->bindParam(':address', $addressID);
+                $stm->bindParam(':address', $addressId);
                 $stm->bindParam(':phone', $address['phone_number']);
                 $stm->execute();
 
                 $orderId = Database::$pdo->lastInsertId();
 
-                foreach ($cart as $object) {
-                    $stm = Database::$pdo->prepare("SELECT product.quantity FROM product
-                                            WHERE ");
-
-                    $stm->bindParam(':id', $object['id']);
-                    $stm->execute();
-                    $quantum = $stm->fetch(PDO::FETCH_ASSOC);
-
-                    if($quantum['quantity']-$object['numbertot']>0)
-                    {
-                        // Insert the purchased products inside the database
-                        $stm = Database::$pdo->prepare("INSERT INTO order_detail(order_id, product_id, quantity, product_title, product_price, brand_name)
+                foreach ($cart as $productCart) {
+                    // Insert the purchased products inside the database
+                    $stm = Database::$pdo->prepare("INSERT INTO order_detail(order_id, product_id, quantity, product_title, product_price, brand_name)
                                                         VALUES (:idorder, :idproduct, :quantity, :title, :price, :brand)");
-                        $stm->bindParam(':idorder', $orderId);
-                        $stm->bindParam(':idproduct', $object['id']);
-                        $stm->bindParam(':quantity', $object['numbertot']);
-                        $stm->bindParam(':title', $object['title']);
-                        $stm->bindParam(':price', $object['sell_price']);
-                        $stm->bindParam(':brand', $object['brand']);
-                        $stm->execute();
-                    
-                    
-                        $app = $quantum['quantity']-$object['numbertot'];
-                        $stm = Database::$pdo->prepare(
-                            "UPDATE product
-                                SET product.quantity = :quantity
-                                WHERE category.id=:id"
-                        );
-                        $stm->bindParam(':quantity', $app);
-                        $stm->execute();
-                    }
-                    else
-                    {
-                        return false;
-                    }
+                    $stm->bindParam(':idorder', $orderId);
+                    $stm->bindParam(':idproduct', $productCart['id']);
+                    $stm->bindParam(':quantity', $productCart['cartQuantity']);
+                    $stm->bindParam(':title', $productCart['title']);
+                    $stm->bindParam(':price', $productCart['sell_price']);
+                    $stm->bindParam(':brand', $productCart['brand']);
+                    $stm->execute();
+
+                    // Update the product's quantity
+                    $newQuantity = $quantity['quantity'] - $productCart['cartQuantity'];
+                    $stm = Database::$pdo->prepare(
+                        "UPDATE product
+                                SET quantity = :quantity
+                                WHERE id = :id"
+                    );
+                    $stm->bindParam(':quantity', $newQuantity);
+                    $stm->bindParam(':id', $productCart["id"]);
+                    $stm->execute();
                 }
 
                 try {

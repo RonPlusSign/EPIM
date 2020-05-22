@@ -43,24 +43,24 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
       <!---- Product image ----->
       <!------------------------>
       <v-col xl="3" lg="4" md="4" sm="5" cols="12" align="center">
-        <v-avatar
-          class="ml-1 productPreview"
-          size="200"
-          tile
-          image
-          left
-          @click="
-            $router.push({ name: 'productDetail', params: { id: product.id } })
-          "
+        <router-link
+          :to="{ name: 'productDetail', params: { id: product.id } }"
         >
-          <v-img
-            contain
-            class="ml-3"
-            v-if="product.images[0] && product.images[0] !== ''"
-            :src="product.images[0]"
-          />
-          <v-img contain class="ml-3" v-else src="@/assets/Product Not Found.png" />
-        </v-avatar>
+          <v-avatar class="ml-1 productPreview" size="200" tile image left>
+            <v-img
+              contain
+              class="ml-3"
+              v-if="product.images[0] && product.images[0] !== ''"
+              :src="product.images[0]"
+            />
+            <v-img
+              contain
+              class="ml-3"
+              v-else
+              src="@/assets/Product Not Found.png"
+            />
+          </v-avatar>
+        </router-link>
       </v-col>
       <!----------------------->
       <!---- Product data ----->
@@ -69,19 +69,24 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <!---------------->
         <!---- Title ----->
         <!---------------->
-        <v-card-title
-          class="pt-1 productTitle"
-          @click="
-            $router.push({ name: 'productDetail', params: { id: product.id } })
-          "
-        >{{ product.title }}</v-card-title>
+        <v-card-title class="pt-1 productTitle">
+          <router-link
+            tag="span"
+            :to="{ name: 'productDetail', params: { id: product.id } }"
+          >
+            {{ product.title }}
+          </router-link>
+        </v-card-title>
 
         <!---------------->
         <!---- Brand ----->
         <!---------------->
         <v-card-subtitle class="pb-0">
           di
-          <router-link :to="{ path: '/prodotti', query: { b: product.brand } }">{{ product.brand }}</router-link>
+          <router-link
+            :to="{ path: '/prodotti', query: { b: product.brand } }"
+            >{{ product.brand }}</router-link
+          >
         </v-card-subtitle>
         <!-------------------------->
         <!----- Admin buttons ------>
@@ -90,7 +95,7 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <v-col align="center" cols="12" sm="12" md="6" lg="4" xl="4">
             <!---- Edit button ---->
             <v-btn
-              :to="{name: 'editProduct', params: { id: product.id }}"
+              :to="{ name: 'editProduct', params: { id: product.id } }"
               dark
               color="secondary lighten-1"
             >
@@ -133,7 +138,9 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!---------------->
           <p v-if="!adminVersion" class="subtitle-1 mb-2">
             Prezzo:
-            <span class="font-weight-medium accent--text">{{ product.sell_price }} €</span>
+            <span class="font-weight-medium accent--text"
+              >{{ product.sell_price }} €</span
+            >
           </p>
 
           <!----------------------------->
@@ -142,21 +149,21 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <div v-if="adminVersion">
             <p class="subtitle-1 mb-2">
               Prezzo di vendita:
-              <span
-                class="font-weight-medium accent--text"
-              >{{ product.sell_price }} €</span>
+              <span class="font-weight-medium accent--text"
+                >{{ product.sell_price }} €</span
+              >
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo di acquisto:
-              <span
-                class="font-weight-medium accent--text"
-              >{{ product.purchase_price }} €</span>
+              <span class="font-weight-medium accent--text"
+                >{{ product.purchase_price }} €</span
+              >
             </p>
             <p class="subtitle-1 mb-2">
               Prezzo consigliato:
-              <span
-                class="font-weight-medium accent--text"
-              >{{ product.recommended_price }} €</span>
+              <span class="font-weight-medium accent--text"
+                >{{ product.recommended_price }} €</span
+              >
             </p>
           </div>
 
@@ -164,7 +171,15 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
           <!----- Cart actions ------>
           <!------------------------->
           <v-row cols="12" align="center" v-if="cartVersion">
-            <v-col align="center" cols="12" sm="12" md="12" lg="4" xl="4" class="pt-0">
+            <v-col
+              align="center"
+              cols="12"
+              sm="12"
+              md="12"
+              lg="4"
+              xl="4"
+              class="pt-0"
+            >
               <!---- Selected quantity ---->
               <ENumberInput
                 :value="product.selectedQuantity"
@@ -174,7 +189,15 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
                 @change="(newValue) => updateCartQuantity(newValue)"
               />
             </v-col>
-            <v-col align="center" cols="12" sm="12" md="12" lg="8" xl="8" class="pt-0">
+            <v-col
+              align="center"
+              cols="12"
+              sm="12"
+              md="12"
+              lg="8"
+              xl="8"
+              class="pt-0"
+            >
               <!---- Delete button ---->
               <v-btn
                 @click="deleteFromCart(product.id)"
@@ -196,7 +219,8 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
             Categoria:
             <router-link
               :to="{ path: '/prodotti', query: { c: product.category } }"
-            >{{ product.category }}</router-link>
+              >{{ product.category }}</router-link
+            >
           </p>
           <!------------------------>
           <!-- Quantity available -->
@@ -218,27 +242,27 @@ export default {
   computed: {
     logged() {
       return this.$store.getters.logged;
-    }
+    },
   },
   data() {
     return {
       addingToCart: false,
-      deleting: false
+      deleting: false,
     };
   },
   props: {
     product: {
       type: Object,
-      required: true
+      required: true,
     },
     adminVersion: {
       type: Boolean,
-      default: false
+      default: false,
     },
     cartVersion: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   methods: {
     // Add a product to the cart
@@ -247,8 +271,8 @@ export default {
       const task = () => {
         Axios.post(process.env.VUE_APP_API_URL + `user.php?cart`, {
           id: id, // Product id
-          quantity: 1 // Default quantity
-        }).catch(err => {
+          quantity: 1, // Default quantity
+        }).catch((err) => {
           console.error(err);
         });
       };
@@ -266,14 +290,14 @@ export default {
       this.deleting = true;
       Axios.delete(process.env.VUE_APP_API_URL + `products.php`, {
         params: {
-          id: id
-        }
+          id: id,
+        },
       })
         .then(() => {
           this.$emit("deleted", id);
           this.deleting = false;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     },
@@ -283,14 +307,14 @@ export default {
       this.deleting = true;
       Axios.delete(process.env.VUE_APP_API_URL + `user.php?cart`, {
         params: {
-          id: id
-        }
+          id: id,
+        },
       })
         .then(() => {
           this.$emit("deleted", id);
           this.deleting = false;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
         });
     },
@@ -305,21 +329,21 @@ export default {
           // Request to change the selected quantity on server side
           Axios.patch(process.env.VUE_APP_API_URL + `user.php?cart`, {
             id: this.product.id,
-            quantity: newQuantity
+            quantity: newQuantity,
           })
             .then(() => {
               this.$emit("selected-quantity-changed", {
                 id: this.product.id,
-                newQuantity: newQuantity
+                newQuantity: newQuantity,
               });
             })
-            .catch(err => {
+            .catch((err) => {
               console.error(err);
             });
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
