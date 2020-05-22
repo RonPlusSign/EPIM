@@ -161,21 +161,21 @@ class OrdersHandler
                     $stm->execute();
                     $quantum = $stm->fetch(PDO::FETCH_ASSOC);
 
-                    if($quantum['quantity']-$object['quantity']>0)
+                    if($quantum['quantity']-$object['numbertot']>0)
                     {
                         // Insert the purchased products inside the database
                         $stm = Database::$pdo->prepare("INSERT INTO order_detail(order_id, product_id, quantity, product_title, product_price, brand_name)
                                                         VALUES (:idorder, :idproduct, :quantity, :title, :price, :brand)");
                         $stm->bindParam(':idorder', $orderId);
                         $stm->bindParam(':idproduct', $object['id']);
-                        $stm->bindParam(':quantity', $object['quantity']);
+                        $stm->bindParam(':quantity', $object['numbertot']);
                         $stm->bindParam(':title', $object['title']);
                         $stm->bindParam(':price', $object['sell_price']);
                         $stm->bindParam(':brand', $object['brand']);
                         $stm->execute();
                     
                     
-                        $app = $quantum['quantity']-$object['quantity'];
+                        $app = $quantum['quantity']-$object['numbertot'];
                         $stm = Database::$pdo->prepare(
                             "UPDATE product
                                 SET product.quantity = :quantity
