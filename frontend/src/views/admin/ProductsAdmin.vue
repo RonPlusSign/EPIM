@@ -99,7 +99,7 @@ export default {
       // Pages navigation
       numberOfProductsFound: 0,
       productsPerPage: 0,
-      selectedPage: 1
+      selectedPage: 1,
     };
   },
 
@@ -115,7 +115,7 @@ export default {
     // Returns the number of pages (total number of results divided by the number of products per page)
     numberOfPages() {
       return Math.ceil(this.numberOfProductsFound / this.productsPerPage);
-    }
+    },
   },
 
   methods: {
@@ -131,7 +131,7 @@ export default {
 
         this.$router.push({
           name: "productsAdmin",
-          query: { q, ...this.filters }
+          query: { q, ...this.filters },
         });
       }
       this.filtersChanged = false;
@@ -153,9 +153,9 @@ export default {
 
       Axios.get(process.env.VUE_APP_API_URL + `products.php` + salesString, {
         // Add the filters (query string params)
-        params: this.filtersEmpty ? {} : this.$route.query
+        params: this.filtersEmpty ? {} : this.$route.query,
       })
-        .then(response => {
+        .then((response) => {
           // Parse the response from the server
           /*
           Response format:
@@ -172,7 +172,7 @@ export default {
           this.numberOfProductsFound = response.data.totalResults;
           this.productsPerPage = response.data.productsPerPage;
         })
-        .catch(error => {
+        .catch((error) => {
           console.error(error);
         });
 
@@ -183,8 +183,8 @@ export default {
      * Remove a product from the list of products
      */
     removeFromList(id) {
-      this.products = this.products.filter(product => product.id !== id);
-    }
+      this.products = this.products.filter((product) => product.id !== id);
+    },
   },
 
   watch: {
@@ -213,16 +213,16 @@ export default {
         path: "/prodotti",
         query: {
           ...this.$route.query,
-          p: value
-        }
+          p: value,
+        },
       });
-    }
+    },
   },
 
   created() {
     if (this.$route.query.q !== undefined)
       this.productSearchQuery = this.$route.query.q;
     this.fetchProducts();
-  }
+  },
 };
 </script>

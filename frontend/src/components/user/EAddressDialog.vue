@@ -25,7 +25,9 @@ Events:
         <!-------------------->
         <!---- Card title ---->
         <!-------------------->
-        <v-card-title class="primary darken-1 white--text">{{ title }}</v-card-title>
+        <v-card-title class="primary darken-1 white--text">{{
+          title
+        }}</v-card-title>
         <v-card-text class="pb-1">
           <!----------------------->
           <!---- Region select ---->
@@ -85,6 +87,7 @@ Events:
             outlined
             dense
             clearable
+            @keyup.enter.native="submit"
           />
 
           <v-row>
@@ -100,6 +103,7 @@ Events:
                 label="Civico"
                 :rules="[rules.required, rules.positive]"
                 prepend-icon="mdi-numeric"
+                @keyup.enter.native="submit"
               />
             </v-col>
             <v-col>
@@ -114,6 +118,7 @@ Events:
                 label="CAP"
                 :rules="[rules.required, rules.isNumber, rules.positive]"
                 prepend-icon="mdi-map-marker-path"
+                @keyup.enter.native="submit"
               />
             </v-col>
           </v-row>
@@ -129,6 +134,7 @@ Events:
             label="Numero di telefono per la consegna"
             :rules="[rules.required, rules.phoneNumber]"
             prepend-icon="mdi-phone"
+            @keyup.enter.native="submit"
           />
 
           <!----------------------->
@@ -142,7 +148,9 @@ Events:
             type="error"
             border="top"
             color="red darken-1"
-          >Errore durante l'esecuzione dell'operazione.</v-alert>
+          >
+            Errore durante l'esecuzione dell'operazione.
+          </v-alert>
         </v-card-text>
         <v-card-actions class="pb-6 px-8">
           <!----------------------------->
@@ -155,14 +163,7 @@ Events:
           <!-------------------------->
           <!---- Send data button ---->
           <!-------------------------->
-          <v-btn
-            @click="submit"
-            @keyup.enter.exact="submit"
-            small
-            fab
-            :loading="loading"
-            color="primary"
-          >
+          <v-btn @click="submit" small fab :loading="loading" color="primary">
             <v-icon>mdi-check</v-icon>
           </v-btn>
         </v-card-actions>
@@ -189,34 +190,34 @@ export default {
       error: false, // Controls the error alert status (open/close)
       rules: {
         // Input field rules
-        required: value => !!value || "Inserisci questo parametro",
-        positive: value => Number.parseInt(value) > 0 || "Valore non valido",
-        isNumber: value => {
+        required: (value) => !!value || "Inserisci questo parametro",
+        positive: (value) => Number.parseInt(value) > 0 || "Valore non valido",
+        isNumber: (value) => {
           const pattern = /^[0-9]+$/;
           return pattern.test(value) || "Il valore inserito non è un numero";
         },
-        phoneNumber: value => {
+        phoneNumber: (value) => {
           const pattern = /^[0-9]{7,12}$/;
           return (
             pattern.test(value) ||
             "Il numero inserito deve essere lungo dalle 7 a 12 cifre"
           );
-        }
-      }
+        },
+      },
     };
   },
   props: {
     state: {
       type: Boolean,
-      required: true
+      required: true,
     },
     title: {
       type: String,
-      default: ""
+      default: "",
     },
     startingObject: {
-      default: null
-    }
+      default: null,
+    },
   },
 
   watch: {
@@ -247,16 +248,16 @@ export default {
 
         // Get the province of the selected city
         Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-          params: { cities: "", id: city }
+          params: { cities: "", id: city },
         })
-          .then(response => {
+          .then((response) => {
             province = response.data.province;
 
             // Get the region of the selected province
             Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
-              params: { provinces: "", id: province }
+              params: { provinces: "", id: province },
             })
-              .then(response => {
+              .then((response) => {
                 region = response.data.region;
                 this.selectedRegion = region;
                 this.selectedProvince = province;
@@ -266,39 +267,39 @@ export default {
                 Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
                   params: {
                     cities: "",
-                    province: province
-                  }
+                    province: province,
+                  },
                 })
-                  .then(response => (this.cities = response.data))
-                  .catch(err => console.error(err));
+                  .then((response) => (this.cities = response.data))
+                  .catch((err) => console.error(err));
 
                 // Fetch the provinces of that region
                 Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
                   params: {
                     provinces: "",
-                    region: region
-                  }
+                    region: region,
+                  },
                 })
-                  .then(response => (this.provinces = response.data))
-                  .catch(err => console.error(err));
+                  .then((response) => (this.provinces = response.data))
+                  .catch((err) => console.error(err));
 
                 Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
                   params: {
                     cities: "",
-                    province: province
-                  }
+                    province: province,
+                  },
                 })
-                  .then(response => (this.cities = response.data))
-                  .catch(err => console.error(err));
+                  .then((response) => (this.cities = response.data))
+                  .catch((err) => console.error(err));
 
                 setTimeout(() => {
                   // Set fetching data to false, so the watchers can start to work again
                   this.fetchingData = false;
                 }, 1000);
               })
-              .catch(err => console.error(err));
+              .catch((err) => console.error(err));
           })
-          .catch(err => console.error(err));
+          .catch((err) => console.error(err));
       }
     },
 
@@ -310,11 +311,11 @@ export default {
           Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
             params: {
               provinces: "",
-              region: regionId
-            }
+              region: regionId,
+            },
           })
-            .then(response => (this.provinces = response.data))
-            .catch(err => console.error(err));
+            .then((response) => (this.provinces = response.data))
+            .catch((err) => console.error(err));
         }
       }
     },
@@ -327,14 +328,14 @@ export default {
           Axios.get(process.env.VUE_APP_API_URL + `address.php`, {
             params: {
               cities: "",
-              province: provinceId
-            }
+              province: provinceId,
+            },
           })
-            .then(response => (this.cities = response.data))
-            .catch(err => console.error(err));
+            .then((response) => (this.cities = response.data))
+            .catch((err) => console.error(err));
         }
       }
-    }
+    },
   },
 
   created() {
@@ -364,7 +365,7 @@ export default {
               this.clearAddress();
               this.$emit("updated-server-values");
             })
-            .catch(err => {
+            .catch((err) => {
               // Show the error
               this.loading = false;
               this.error = true;
@@ -374,7 +375,7 @@ export default {
           // Override the starting Object
           Axios.patch(process.env.VUE_APP_API_URL + `user.php?address`, {
             id: this.startingObject.id,
-            ...this.addressDifferences
+            ...this.addressDifferences,
           })
             .then(() => {
               // Close the dialog
@@ -383,7 +384,7 @@ export default {
               this.isOpen = false;
               this.$emit("updated-server-values");
             })
-            .catch(err => {
+            .catch((err) => {
               // Show the error
               this.loading = false;
               this.error = true;
@@ -406,16 +407,16 @@ export default {
           street: null,
           houseNumber: null,
           postalCode: null,
-          phoneNumber: null // Phone number associated with that address
+          phoneNumber: null, // Phone number associated with that address
         };
       }
     },
 
     fetchRegions() {
       Axios.get(process.env.VUE_APP_API_URL + `address.php?regions`)
-        .then(response => (this.regions = response.data))
-        .catch(err => console.error(err));
-    }
+        .then((response) => (this.regions = response.data))
+        .catch((err) => console.error(err));
+    },
   },
   computed: {
     addressDifferences() {
@@ -441,7 +442,7 @@ export default {
 
         return patch;
       } else return this.address;
-    }
-  }
+    },
+  },
 };
 </script>

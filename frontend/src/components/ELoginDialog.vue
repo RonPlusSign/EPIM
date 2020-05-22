@@ -36,7 +36,12 @@ To close the dialog, do:
         Effettua il login
         <v-spacer />
         <!-- Close dialog button -->
-        <v-btn v-if="!persistent" @click="$store.commit('closeLoginDialog')" icon color="white">
+        <v-btn
+          v-if="!persistent"
+          @click="$store.commit('closeLoginDialog')"
+          icon
+          color="white"
+        >
           <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-btn v-else @click="closePersistentDialog" icon color="white">
@@ -60,6 +65,7 @@ To close the dialog, do:
             prepend-icon="mdi-account"
             type="text"
             required
+            @keyup.enter.native="handleLogin"
           />
 
           <!-- Password -->
@@ -74,6 +80,7 @@ To close the dialog, do:
             @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
             required
+            @keyup.enter.native="handleLogin"
           />
         </v-form>
 
@@ -88,7 +95,9 @@ To close the dialog, do:
           type="error"
           border="top"
           color="red darken-1"
-        >Errore durante il login. Hai inserito i dati correttamente?</v-alert>
+        >
+          Errore durante il login. Hai inserito i dati correttamente?
+        </v-alert>
       </v-card-text>
       <!----------------------->
       <!------- Buttons ------->
@@ -98,7 +107,9 @@ To close the dialog, do:
         <v-btn
           @click="isRegisterDialogActive = !isRegisterDialogActive"
           color="primary white--text"
-        >Registrati</v-btn>
+        >
+          Registrati
+        </v-btn>
         <v-spacer />
         <!-- Do login button -->
         <v-btn @click="handleLogin" :loading="loading" color="secondary">
@@ -130,7 +141,7 @@ export default {
       // Input values
       user: {
         email: "",
-        password: ""
+        password: "",
       },
 
       // Login status
@@ -143,12 +154,12 @@ export default {
 
       // Input rules
       rules: {
-        required: value => !!value || "Inserisci questo parametro",
-        email: value => {
+        required: (value) => !!value || "Inserisci questo parametro",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "E-mail non valida";
-        }
-      }
+        },
+      },
     };
   },
 
@@ -161,13 +172,13 @@ export default {
       set(value) {
         if (value) this.$store.commit("openLoginDialog", this.persistent);
         else this.$store.commit("closeLoginDialog");
-      }
+      },
     },
 
     // Get if the dialog is persistent from the store
     persistent() {
       return this.$store.getters.isPersistentLoginDialog;
-    }
+    },
   },
 
   watch: {
@@ -181,7 +192,7 @@ export default {
       if (isActive) {
         this.resetForm();
       }
-    }
+    },
   },
 
   methods: {
@@ -222,7 +233,7 @@ export default {
 
       // Reset the form valdiation if it has been created
       if (this.$refs.loginForm) this.$refs.loginForm.reset();
-    }
-  }
+    },
+  },
 };
 </script>

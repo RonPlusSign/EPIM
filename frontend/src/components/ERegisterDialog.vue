@@ -43,6 +43,7 @@ example:
             prepend-icon="mdi-account"
             type="text"
             required
+            @keyup.enter.native="handleRegistration"
           />
           <!------- Surname ------->
           <v-text-field
@@ -53,6 +54,7 @@ example:
             prepend-icon="mdi-account-multiple"
             type="text"
             required
+            @keyup.enter.native="handleRegistration"
           />
           <!------- Email ------->
           <v-text-field
@@ -63,6 +65,7 @@ example:
             prepend-icon="mdi-email"
             type="text"
             required
+            @keyup.enter.native="handleRegistration"
           />
 
           <!------- Phone number ------->
@@ -74,6 +77,7 @@ example:
             prepend-icon="mdi-phone"
             type="text"
             required
+            @keyup.enter.native="handleRegistration"
           />
 
           <!------- Password ------->
@@ -88,6 +92,7 @@ example:
             @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
             required
+            @keyup.enter.native="handleRegistration"
           />
 
           <!------- Confirm password ------->
@@ -102,6 +107,7 @@ example:
             @click:append="isPasswordVisible = !isPasswordVisible"
             :type="isPasswordVisible ? 'text' : 'password'"
             required
+            @keyup.enter.native="handleRegistration"
           />
         </v-form>
 
@@ -125,7 +131,6 @@ example:
         <v-spacer />
         <v-btn
           @click="handleRegistration"
-          @keyup.enter="handleRegistration"
           :loading="loading"
           color="secondary"
         >

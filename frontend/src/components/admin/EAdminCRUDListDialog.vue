@@ -41,6 +41,7 @@ Events:
             dense
             label="Nome"
             :rules="[rules.required, rules.differentFromPreviousValue]"
+            @keyup.enter.native="submit"
           />
 
           <!----------------------->
@@ -69,14 +70,7 @@ Events:
           <!-------------------------->
           <!---- Send data button ---->
           <!-------------------------->
-          <v-btn
-            @click="submit"
-            @keyup.enter.exact="submit"
-            small
-            fab
-            :loading="loading"
-            color="primary"
-          >
+          <v-btn @click="submit" small fab :loading="loading" color="primary">
             <v-icon>mdi-check</v-icon>
           </v-btn>
         </v-card-actions>
