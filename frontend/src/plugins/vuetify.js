@@ -12,8 +12,9 @@ export default new Vuetify({
   theme: {
     themes: {
       light: {
-        primary: "#424242",
-        accent: colors.orange.darken2,
+        primary: colors.indigo.lighten1,
+        accent: colors.orange.accent4,
+        secondary: colors.green, //colors.deepPurple,
       },
     },
   },

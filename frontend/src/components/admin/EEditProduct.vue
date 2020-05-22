@@ -140,7 +140,7 @@
       right
       large
       class="saveBtn mr-6 mb-6 elevation-6"
-      color="blue"
+      color="secondary"
       :loading="loading"
     >
       Salva

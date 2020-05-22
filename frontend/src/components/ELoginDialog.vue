@@ -97,11 +97,11 @@ To close the dialog, do:
         <!-- Register button -->
         <v-btn
           @click="isRegisterDialogActive = !isRegisterDialogActive"
-          color="blue white--text"
+          color="primary white--text"
         >Registrati</v-btn>
         <v-spacer />
         <!-- Do login button -->
-        <v-btn @click="handleLogin" :loading="loading" color="primary">
+        <v-btn @click="handleLogin" :loading="loading" color="secondary">
           <span class="mt-1">Login</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
         </v-btn>

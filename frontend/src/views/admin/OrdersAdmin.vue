@@ -3,7 +3,7 @@
     <!-------------------------------------->
     <!---- Go back to Admin page button ---->
     <!-------------------------------------->
-    <v-btn :to="'/admin'" exact text color="secondary">
+    <v-btn :to="'/admin'" exact text>
       <v-icon class="mr-2">mdi-arrow-left</v-icon>
       <span class="mt-1">torna alla pagina di admin</span>
     </v-btn>

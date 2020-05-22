@@ -41,13 +41,13 @@ Example of usage:
           <v-col align="center">
             <v-btn
               @click="bestSellers"
-              color="primary lighten-2 black--text"
+              color="primary lighten-1"
               small
             >Prodotti più venduti</v-btn>
           </v-col>
           <v-col align="center">
             <!-- Worst sellers -->
-            <v-btn @click="worstSellers" color="orange lighten-2" small>Prodotti meno venduti</v-btn>
+            <v-btn @click="worstSellers" color="grey lighten-2" small>Prodotti meno venduti</v-btn>
           </v-col>
         </v-row>
 
@@ -104,7 +104,7 @@ Example of usage:
         <v-row cols="12" class="mx-1 mb-3 mt-2">
           <v-col xl="5" lg="5" md="5" sm="12" cols="12" align="center">
             <!-- Filters Clear button -->
-            <v-btn color="red lighten-1" dark @click="clearFilters">
+            <v-btn color="red" outlined dark @click="clearFilters">
               Cancella filtri
               <v-icon class="ml-2" dark>mdi-delete</v-icon>
             </v-btn>
@@ -112,7 +112,7 @@ Example of usage:
           <v-col class="hidden-sm-and-down" xl="3" lg="3" md="3" cols="12"></v-col>
           <v-col xl="4" lg="4" md="4" cols="12" align="center">
             <!-- Filters OK button -->
-            <v-btn dark color="blue" @click="searchProducts">
+            <v-btn dark color="secondary" @click="searchProducts">
               Cerca
               <v-icon class="ml-2" dark>mdi-magnify</v-icon>
             </v-btn>

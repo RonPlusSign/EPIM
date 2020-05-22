@@ -309,7 +309,7 @@
         <!--------------------------->
         <!---- Go to orders page ---->
         <!--------------------------->
-        <v-btn :to="'/profilo/ordini'" outlined color="secondary">
+        <v-btn :to="'/profilo/ordini'" color="accent lighten-1">
           <span>Visualizza i tuoi ordini</span>
           <v-icon class="ml-2">mdi-truck</v-icon>
         </v-btn>

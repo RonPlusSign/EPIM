@@ -89,14 +89,14 @@ If cartVersion is true, the product will also have a "selectedQuantity" attribut
         <v-row cols="12" v-if="adminVersion">
           <v-col align="center" cols="12" sm="12" md="6" lg="4" xl="4">
             <!---- Edit button ---->
-            <v-btn :to="{name: 'editProduct', params: { id: product.id }}" dark color="blue">
+            <v-btn :to="{name: 'editProduct', params: { id: product.id }}" dark color="secondary lighten-1">
               Modifica
               <v-icon class="ml-2">mdi-pencil</v-icon>
             </v-btn>
           </v-col>
           <v-col align="center" cols="12" sm="12" md="6" lg="4" xl="4">
             <!---- Delete button ---->
-            <v-btn @click="deleteProduct(product.id)" :loading="deleting" dark color="red">
+            <v-btn @click="deleteProduct(product.id)" :loading="deleting" dark color="red lighten-1">
               Cancella
               <v-icon class="ml-2">mdi-delete</v-icon>
             </v-btn>
@@ -326,8 +326,14 @@ export default {
   cursor: pointer;
 }
 
-.productTitle:hover {
-  color: darkgreen;
+.product-card:hover .productTitle {
+  padding-left: 20px;
+  color: #6b00b6;
+  transition: 0.3s;
+}
+
+.productTitle:not(:hover) {
+  padding-left: 0;
   transition: 0.3s;
 }
 </style>

@@ -64,7 +64,7 @@ Events:
                 <v-spacer class="hidden-sm-and-down" />
                 <v-col align="right" cols="6">
                   <!---- "Add new" button ---->
-                  <v-btn @click="dialog = true" dark color="blue">
+                  <v-btn @click="dialog = true" dark color="secondary">
                     <span class="subtitle-2">Aggiungi</span>
                     <v-icon class="ml-2">mdi-plus</v-icon>
                   </v-btn>

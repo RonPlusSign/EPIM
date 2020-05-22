@@ -127,7 +127,7 @@ example:
           @click="handleRegistration"
           @keyup.enter="handleRegistration"
           :loading="loading"
-          color="primary"
+          color="secondary"
         >
           <span class="mt-1">Registrati</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
