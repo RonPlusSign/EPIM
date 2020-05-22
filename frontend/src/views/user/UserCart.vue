@@ -3,8 +3,8 @@
     <!------------------------------------->
     <!---- Go back to User page button ---->
     <!------------------------------------->
-    <v-btn absolute top right :to="'/profilo'" text color="secondary">
-      <span class="mt-1">Profilo utente</span>
+    <v-btn absolute top right :to="'/profilo'" outlined>
+      <span>Profilo utente</span>
       <v-icon class="ml-2">mdi-account</v-icon>
     </v-btn>
 
@@ -92,7 +92,7 @@ export default {
           this.loading = false;
         });
     },
-    
+
     /**
      * Remove a product from the list of products
      */

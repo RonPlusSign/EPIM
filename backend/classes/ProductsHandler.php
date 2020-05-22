@@ -312,8 +312,8 @@ class ProductsHandler
                     ':sell_price' => $productJson->sell_price,
                     ':recommended_price' => $productJson->recommended_price,
                     ':quantity' => $productJson->quantity,
-                    ':category' => $productJson->category,
-                    ':brand' => $productJson->brand,
+                    ':category' => $productJson->category_id,
+                    ':brand' => $productJson->brand_id,
                 ];
                 $stm->execute($data);
                 return $stm->rowCount();
