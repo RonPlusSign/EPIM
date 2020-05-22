@@ -12,97 +12,37 @@ This component requires one prop:
     <v-container width="100%" class="headline">
       <span v-if="logged">
         Ciao,
-        <span class="secondary--text">{{user.name}}</span>!
+        <span class="secondary--text">{{ user.name }}</span
+        >!
       </span>
       <span v-else>Benvenuto!</span>
     </v-container>
     <v-divider />
 
-    <!-- List of items -->
     <v-list dense nav class="py-0">
-      <!-- Home route -->
-      <v-list-item @click="isExpanded=false" :to="'/'" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-home</v-icon>
-        </v-list-item-icon>
+      <!----------------------->
+      <!---- List of items ---->
+      <!----------------------->
+      <div v-for="item in drawerItems" :key="item.title">
+        <v-list-item
+          v-if="item.visible"
+          @click="item.action ? item.action() : null"
+          :to="item.route ? item.route : ''"
+          class="py-1 mb-0"
+          link
+        >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
 
-        <v-list-item-content class="py-0">
-          <v-list-item-title class="subtitle-2">Home</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider />
-
-      <!-- "Your account" route -->
-      <v-list-item @click="isExpanded=false" :to="'/profilo'" class="py-1 mb-0" link v-if="logged">
-        <v-list-item-icon>
-          <v-icon>mdi-account</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content class="py-0">
-          <v-list-item-title class="subtitle-2">Il tuo profilo</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider v-if="logged" />
-
-      <!-- Login list item -->
-      <v-list-item v-if="!logged" @click="login(); isExpanded = false;" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-login</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="subtitle-2">Accedi</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider v-if="!logged" />
-
-      <!-- Products route -->
-      <v-list-item @click="isExpanded=false" :to="'/prodotti'" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-package-variant</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="subtitle-2">Prodotti</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider />
-
-      <!-- Categories route -->
-      <v-list-item @click="isExpanded=false" :to="'/categorie'" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-format-list-bulleted-square</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="subtitle-2">Categorie</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider />
-
-      <!-- Brands route -->
-      <v-list-item @click="isExpanded=false" :to="'/marche'" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-tag</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="subtitle-2">Marche</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider />
-
-      <!-- Logout list item -->
-      <v-list-item v-if="logged" @click="logout(); isExpanded = false;" class="py-1 mb-0" link>
-        <v-list-item-icon>
-          <v-icon>mdi-logout</v-icon>
-        </v-list-item-icon>
-
-        <v-list-item-content>
-          <v-list-item-title class="subtitle-2">Logout</v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-      <v-divider v-if="logged" />
+          <v-list-item-content class="py-0">
+            <v-list-item-title class="subtitle-2">{{
+              item.title
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider v-if="item.visible" />
+      </div>
     </v-list>
   </v-navigation-drawer>
 </template>
@@ -113,12 +53,12 @@ export default {
   props: {
     drawerExpanded: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
-      isExpanded: false
+      isExpanded: false,
     };
   },
   computed: {
@@ -127,7 +67,68 @@ export default {
     },
     user() {
       return this.$store.getters.user;
-    }
+    },
+
+    drawerItems() {
+      return [
+        {
+          title: "Home",
+          action: () => (this.isExpanded = false),
+          route: "/",
+          icon: "mdi-home",
+          visible: true,
+        },
+        {
+          title: "Il tuo profilo",
+          action: () => (this.isExpanded = false),
+          route: "/profilo",
+          icon: "mdi-account",
+          visible: this.logged,
+        },
+        {
+          title: "Accedi",
+          action: () => {
+            this.login();
+            this.isExpanded = false;
+          },
+          route: null,
+          icon: "mdi-login",
+          visible: !this.logged,
+        },
+        {
+          title: "Prodotti",
+          action: () => (this.isExpanded = false),
+          route: "/prodotti",
+          icon: "mdi-package-variant",
+          visible: true,
+        },
+        {
+          title: "Categorie",
+          action: () => (this.isExpanded = false),
+          route: "/categorie",
+          icon: "mdi-format-list-bulleted-square",
+          visible: true,
+        },
+        {
+          title: "Marche",
+          action: () => (this.isExpanded = false),
+          route: "/marche",
+          icon: "mdi-tag",
+          visible: true,
+        },
+
+        {
+          title: "Logout",
+          action: () => {
+            this.logout();
+            this.isExpanded = false;
+          },
+          route: null,
+          icon: "mdi-logout",
+          visible: this.logged,
+        },
+      ];
+    },
   },
 
   created() {
@@ -141,7 +142,7 @@ export default {
     },
     isExpanded(value) {
       this.$emit("toggle", value);
-    }
+    },
   },
 
   methods: {
@@ -152,7 +153,7 @@ export default {
     },
     login() {
       this.$store.commit("openLoginDialog");
-    }
-  }
+    },
+  },
 };
 </script>
