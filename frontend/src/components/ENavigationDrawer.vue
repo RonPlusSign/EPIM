@@ -12,7 +12,7 @@ This component requires one prop:
     <v-container width="100%" class="headline">
       <span v-if="logged">
         Ciao,
-        <span class="secondary--text">{{ user.name }}</span
+        <span class="secondary--text">{{ user ? user.name : "" }}</span
         >!
       </span>
       <span v-else>Benvenuto!</span>

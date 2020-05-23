@@ -16,15 +16,17 @@ Example of usage:
   <!---------------------------------------->
   <!---- Filter button & filter inputs ----->
   <!---------------------------------------->
-  <div class="text-center">
-    <v-menu transition="slide-y-transition" offset-y :close-on-content-click="false">
+  <div>
+    <v-menu
+      transition="slide-y-transition"
+      offset-y
+      :close-on-content-click="false"
+    >
       <!-- filters menu toggler -->
       <template v-slot:activator="{ on }">
         <v-btn icon v-on="on">
           <v-icon>
-            {{
-            filtersEmpty ? "mdi-filter-outline" : "mdi-filter"
-            }}
+            {{ filtersEmpty ? "mdi-filter-outline" : "mdi-filter" }}
           </v-icon>
         </v-btn>
       </template>
@@ -39,15 +41,15 @@ Example of usage:
         <!-- Best sellers -->
         <v-row class="pa-3">
           <v-col align="center">
-            <v-btn
-              @click="bestSellers"
-              color="primary lighten-1"
-              small
-            >Prodotti più venduti</v-btn>
+            <v-btn @click="bestSellers" color="primary lighten-1" small
+              >Prodotti più venduti</v-btn
+            >
           </v-col>
           <v-col align="center">
             <!-- Worst sellers -->
-            <v-btn @click="worstSellers" color="grey lighten-2" small>Prodotti meno venduti</v-btn>
+            <v-btn @click="worstSellers" color="grey lighten-2" small
+              >Prodotti meno venduti</v-btn
+            >
           </v-col>
         </v-row>
 
@@ -87,7 +89,9 @@ Example of usage:
           class="align-center mt-12"
         >
           <!-- thumb labels value -->
-          <template v-slot:thumb-label="{ value }">{{ value === priceRange.max ? "MAX" : value }}</template>
+          <template v-slot:thumb-label="{ value }">{{
+            value === priceRange.max ? "MAX" : value
+          }}</template>
         </v-range-slider>
 
         <!-- Products sorting method -->
@@ -109,7 +113,13 @@ Example of usage:
               <v-icon class="ml-2" dark>mdi-delete</v-icon>
             </v-btn>
           </v-col>
-          <v-col class="hidden-sm-and-down" xl="3" lg="3" md="3" cols="12"></v-col>
+          <v-col
+            class="hidden-sm-and-down"
+            xl="3"
+            lg="3"
+            md="3"
+            cols="12"
+          ></v-col>
           <v-col xl="4" lg="4" md="4" cols="12" align="center">
             <!-- Filters OK button -->
             <v-btn dark color="secondary" @click="searchProducts">
@@ -141,7 +151,7 @@ export default {
       priceRange: {
         min: 0,
         max: 500,
-        interval: 10
+        interval: 10,
       },
       // Order types
       typesOfSorting: [
@@ -149,22 +159,22 @@ export default {
           id: 1,
           name: "Migliore corrispondenza",
           type: null,
-          sortMethod: null
+          sortMethod: null,
         },
         { id: 2, name: "Titolo (crescente)", type: "title", sortMethod: "asc" },
         {
           id: 3,
           name: "Titolo (decrescente)",
           type: "title",
-          sortMethod: "desc"
+          sortMethod: "desc",
         },
         { id: 4, name: "Prezzo (crescente)", type: "price", sortMethod: "asc" },
         {
           id: 5,
           name: "Prezzo (decrescente)",
           type: "price",
-          sortMethod: "desc"
-        }
+          sortMethod: "desc",
+        },
         // {
         //   id: 6,
         //   name: "Più venduti",
@@ -183,15 +193,15 @@ export default {
         selectedCategoryId: null,
         selectedBrandId: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1
-      }
+        selectedSortingMethodId: 1,
+      },
     };
   },
   computed: {
     selectedSortingMethod() {
       // Represents the selected sorting method of the array typesOfSorting
       return this.typesOfSorting.filter(
-        element => element.id === this.activeFilters.selectedSortingMethodId
+        (element) => element.id === this.activeFilters.selectedSortingMethodId
       )[0];
     },
 
@@ -203,41 +213,39 @@ export default {
         this.activeFilters.priceRange[1] === 500 &&
         this.activeFilters.selectedSortingMethodId === 1
       );
-    }
+    },
   },
   created() {
     // Fill the selected filters values depending on the current query string
 
     // query to get all categories (and fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then(response => {
+      .then((response) => {
         this.categories = response.data;
 
         // Set the values of category and brand depending on the current route query string
         if (this.$route.query.c !== undefined) {
-
           this.activeFilters.selectedCategoryId = +this.categories.find(
-            category => category.name === this.$route.query.c
+            (category) => category.name === this.$route.query.c
           ).id;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
     // query to get all brands (and fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then(response => {
+      .then((response) => {
         this.brands = response.data;
         // Brand
         if (this.$route.query.b !== undefined) {
-
           this.activeFilters.selectedBrandId = +this.brands.find(
-            brand => brand.name === this.$route.query.b
+            (brand) => brand.name === this.$route.query.b
           ).id;
         }
       })
-      .catch(error => {
+      .catch((error) => {
         console.error(error);
       });
 
@@ -257,8 +265,8 @@ export default {
         // this handler is also called if the filters are retrieved by the parameters in the URI, so we emit the value only if the change is after that process
         if (this.savedFiltersFromURI)
           this.$emit("filters-changed", this.formatFilters());
-      }
-    }
+      },
+    },
   },
   methods: {
     formatFilters() {
@@ -268,14 +276,14 @@ export default {
       // Category
       if (this.activeFilters.selectedCategoryId !== null) {
         formattedFilters.c = this.categories.find(
-          category => category.id === this.activeFilters.selectedCategoryId
+          (category) => category.id === this.activeFilters.selectedCategoryId
         ).name;
       }
 
       // Brand
       if (this.activeFilters.selectedBrandId !== null) {
         formattedFilters.b = this.brands.find(
-          brand => brand.id === this.activeFilters.selectedBrandId
+          (brand) => brand.id === this.activeFilters.selectedBrandId
         ).name;
       }
 
@@ -316,7 +324,7 @@ export default {
         selectedCategoryId: null,
         selectedBrandId: null,
         priceRange: [0, 500],
-        selectedSortingMethodId: 1
+        selectedSortingMethodId: 1,
       };
     },
 
@@ -324,7 +332,7 @@ export default {
       this.clearFilters();
       this.$emit("filters-changed", {
         sales: "",
-        desc: ""
+        desc: "",
       });
       this.$emit("search");
     },
@@ -332,10 +340,10 @@ export default {
       this.clearFilters();
       this.$emit("filters-changed", {
         sales: "",
-        asc: ""
+        asc: "",
       });
       this.$emit("search");
-    }
-  }
+    },
+  },
 };
 </script>

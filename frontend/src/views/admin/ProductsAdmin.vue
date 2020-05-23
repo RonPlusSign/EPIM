@@ -15,40 +15,23 @@
     <!--------------->
     <h2>Gestione dei prodotti</h2>
 
-    <v-btn :to="{ name: 'createProduct' }" color="secondary" dark class="my-3">
+    <v-btn
+      :to="{ name: 'createProduct' }"
+      color="secondary"
+      dark
+      class="mt-3 mb-6"
+    >
       Crea nuovo
       <v-icon class="ml-2">mdi-plus</v-icon>
     </v-btn>
 
-    <v-row cols="12">
-      <v-col cols="11" class="pr-0">
-        <!--------------------->
-        <!---- Search bar ----->
-        <!--------------------->
-        <v-text-field
-          align="center"
-          light
-          v-model="productSearchQuery"
-          label="Cerca"
-          outlined
-          rounded
-          solo
-          hide-details
-          dense
-          append-icon="mdi-magnify"
-          @click:append="searchProducts"
-          @keyup.enter.native="searchProducts"
-        />
-      </v-col>
-      <v-col cols="1" class="pl-0 mt-1 align-left">
-        <!------------------------------------------------->
-        <!---- Product search filters button and menu ----->
-        <!------------------------------------------------->
-        <EProductsFilterMenu
-          @filters-changed="(newFilters) => checkFilters(newFilters)"
-          @search="searchProducts"
-        />
-      </v-col>
+    <v-row class="ml-4 ml-md-0 mr-sm-n12">
+      <v-spacer class="hidden-sm-and-down" />
+      <!--------------------->
+      <!---- Search bar ----->
+      <!--------------------->
+      <ESearchProducts :redirectRoute="'/admin/prodotti'" />
+      <v-spacer class="hidden-sm-and-down" />
     </v-row>
 
     <!----------------------->
@@ -78,18 +61,14 @@ import Axios from "axios";
 import adminMixin from "@/mixins/adminMixin";
 
 import EProductsList from "@/components/EProductsList";
-import EProductsFilterMenu from "@/components/EProductsFilterMenu.vue";
+import ESearchProducts from "@/components/ESearchProducts.vue";
 
 export default {
   name: "ProductsAdmin",
-  components: { EProductsFilterMenu, EProductsList },
+  components: { EProductsList, ESearchProducts },
   mixins: [adminMixin],
   data() {
     return {
-      productSearchQuery: "",
-      filtersChanged: false,
-      filters: {},
-
       // List of products
       products: [],
 
@@ -104,14 +83,6 @@ export default {
   },
 
   computed: {
-    filtersEmpty() {
-      let isEmpty = true;
-      Object.entries(this.$route.query).forEach(([, value]) => {
-        if (value !== undefined) isEmpty = false;
-      });
-      return isEmpty;
-    },
-
     // Returns the number of pages (total number of results divided by the number of products per page)
     numberOfPages() {
       return Math.ceil(this.numberOfProductsFound / this.productsPerPage);
@@ -119,31 +90,6 @@ export default {
   },
 
   methods: {
-    searchProducts() {
-      /**
-       * Block navigation if route is the same (same search)
-       * Also redirects to /prodotti when using searchbar
-       */
-      if (this.filtersChanged) {
-        if (this.productSearchQuery.trim() !== "")
-          // Title
-          var q = this.productSearchQuery.trim();
-
-        this.$router.push({
-          name: "productsAdmin",
-          query: { q, ...this.filters },
-        });
-      }
-      this.filtersChanged = false;
-    },
-    checkFilters(newFilters) {
-      // check if filters are changed
-      if (this.filters !== newFilters) {
-        this.filtersChanged = true;
-        this.filters = newFilters;
-      }
-    },
-
     // Fetch the products list from the server
     fetchProducts() {
       this.loading = true;
@@ -188,18 +134,8 @@ export default {
   },
 
   watch: {
-    productSearchQuery() {
-      this.filtersChanged = true;
-    },
-
     $route() {
-      // Title
-      if (
-        this.$route.query.q !== undefined &&
-        this.$route.query.q !== this.productSearchQuery
-      )
-        this.productSearchQuery = this.$route.query.q;
-      else this.productSearchQuery = "";
+      this.fetchProducts();
     },
 
     selectedPage(value) {
@@ -217,12 +153,6 @@ export default {
         },
       });
     },
-  },
-
-  created() {
-    if (this.$route.query.q !== undefined)
-      this.productSearchQuery = this.$route.query.q;
-    this.fetchProducts();
   },
 };
 </script>

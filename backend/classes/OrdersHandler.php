@@ -180,7 +180,7 @@ class OrdersHandler
                     $stm->execute();
 
                     // Update the product's quantity
-                    $newQuantity = $quantity['quantity'] - $productCart['cartQuantity'];
+                    $newQuantity = $productCart['quantity'] - $productCart['cartQuantity'];
                     $stm = Database::$pdo->prepare(
                         "UPDATE product
                                 SET quantity = :quantity

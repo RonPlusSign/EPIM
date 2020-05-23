@@ -11,7 +11,7 @@
       <!--------------->
       <!---- Logo ----->
       <!--------------->
-      <v-btn :to="'/'" text height="44px" class="px-0">
+      <v-btn :to="'/'" text height="44px" class="px-0 mr-2">
         <v-img
           alt="EPIM Logo"
           class="shrink"
@@ -30,26 +30,7 @@
       <!--------------------->
       <!---- Search bar ----->
       <!--------------------->
-      <v-text-field
-        align="center"
-        light
-        v-model="productSearchQuery"
-        label="Cerca"
-        solo
-        hide-details
-        dense
-        append-icon="mdi-magnify"
-        @click:append="searchProducts"
-        @keyup.enter.native="searchProducts"
-      />
-
-      <!------------------------------------------------->
-      <!---- Product search filters button and menu ----->
-      <!------------------------------------------------->
-      <EProductsFilterMenu
-        @filters-changed="(newFilters) => checkFilters(newFilters)"
-        @search="searchProducts()"
-      />
+      <ESearchProducts />
 
       <v-spacer class="hidden-xs-only" />
 
@@ -60,7 +41,9 @@
         <v-col v-if="logged" class="pa-0 text-right">
           <!-- User profile button & Cart button -->
           <v-btn :to="'/profilo'" text class="mr-1">
-            <span class="hidden-sm-and-down mr-2">Profilo di {{ user ? user.name : "" }}</span>
+            <span class="hidden-sm-and-down mr-2"
+              >Profilo di {{ user ? user.name : "" }}</span
+            >
             <v-icon>mdi-account</v-icon>
           </v-btn>
           <v-btn :to="'/carrello'" icon>
@@ -89,19 +72,15 @@
 
 <script>
 import ENavigationDrawer from "@/components/ENavigationDrawer.vue";
-import EProductsFilterMenu from "@/components/EProductsFilterMenu.vue";
+import ESearchProducts from "@/components/ESearchProducts.vue";
 
 export default {
   name: "ENavbar",
-  components: { ENavigationDrawer, EProductsFilterMenu },
+  components: { ENavigationDrawer, ESearchProducts },
   data() {
     return {
       // Side menu status
       isDrawerExpanded: false,
-      // Research filters
-      productSearchQuery: "",
-      filtersChanged: false,
-      filters: {}
     };
   },
   computed: {
@@ -110,54 +89,7 @@ export default {
     },
     user() {
       return this.$store.getters.user;
-    }
-  },
-
-  methods: {
-    searchProducts() {
-      /**
-       * Block navigation if route is the same (same search)
-       * Also redirects to /prodotti when using searchbar
-       */
-      if (this.filtersChanged) {
-        if (this.productSearchQuery.trim() !== "")
-          // Title
-          var q = this.productSearchQuery.trim();
-
-        this.$router.push({
-          name: "products",
-          query: { q, ...this.filters }
-        });
-      }
-      this.filtersChanged = false;
     },
-    checkFilters(newFilters) {
-      // check if filters are changed
-      if (this.filters !== newFilters) {
-        this.filtersChanged = true;
-        this.filters = newFilters;
-      }
-    }
   },
-
-  watch: {
-    productSearchQuery() {
-      this.filtersChanged = true;
-    },
-
-    $route() {
-      // Title
-      if (
-        this.$route.query.q !== undefined &&
-        this.$route.query.q !== this.productSearchQuery
-      )
-        this.productSearchQuery = this.$route.query.q;
-      else this.productSearchQuery = "";
-    }
-  },
-  created() {
-    if (this.$route.query.q !== undefined)
-      this.productSearchQuery = this.$route.query.q;
-  }
 };
 </script>
