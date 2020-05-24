@@ -366,6 +366,11 @@ export default {
               this.$emit("updated-server-values");
             })
             .catch((err) => {
+              if (err.response.status === 403)
+                this.$store
+                  .dispatch("checkLogin")
+                  .catch(this.$store.commit("openLoginDialog", true));
+
               // Show the error
               this.loading = false;
               this.error = true;
@@ -385,6 +390,10 @@ export default {
               this.$emit("updated-server-values");
             })
             .catch((err) => {
+              if (err.response.status === 403)
+                this.$store
+                  .dispatch("checkLogin")
+                  .catch(this.$store.commit("openLoginDialog", true));
               // Show the error
               this.loading = false;
               this.error = true;

@@ -61,7 +61,7 @@
             v-model="item.isAdmin"
             :loading="loading[item.id]"
             dense
-            @change="value => updateAdminState(item, value)"
+            @change="(value) => updateAdminState(item, value)"
           />
         </v-row>
       </template>
@@ -93,7 +93,7 @@ export default {
           align: "start",
           sortable: true,
           value: "name",
-          filterable: true
+          filterable: true,
         },
         {
           // Surname column
@@ -101,7 +101,7 @@ export default {
           align: "center",
           sortable: true,
           value: "surname",
-          filterable: true
+          filterable: true,
         },
         {
           // Email column
@@ -109,7 +109,7 @@ export default {
           align: "center",
           sortable: true,
           value: "email",
-          filterable: true
+          filterable: true,
         },
         {
           // Phone number column
@@ -117,7 +117,7 @@ export default {
           align: "center",
           sortable: true,
           value: "phoneNumber",
-          filterable: true
+          filterable: true,
         },
         {
           // Modify column
@@ -126,9 +126,9 @@ export default {
           sortable: false,
           align: "center",
           width: 120,
-          filterable: false
-        }
-      ]
+          filterable: false,
+        },
+      ],
     };
   },
 
@@ -141,13 +141,17 @@ export default {
     getUsers() {
       this.loading = true;
       Axios.get(process.env.VUE_APP_API_URL + `user.php?all`)
-        .then(response => {
+        .then((response) => {
           this.users = response.data;
           this.loading = [];
-          this.users.forEach(user => (this.loading[user.id] = false));
+          this.users.forEach((user) => (this.loading[user.id] = false));
         })
-        .catch(error => {
-          console.error(error);
+        .catch((error) => {
+          if (error.response.status === 403)
+            this.$store
+              .dispatch("checkLoginAdmin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(error);
         });
     },
     updateAdminState(user, isAdmin) {
@@ -162,15 +166,20 @@ export default {
         // Make the request to change the status of the user
         Axios.post(process.env.VUE_APP_API_URL + `user.php?admin`, {
           id: user.id,
-          isAdmin: isAdmin
-        }).catch(error => {
+          isAdmin: isAdmin,
+        }).catch((error) => {
+          if (error.response.status === 403)
+            this.$store
+              .dispatch("checkLoginAdmin")
+              .catch(this.$store.commit("openLoginDialog", true));
+
           alert("Errore durante la modifica: ", error);
           user.isAdmin = !isAdmin;
         });
       }
       // If the user cancels the operation
       else user.isAdmin = !isAdmin;
-    }
-  }
+    },
+  },
 };
 </script>

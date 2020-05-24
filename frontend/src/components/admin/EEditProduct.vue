@@ -5,7 +5,7 @@
     <!-------------------->
     <h2>
       {{
-      productObject ? "Modifica di un prodotto" : "Aggiunta di un prodotto"
+        productObject ? "Modifica di un prodotto" : "Aggiunta di un prodotto"
       }}
     </h2>
     <v-divider class="my-3" />
@@ -15,7 +15,13 @@
     <!----------------------->
     <v-form ref="editProductForm">
       <h3 class="mb-3">Titolo</h3>
-      <v-text-field v-model="product.title" :rules="[rules.required]" clearable dense filled />
+      <v-text-field
+        v-model="product.title"
+        :rules="[rules.required]"
+        clearable
+        dense
+        filled
+      />
 
       <v-divider class="my-3" />
 
@@ -41,7 +47,7 @@
             :value="product.purchase_price"
             :min="0"
             :decimals="2"
-            @change="(value) =>  (product.purchase_price = value)"
+            @change="(value) => (product.purchase_price = value)"
           />
         </v-col>
         <v-col xl="4" lg="4" cols="12" align="center">
@@ -167,13 +173,13 @@ export default {
         category_id: -1,
         purchase_price: -1,
         sell_price: -1,
-        recommended_price: -1
+        recommended_price: -1,
       },
       categories: [],
       brands: [],
 
-      rules: { required: value => !!value || "Inserisci questo parametro" },
-      loading: false
+      rules: { required: (value) => !!value || "Inserisci questo parametro" },
+      loading: false,
     };
   },
 
@@ -181,8 +187,8 @@ export default {
     productObject: {
       // If this object is passed, we're editing the product data
       // If it is null, we're creating a new product
-      default: null
-    }
+      default: null,
+    },
   },
 
   created() {
@@ -190,15 +196,15 @@ export default {
 
     // query to get all categories (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `categories.php`)
-      .then(response => (this.categories = response.data))
-      .catch(error => {
+      .then((response) => (this.categories = response.data))
+      .catch((error) => {
         console.error(error);
       });
 
     // query to get all brands (to fill filters)
     Axios.get(process.env.VUE_APP_API_URL + `brands.php`)
-      .then(response => (this.brands = response.data))
-      .catch(error => {
+      .then((response) => (this.brands = response.data))
+      .catch((error) => {
         console.error(error);
       });
   },
@@ -210,7 +216,7 @@ export default {
   watch: {
     productObject(newObject) {
       this.product = Object.assign({}, newObject);
-    }
+    },
   },
 
   methods: {
@@ -228,8 +234,13 @@ export default {
               this.loading = false;
               this.$router.push("/admin/prodotti");
             })
-            .catch(err => {
-              console.error(err);
+            .catch((err) => {
+              if (err.response.status === 403)
+                this.$store
+                  .dispatch("checkLoginAdmin")
+                  .catch(this.$store.commit("openLoginDialog", true));
+              else console.error(err);
+
               this.loading = false;
             });
         } else {
@@ -273,14 +284,19 @@ export default {
               this.loading = false;
               this.$router.push("/admin/prodotti");
             })
-            .catch(err => {
-              console.error(err);
+            .catch((err) => {
+              if (err.response.status === 403)
+                this.$store
+                  .dispatch("checkLoginAdmin")
+                  .catch(this.$store.commit("openLoginDialog", true));
+              else console.error(err);
+
               this.loading = false;
             });
         }
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

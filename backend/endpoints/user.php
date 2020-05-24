@@ -27,7 +27,11 @@ switch ($requestMethod) {
 
         // Get the user addresses
         else if (isset($_GET["address"])) {
-            echo json_encode(UserHandler::getAddresses());
+            $addresses = UserHandler::getAddresses();
+            if ($addresses) {
+                echo json_encode($addresses);
+                http_response_code(200);
+            } else http_response_code(403);
         }
 
         // Get all users

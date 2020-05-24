@@ -10,11 +10,9 @@
         <!------------------------------->
         <v-row v-if="ordering" cols="12">
           <!-- If the order is loading -->
-          <v-col
-            cols="12"
-            align="center"
-            class="headline"
-          >Sto simulando il pagamento e l'elaborazione dell'ordine...</v-col>
+          <v-col cols="12" align="center" class="headline"
+            >Sto simulando il pagamento e l'elaborazione dell'ordine...</v-col
+          >
           <v-col cols="12" align="center">
             <!-- Loading effect -->
             <v-progress-circular color="accent" indeterminate class="mt-3" />
@@ -34,7 +32,8 @@
               type="error"
               border="top"
               color="red darken-1"
-            >Errore durante l'elaborazione dell'ordine.</v-alert>
+              >Errore durante l'elaborazione dell'ordine.</v-alert
+            >
           </v-col>
         </v-row>
         <!------------------------------->
@@ -42,7 +41,9 @@
         <!------------------------------->
         <v-row v-else-if="success" cols="12">
           <!-- If the order is completed -->
-          <v-col cols="12" class="headline">Ordine effettuato con successo!</v-col>
+          <v-col cols="12" class="headline"
+            >Ordine effettuato con successo!</v-col
+          >
           <v-col align="center">
             <v-btn depressed fab dark color="primary">
               <v-icon dark>mdi-check</v-icon>
@@ -88,7 +89,12 @@
                     ></v-text-field>
                   </v-col>
                   <v-spacer class="hidden-md-and-down" />
-                  <v-col align="right" cols="12" md="6" class="order-first order-md-last py-0">
+                  <v-col
+                    align="right"
+                    cols="12"
+                    md="6"
+                    class="order-first order-md-last py-0"
+                  >
                     <!-- Go to profile button -->
                     <v-btn
                       :to="'/profilo'"
@@ -112,9 +118,15 @@
           <!------------------------------------------>
           <v-col cols="12" class="mt-3 mb-2">
             <v-row>
-              <v-btn @click="isOpen = false" color="red" outlined>Annulla</v-btn>
+              <v-btn @click="isOpen = false" color="red" outlined
+                >Annulla</v-btn
+              >
               <v-spacer />
-              <v-btn @click="order" color="primary" :disabled="selectedAddress.length === 0">
+              <v-btn
+                @click="order"
+                color="primary"
+                :disabled="selectedAddress.length === 0"
+              >
                 Acquista
                 <v-icon class="ml-2">mdi-cart</v-icon>
               </v-btn>
@@ -160,7 +172,7 @@ export default {
           align: "start",
           sortable: true,
           value: "address",
-          filterable: true
+          filterable: true,
         },
         {
           // Phone number column
@@ -168,8 +180,8 @@ export default {
           value: "phoneNumber",
           sortable: true,
           align: "center",
-          filterable: true
-        }
+          filterable: true,
+        },
         // {
         //   // Select address column
         //   text: "Seleziona",
@@ -179,15 +191,15 @@ export default {
         //   width: 50,
         //   filterable: false
         // }
-      ]
+      ],
     };
   },
 
   props: {
     status: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -197,33 +209,38 @@ export default {
       },
       set(open) {
         if (!open) this.$emit("close");
-      }
+      },
     },
 
     formattedAddress() {
       let formatted = [];
 
-      this.addresses.forEach(address => {
+      this.addresses.forEach((address) => {
         formatted.push({
           id: address.id,
           address: `${address.street}, ${address.houseNumber}, ${address.cityName} (${address.postalCode})`,
-          phoneNumber: address.phoneNumber
+          phoneNumber: address.phoneNumber,
         });
       });
 
       return formatted;
-    }
+    },
   },
 
   created() {
     // Fetch the addresses
     this.fetchingAddresses = true;
     Axios.get(process.env.VUE_APP_API_URL + `user.php?address`)
-      .then(response => {
+      .then((response) => {
         this.addresses = response.data;
         this.fetchingAddresses = false;
       })
-      .catch(err => {
+      .catch((err) => {
+        if (err.response.status === 403)
+          this.$store
+            .dispatch("checkLogin")
+            .catch(this.$store.commit("openLoginDialog", true));
+
         this.fetchingAddresses = false;
         console.error(err);
       });
@@ -234,7 +251,7 @@ export default {
       this.ordering = true;
       this.products = [];
       Axios.post(process.env.VUE_APP_API_URL + `orders.php?purchase`, {
-        address: this.selectedAddress[0].id
+        address: this.selectedAddress[0].id,
       })
         .then(() => {
           setTimeout(() => {
@@ -244,12 +261,16 @@ export default {
           this.success = true;
           setTimeout(() => (this.isOpen = false), 2500);
         })
-        .catch(error => {
-          console.error(error);
+        .catch((error) => {
+          if (error.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(error);
           this.ordering = false;
           this.error = true;
         });
-    }
+    },
   },
 
   watch: {
@@ -265,11 +286,10 @@ export default {
           this.formattedAddress.length > 0
         )
           this.selectedAddress.push(this.formattedAddress[0]);
-      }
-    }
-  }
+      },
+    },
+  },
 };
 </script>
 
-<style>
-</style>
+<style></style>

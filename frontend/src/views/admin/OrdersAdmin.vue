@@ -37,7 +37,7 @@ export default {
   components: { EOrdersList },
   data() {
     return {
-      orders: []
+      orders: [],
     };
   },
 
@@ -48,20 +48,24 @@ export default {
   watch: {
     logged(value) {
       if (value) this.fetchOrders();
-    }
+    },
   },
 
   methods: {
     fetchOrders() {
       // Get the user orders
       Axios.get(process.env.VUE_APP_API_URL + `orders.php?admin`)
-        .then(response => {
+        .then((response) => {
           this.orders = response.data;
         })
-        .catch(err => {
-          console.error(err);
+        .catch((err) => {
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLoginAdmin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>

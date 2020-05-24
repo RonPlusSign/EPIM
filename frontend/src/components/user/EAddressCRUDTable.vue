@@ -1,4 +1,3 @@
-
 <!-- WARNING! this component is not working and is not used at the moment -->
 
 <!--
@@ -134,7 +133,7 @@ export default {
         value: "cityName",
         filterable: true,
         align: "center",
-        width: "80"
+        width: "80",
       },
       {
         // Street column
@@ -143,7 +142,7 @@ export default {
         value: "street",
         filterable: true,
         align: "center",
-        width: "150"
+        width: "150",
       },
       {
         // House number column
@@ -152,7 +151,7 @@ export default {
         value: "houseNumber",
         filterable: true,
         align: "center",
-        width: "50"
+        width: "50",
       },
       {
         // Postal code column
@@ -161,7 +160,7 @@ export default {
         value: "postalCode",
         filterable: true,
         align: "center",
-        width: "50"
+        width: "50",
       },
       {
         // Phone number column
@@ -170,7 +169,7 @@ export default {
         value: "phoneNumber",
         filterable: true,
         align: "center",
-        width: "80"
+        width: "80",
       },
       {
         // Modify column
@@ -179,7 +178,7 @@ export default {
         sortable: false,
         align: "center",
         width: 50,
-        filterable: false
+        filterable: false,
       },
       {
         // Delete column
@@ -188,25 +187,25 @@ export default {
         sortable: false,
         align: "center",
         width: 50,
-        filterable: false
-      }
+        filterable: false,
+      },
     ],
-    editedIndex: -1 // Index of the element that the user is modifying (Modified by the dialog)
+    editedIndex: -1, // Index of the element that the user is modifying (Modified by the dialog)
   }),
 
   props: {
     items: {
       type: Array,
-      required: true
+      required: true,
     },
     fetchingItems: {
       type: Boolean,
-      required: true
+      required: true,
     },
     nameOfItems: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
 
   computed: {
@@ -214,7 +213,7 @@ export default {
       return this.editedIndex === -1
         ? `Crea ${this.nameOfItems}`
         : `Modifica ${this.nameOfItems}`;
-    }
+    },
     // filteredItems() {
     //   // Filter items by the name
     //   return this.items.filter(item =>
@@ -226,7 +225,7 @@ export default {
   watch: {
     dialog(val) {
       val || this.close();
-    }
+    },
   },
 
   methods: {
@@ -240,13 +239,17 @@ export default {
       if (confirm(`Sei sicuro di voler eliminare questo indirizzo?`)) {
         // DELETE request to the server
         Axios.delete(process.env.VUE_APP_API_URL + `user.php?address`, {
-          params: { id: item.id }
+          params: { id: item.id },
         })
           .then(() => {
             this.$emit("updated-server-values");
           })
-          .catch(err => {
-            console.error(err);
+          .catch((err) => {
+            if (err.response.status === 403) {
+              this.$store
+                .dispatch("checkLogin")
+                .catch(this.$store.commit("openLoginDialog", true));
+            } else console.error(err);
           });
       }
     },
@@ -255,8 +258,8 @@ export default {
       // Close the dialog
       this.dialog = false;
       this.editedIndex = -1;
-    }
-  }
+    },
+  },
 };
 </script>
 

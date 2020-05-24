@@ -38,11 +38,17 @@
         :loading="loading"
         :cartVersion="true"
         @deleted="(id) => removeFromList(id)"
-        @selected-quantity-changed="changes => updateSelectedQuantity(changes)"
+        @selected-quantity-changed="
+          (changes) => updateSelectedQuantity(changes)
+        "
       />
     </v-row>
 
-    <EOrderDialog :status="orderDialog" @close="orderDialog = false" @order="products = []" />
+    <EOrderDialog
+      :status="orderDialog"
+      @close="orderDialog = false"
+      @order="products = []"
+    />
   </div>
 </template>
 
@@ -62,7 +68,7 @@ export default {
     return {
       products: [],
       loading: false,
-      orderDialog: false
+      orderDialog: false,
     };
   },
 
@@ -73,7 +79,7 @@ export default {
   watch: {
     logged(value) {
       if (value) this.fetchCart();
-    }
+    },
   },
 
   methods: {
@@ -83,12 +89,16 @@ export default {
     fetchCart() {
       this.loading = true;
       Axios.get(process.env.VUE_APP_API_URL + `user.php?cart`)
-        .then(response => {
+        .then((response) => {
           this.products = response.data;
           this.loading = false;
         })
-        .catch(error => {
-          console.error(error);
+        .catch((error) => {
+          if (error.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(error);
           this.loading = false;
         });
     },
@@ -97,17 +107,17 @@ export default {
      * Remove a product from the list of products
      */
     removeFromList(id) {
-      this.products = this.products.filter(product => product.id !== id);
+      this.products = this.products.filter((product) => product.id !== id);
     },
     /**
      * Change the selected quantity of a specific product
      */
     updateSelectedQuantity(updated) {
-      this.products = this.products.map(product => {
+      this.products = this.products.map((product) => {
         if (product.id === updated.id)
           product.selectedQuantity = updated.newQuantity;
       });
-    }
-  }
+    },
+  },
 };
 </script>

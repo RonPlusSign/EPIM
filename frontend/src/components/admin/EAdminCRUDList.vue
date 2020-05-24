@@ -207,7 +207,11 @@ export default {
             this.$emit("updated-server-values");
           })
           .catch((err) => {
-            console.error(err);
+            if (err.response.status === 403)
+              this.$store
+                .dispatch("checkLoginAdmin")
+                .catch(this.$store.commit("openLoginDialog", true));
+            else console.error(err);
           });
       }
     },

@@ -46,13 +46,21 @@
               </v-col>
             </v-row>
             <div v-if="editToggler.name">
-              <v-btn icon color="primary" @click="saveName" :loading="loading.name">
+              <v-btn
+                icon
+                color="primary"
+                @click="saveName"
+                :loading="loading.name"
+              >
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
               <v-btn
                 icon
                 color="red"
-                @click="editToggler.name = false; editedUser.name = user.name;"
+                @click="
+                  editToggler.name = false;
+                  editedUser.name = user.name;
+                "
               >
                 <v-icon>mdi-close-thick</v-icon>
               </v-btn>
@@ -68,7 +76,9 @@
               type="error"
               border="top"
               color="red darken-1"
-            >Errore durante la modifica del nome.</v-alert>
+            >
+              Errore durante la modifica del nome.
+            </v-alert>
           </v-col>
         </v-row>
       </v-col>
@@ -126,13 +136,21 @@
               </v-col>
             </v-row>
             <div v-if="editToggler.surname">
-              <v-btn icon color="primary" @click="saveSurname" :loading="loading.surname">
+              <v-btn
+                icon
+                color="primary"
+                @click="saveSurname"
+                :loading="loading.surname"
+              >
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
               <v-btn
                 icon
                 color="red"
-                @click="editToggler.surname = false; editedUser.surname = user.surname;"
+                @click="
+                  editToggler.surname = false;
+                  editedUser.surname = user.surname;
+                "
               >
                 <v-icon>mdi-close-thick</v-icon>
               </v-btn>
@@ -148,7 +166,9 @@
               type="error"
               border="top"
               color="red darken-1"
-            >Errore durante la modifica del cognome.</v-alert>
+            >
+              Errore durante la modifica del cognome.
+            </v-alert>
           </v-col>
         </v-row>
       </v-col>
@@ -193,19 +213,31 @@
           <v-col align="center" justify="center" cols="4">
             <v-row v-if="!editToggler.phoneNumber">
               <v-col>
-                <v-btn icon color="grey" @click="editToggler.phoneNumber = true">
+                <v-btn
+                  icon
+                  color="grey"
+                  @click="editToggler.phoneNumber = true"
+                >
                   <v-icon>mdi-pencil</v-icon>
                 </v-btn>
               </v-col>
             </v-row>
             <div v-if="editToggler.phoneNumber">
-              <v-btn icon color="primary" @click="savePhoneNumber" :loading="loading.phoneNumber">
+              <v-btn
+                icon
+                color="primary"
+                @click="savePhoneNumber"
+                :loading="loading.phoneNumber"
+              >
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
               <v-btn
                 icon
                 color="red"
-                @click="editToggler.phoneNumber = false; editedUser.phoneNumber = user.phoneNumber;"
+                @click="
+                  editToggler.phoneNumber = false;
+                  editedUser.phoneNumber = user.phoneNumber;
+                "
               >
                 <v-icon>mdi-close-thick</v-icon>
               </v-btn>
@@ -221,7 +253,9 @@
               type="error"
               border="top"
               color="red darken-1"
-            >Errore durante la modifica del numero di telefono.</v-alert>
+            >
+              Errore durante la modifica del numero di telefono.
+            </v-alert>
           </v-col>
         </v-row>
       </v-col>
@@ -274,13 +308,21 @@
               </v-col>
             </v-row>
             <div v-if="editToggler.email">
-              <v-btn icon color="primary" @click="saveEmail" :loading="loading.email">
+              <v-btn
+                icon
+                color="primary"
+                @click="saveEmail"
+                :loading="loading.email"
+              >
                 <v-icon>mdi-check-bold</v-icon>
               </v-btn>
               <v-btn
                 icon
                 color="red"
-                @click="editToggler.email = false; editedUser.email = user.email;"
+                @click="
+                  editToggler.email = false;
+                  editedUser.email = user.email;
+                "
               >
                 <v-icon>mdi-close-thick</v-icon>
               </v-btn>
@@ -296,7 +338,9 @@
               type="error"
               border="top"
               color="red darken-1"
-            >Errore durante la modifica dell'indirizzo email.</v-alert>
+            >
+              Errore durante la modifica dell'indirizzo email.
+            </v-alert>
           </v-col>
         </v-row>
       </v-col>
@@ -356,35 +400,35 @@ export default {
         name: false,
         surname: false,
         phoneNumber: false,
-        email: false
+        email: false,
       },
       loading: {
         name: false,
         surname: false,
         phoneNumber: false,
-        email: false
+        email: false,
       },
       errors: {
         name: false,
         surname: false,
         phoneNumber: false,
-        email: false
+        email: false,
       },
       // Input rules
       rules: {
-        required: value => !!value || "Inserisci questo parametro",
-        email: value => {
+        required: (value) => !!value || "Inserisci questo parametro",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "E-mail non valida";
         },
-        phoneNumber: value => {
+        phoneNumber: (value) => {
           const pattern = /^[0-9]{9,10}$/;
           return (
             pattern.test(value.trim()) ||
             "Il numero inserito deve contenere solo 9 o 10 numeri"
           );
-        }
-      }
+        },
+      },
     };
   },
 
@@ -401,7 +445,7 @@ export default {
       this.editedUser = Object.assign({}, this.user);
 
       this.fetchAddresses();
-    }
+    },
   },
 
   methods: {
@@ -415,7 +459,11 @@ export default {
             // Request is successful
             resolve();
           })
-          .catch(error => {
+          .catch((error) => {
+            if (error.response.status === 403)
+              this.$store
+                .dispatch("checkLogin")
+                .catch(this.$store.commit("openLoginDialog", true));
             // Error during the login, reject the Promise
             reject(error);
           });
@@ -431,7 +479,7 @@ export default {
             this.editToggler.name = false;
             this.errors.name = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading.name = false;
             this.errors.name = true;
             console.error(err);
@@ -448,7 +496,7 @@ export default {
             this.editToggler.surname = false;
             this.errors.surname = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading.surname = false;
             this.errors.surname = true;
             console.error(err);
@@ -465,7 +513,7 @@ export default {
             this.editToggler.phoneNumber = false;
             this.errors.phoneNumber = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading.phoneNumber = false;
             this.errors.phoneNumber = true;
             console.error(err);
@@ -482,7 +530,7 @@ export default {
             this.editToggler.email = false;
             this.errors.email = false;
           })
-          .catch(err => {
+          .catch((err) => {
             this.loading.email = false;
             this.errors.email = true;
             console.error(err);
@@ -493,15 +541,19 @@ export default {
     fetchAddresses() {
       this.fetchingAddresses = true;
       Axios.get(process.env.VUE_APP_API_URL + `user.php?address`)
-        .then(response => {
+        .then((response) => {
           this.addresses = response.data;
           this.fetchingAddresses = false;
         })
-        .catch(err => {
-          console.error(err);
+        .catch((err) => {
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(err);
           this.fetchingAddresses = false;
         });
-    }
-  }
+    },
+  },
 };
 </script>

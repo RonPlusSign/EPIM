@@ -163,13 +163,20 @@ const store = new Vuex.Store({
 
     /**
      * Makes a GET request to login.php to see if the user is logged
+     * @returns a Promise that is resolved if the user is logged, and rejected if it isn't
      */
     checkLogin(context) {
-      Axios.get(process.env.VUE_APP_API_URL + `login.php`)
-        .then((response) => {
-          context.commit("setLogged", response.data.logged);
-        })
-        .catch(() => {});
+      return new Promise((resolve, reject) => {
+        Axios.get(process.env.VUE_APP_API_URL + `login.php`)
+          .then((response) => {
+            context.commit("setIsAdmin", response.data.isAdmin);
+            context.commit("setLogged", response.data.logged);
+
+            if (response.data.logged) resolve();
+            else reject();
+          })
+          .catch(() => {});
+      });
     },
 
     /**
@@ -200,7 +207,8 @@ const store = new Vuex.Store({
           context.commit("setUser", result.data);
         })
         .catch((err) => {
-          console.error(err);
+          if (err.response.status === 403) this.$store.dispatch("checkLogin");
+          else console.error(err);
           context.dispatch("checkLogin");
         });
     },

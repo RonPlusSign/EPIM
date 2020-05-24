@@ -15,19 +15,25 @@
         <!-- Brand -->
         <p class="subtitle-2 mb-2">
           di
-          <router-link :to="{ path: '/prodotti', query: { b: product.brand } }">{{ product.brand }}</router-link>
+          <router-link
+            :to="{ path: '/prodotti', query: { b: product.brand } }"
+            >{{ product.brand }}</router-link
+          >
         </p>
         <!-- Price -->
         <p class="subtitle-1 mb-2">
           Prezzo:
-          <span class="font-weight-medium accent--text">{{ product.sell_price }} €</span>
+          <span class="font-weight-medium accent--text"
+            >{{ product.sell_price }} €</span
+          >
         </p>
         <!-- Category -->
         <p class="body mb-2">
           Categoria:
           <router-link
             :to="{ path: '/prodotti', query: { c: product.category } }"
-          >{{ product.category }}</router-link>
+            >{{ product.category }}</router-link
+          >
         </p>
         <!-- Quantity available -->
         <p class="body mb-0">Quantità disponibile: {{ product.quantity }}</p>
@@ -44,7 +50,15 @@
             />
           </v-col>
           <!-- Add to cart button -->
-          <v-col justify-self="start" align-self="end" cols="12" sm="6" md="8" lg="8" xl="9">
+          <v-col
+            justify-self="start"
+            align-self="end"
+            cols="12"
+            sm="6"
+            md="8"
+            lg="8"
+            xl="9"
+          >
             <v-btn
               color="success"
               @click="addToCart(product.id, selectedQuantity)"
@@ -86,24 +100,24 @@ export default {
         category_id: null,
         category: "Nessuna categoria",
         brand_id: null,
-        brand: "Nessuna marca"
+        brand: "Nessuna marca",
       },
-      selectedQuantity: 0
+      selectedQuantity: 0,
     };
   },
   computed: {
     logged() {
       return this.$store.getters.logged;
-    }
+    },
   },
   created() {
     Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-      params: { id: this.$router.history.current.params.id }
+      params: { id: this.$router.history.current.params.id },
     })
-      .then(response => {
+      .then((response) => {
         this.product = response.data;
       })
-      .catch((/* error */) => {});
+      .catch((err) => console.error(err));
   },
   methods: {
     // Add a product to the cart
@@ -111,9 +125,13 @@ export default {
       const task = () => {
         Axios.post(process.env.VUE_APP_API_URL + `user.php?cart`, {
           id: id, // Product id
-          quantity: quantity // Default quantity
-        }).catch(err => {
-          console.error(err);
+          quantity: quantity, // Default quantity
+        }).catch((err) => {
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .catch(this.$store.commit("openLoginDialog"));
+          else console.error(err);
         });
       };
       // Check if the user is logged
@@ -125,7 +143,7 @@ export default {
         this.$store.commit("openLoginDialog");
         this.$store.commit("setActionAfterLogin", task);
       }
-    }
-  }
+    },
+  },
 };
 </script>

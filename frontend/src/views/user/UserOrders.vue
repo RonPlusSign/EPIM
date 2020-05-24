@@ -10,7 +10,7 @@
     <!--------------->
     <!---- Title ---->
     <!--------------->
-    <h2 class="my-3">Ordini di {{ user ?user.name : "" }}</h2>
+    <h2 class="my-3">Ordini di {{ user ? user.name : "" }}</h2>
     <v-row cols="12" justify="center">
       <v-col v-if="orders.length > 0" xl="8" lg="8" md="10" cols="12">
         <!--------------------->
@@ -37,7 +37,7 @@ export default {
 
   data() {
     return {
-      orders: []
+      orders: [],
     };
   },
 
@@ -48,20 +48,25 @@ export default {
   watch: {
     logged(value) {
       if (value) this.fetchOrders();
-    }
+    },
   },
 
   methods: {
     fetchOrders() {
       // Get the user orders
       Axios.get(process.env.VUE_APP_API_URL + `orders.php`)
-        .then(response => {
+        .then((response) => {
           this.orders = response.data;
         })
-        .catch(err => {
-          console.error(err);
+        .catch((err) => {
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .then(() => console.log("Ciao"))
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(err);
         });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -273,9 +273,11 @@ export default {
           id: id, // Product id
           quantity: 1, // Default quantity
         }).catch((err) => {
-          console.error(err);
+          if (err.response.status === 403) this.$store.dispatch("checkLogin");
+          else console.error(err);
         });
       };
+
       // Check if the user is logged
       if (this.logged) {
         task();
@@ -298,7 +300,11 @@ export default {
           this.deleting = false;
         })
         .catch((err) => {
-          console.error(err);
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLoginAdmin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(err);
         });
     },
 
@@ -315,7 +321,11 @@ export default {
           this.deleting = false;
         })
         .catch((err) => {
-          console.error(err);
+          if (err.response.status === 403)
+            this.$store
+              .dispatch("checkLogin")
+              .catch(this.$store.commit("openLoginDialog", true));
+          else console.error(err);
         });
     },
 
@@ -338,7 +348,11 @@ export default {
               });
             })
             .catch((err) => {
-              console.error(err);
+              if (err.response.status === 403)
+                this.$store
+                  .dispatch("checkLogin")
+                  .catch(this.$store.commit("openLoginDialog", true));
+              else console.error(err);
             });
         }
       }

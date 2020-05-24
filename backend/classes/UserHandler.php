@@ -85,17 +85,17 @@ class UserHandler
      */
     public static function getUser($id)
     {
-        LoginHandler::handleSessionTimeout();
-        
-        try {
-            $stm = Database::$pdo->prepare("SELECT id, email, name, surname, phone_number as phoneNumber, is_admin as isAdmin from user WHERE id = :id");
+        if (LoginHandler::isLogged()) {
+            try {
+                $stm = Database::$pdo->prepare("SELECT id, email, name, surname, phone_number as phoneNumber, is_admin as isAdmin from user WHERE id = :id");
 
-            $stm->bindParam(":id", $id);
-            $stm->execute();
-            return $stm->fetch(PDO::FETCH_ASSOC);
-        } catch (\Exception $e) {
-            return false;
-        }
+                $stm->bindParam(":id", $id);
+                $stm->execute();
+                return $stm->fetch(PDO::FETCH_ASSOC);
+            } catch (\Exception $e) {
+                return false;
+            }
+        } else return false;
     }
 
 

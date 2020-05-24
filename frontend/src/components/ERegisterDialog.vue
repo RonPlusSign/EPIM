@@ -11,7 +11,12 @@ example:
   <!---------------------->
   <!------- Dialog ------->
   <!---------------------->
-  <v-dialog v-model="isDialogActive" align="center" justify="center" width="600">
+  <v-dialog
+    v-model="isDialogActive"
+    align="center"
+    justify="center"
+    width="600"
+  >
     <v-card class="pb-5" :loading="loading">
       <!--------------------->
       <!------- Title ------->
@@ -122,18 +127,15 @@ example:
           type="error"
           border="top"
           color="red darken-1"
-        >Errore durante la registrazione.</v-alert>
+          >{{ errorMsg }}</v-alert
+        >
       </v-card-text>
       <!----------------------->
       <!------- Buttons ------->
       <!----------------------->
       <v-card-actions class="px-5">
         <v-spacer />
-        <v-btn
-          @click="handleRegistration"
-          :loading="loading"
-          color="secondary"
-        >
+        <v-btn @click="handleRegistration" :loading="loading" color="secondary">
           <span class="mt-1">Registrati</span>
           <v-icon class="ml-2">mdi-arrow-right</v-icon>
         </v-btn>
@@ -148,7 +150,7 @@ import Axios from "axios";
 export default {
   name: "ERegisterDialog",
   props: {
-    isOpen: { type: Boolean, required: true }
+    isOpen: { type: Boolean, required: true },
   },
   data() {
     return {
@@ -158,39 +160,40 @@ export default {
         email: "",
         phoneNumber: "",
         password: "",
-        confirmPassword: ""
+        confirmPassword: "",
       },
       loading: false,
       isDialogActive: false,
       isPasswordVisible: false,
       error: false,
+      errorMsg: "Errore durante la registrazione",
       rules: {
-        required: value => !!value || "Inserisci questo parametro",
-        email: value => {
+        required: (value) => !!value || "Inserisci questo parametro",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "E-mail non valida";
         },
-        password: value => {
+        password: (value) => {
           const pattern = /^.{8,}$/;
           return (
             pattern.test(value) ||
             "La password deve contenere almeno 8 caratteri"
           );
         },
-        noSpaces: value => {
+        noSpaces: (value) => {
           const pattern = /\s/;
           return !pattern.test(value) || "La password non deve contenere spazi";
         },
-        confirmPassword: value =>
+        confirmPassword: (value) =>
           value === this.user.password || "La password non corrisponde",
-        phoneNumber: value => {
+        phoneNumber: (value) => {
           const pattern = /^[0-9]{7,12}$/;
           return (
             pattern.test(value.trim()) ||
             "Il numero inserito deve essere lungo dalle 7 a 12 cifre"
           );
-        }
-      }
+        },
+      },
     };
   },
   watch: {
@@ -199,7 +202,7 @@ export default {
     },
     isDialogActive() {
       this.$emit("status-changed", this.isDialogActive);
-    }
+    },
   },
 
   methods: {
@@ -213,7 +216,7 @@ export default {
           surname: this.user.surname,
           email: this.user.email,
           phoneNumber: this.user.phoneNumber.trim(),
-          password: this.user.password
+          password: this.user.password,
         })
           .then((/*response*/) => {
             // Disable loading effect after the server response
@@ -222,14 +225,15 @@ export default {
             this.$store.dispatch("checkLogin");
             this.$store.dispatch("getUserData");
           })
-          .catch(error => {
+          .catch((error) => {
             // Disable loading effect after the server response
             this.loading = false;
             this.error = true;
+            if (error.body.error) this.errorMsg = error.body.error;
             console.error(error);
           });
       }
-    }
-  }
+    },
+  },
 };
 </script>
