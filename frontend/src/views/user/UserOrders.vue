@@ -62,7 +62,6 @@ export default {
           if (err.response.status === 403)
             this.$store
               .dispatch("checkLogin")
-              .then(() => console.log("Ciao"))
               .catch(this.$store.commit("openLoginDialog", true));
           else console.error(err);
         });
