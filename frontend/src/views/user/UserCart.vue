@@ -16,23 +16,44 @@
       <h2>Nessun prodotto nel carrello</h2>
     </v-row>
 
-    <!---------------------------->
-    <!---- Cart products list ---->
-    <!---------------------------->
+    <!------------------------------------>
+    <!---- Order button / total price ---->
+    <!------------------------------------>
     <v-row v-else cols="12" justify="center">
-      <v-row justify="space-around">
-        <v-btn
-          @click="orderDialog = true"
-          relative
-          right
-          color="success"
-          :disabled="products.length === 0"
-        >
-          Effettua l'ordine
-          <v-icon class="ml-2">mdi-cart</v-icon>
-        </v-btn>
+      <v-row cols="12" justify="space-around">
+        <v-col cols="12" align="center">
+          <!-- Order button -->
+          <v-btn
+            @click="orderDialog = true"
+            relative
+            right
+            color="success"
+            :disabled="products.length === 0"
+          >
+            Effettua l'ordine
+            <v-icon class="ml-2">mdi-cart</v-icon>
+          </v-btn>
+        </v-col>
+
+        <v-col cols="12" align="center" class="pb-0">
+          <!-- Total price -->
+          <span class="title font-weight-medium">
+            Totale:
+            <span class="accent--text">
+              {{
+                Number(totalPrice).toLocaleString("it-IT", {
+                  minimumFractionDigits: 2,
+                })
+              }}
+              €
+            </span>
+          </span>
+        </v-col>
       </v-row>
 
+      <!---------------------------->
+      <!---- Cart products list ---->
+      <!---------------------------->
       <EProductsList
         :products="products"
         :loading="loading"
@@ -70,6 +91,16 @@ export default {
       loading: false,
       orderDialog: false,
     };
+  },
+
+  computed: {
+    totalPrice() {
+      return this.products.reduce(
+        (total, product) =>
+          total + product.sell_price * product.selectedQuantity,
+        0
+      );
+    },
   },
 
   created() {
@@ -116,6 +147,7 @@ export default {
       this.products = this.products.map((product) => {
         if (product.id === updated.id)
           product.selectedQuantity = updated.newQuantity;
+        return product;
       });
     },
   },

@@ -22,6 +22,9 @@
             :adminVersion="adminVersion"
             :cartVersion="cartVersion"
             @deleted="(productId) => $emit('deleted', productId)"
+            @selected-quantity-changed="
+              (val) => $emit('selected-quantity-changed', val)
+            "
           />
         </v-col>
         <v-spacer class="hidden-xs-only" />
