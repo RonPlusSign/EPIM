@@ -207,7 +207,6 @@ class ProductsHandler
         return self::queryByFilterString('title', $title, false, false);
     }
 
-
     /**
      * Get a single product
      * 
@@ -251,7 +250,7 @@ class ProductsHandler
     public function getProductImages($id)
     {
         try {
-            $stm = Database::$pdo->prepare("SELECT product_image.url FROM product
+            $stm = Database::$pdo->prepare("SELECT product_image.url FROM product as p
                                             INNER JOIN product_image ON product_image.product=p.id
                                             WHERE p.id=:id");
             $stm->bindParam(':id', $id);
@@ -335,7 +334,7 @@ class ProductsHandler
     {
         if (LoginHandler::isAdmin()) {
             try {
-                $stm = Database::$pdo->prepare("DELETE FROM product WHERE p.id=:id");
+                $stm = Database::$pdo->prepare("DELETE FROM product WHERE id=:id");
                 $stm->bindParam(':id', $id);
                 $stm->execute();
                 return $stm->rowCount();
@@ -374,11 +373,13 @@ class ProductsHandler
                     ':purchase_price' => $newProductJson->purchase_price,
                     ':sell_price' => $newProductJson->sell_price,
                     ':recommended_price' => $newProductJson->recommended_price,
-                    ':quantity' => $newProductJson->quantity,
-                    ':category' => $newProductJson->category,
-                    ':brand' => $newProductJson->brand,
+                    ':quantity' => +$newProductJson->quantity,
+                    ':category' => $newProductJson->category_id,
+                    ':brand' => $newProductJson->brand_id,
                     ':id' => +$id
                 ];
+
+                var_dump($data);
                 $stm->execute($data);
                 return $stm->rowCount();
             } catch (\Exception $e) {

@@ -13,7 +13,7 @@
     <!---------------------------------->
     <!---- "Edit product" component ---->
     <!---------------------------------->
-    <EEditProduct :productObject="product" />
+    <ENewProduct :product="product" />
   </div>
 </template>
 
@@ -21,22 +21,21 @@
 import Axios from "axios";
 
 import adminMixin from "@/mixins/adminMixin";
-import EEditProduct from "@/components/admin/EEditProduct.vue";
+import ENewProduct from "@/components/productAdmin/ENewProduct.vue";
 
 export default {
   name: "EditProduct",
   mixins: [adminMixin],
-  components: { EEditProduct },
+  components: { ENewProduct },
   data() {
     return {
-      product: null
+      product: {}
     };
   },
   created() {
     // Get the product to edit
     Axios.get(process.env.VUE_APP_API_URL + `products.php`, {
-      // ID = id: this.$router.history.current.params.id
-      params: { id: this.$router.history.current.params.id }
+      params: { id: this.$route.params.id }
     })
       .then(response => {
         this.product = response.data;

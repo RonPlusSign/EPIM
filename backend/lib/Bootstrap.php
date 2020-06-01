@@ -1,7 +1,7 @@
 <?php
 
 // Comment this line in production
-//$DEBUG_MODE = true;
+// $DEBUG_MODE = true;
 
 if (isset($DEBUG_MODE)) {
     error_reporting(E_ALL);

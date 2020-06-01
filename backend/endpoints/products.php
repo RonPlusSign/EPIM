@@ -115,13 +115,13 @@ switch ($requestMethod) {
 
 
         // Display help message
-        if (empty($_GET)) {
-            http_response_code(400);
-            echo "Missing queries. Options:\n";
-            echo "\n?q= | ?c= | ?b | ?ps=x&pe=x | ?sales";
-            echo "\n?sort= | ?asc or ?desc";
-            echo "\n?id= | ?p=";
-        }
+        // if (empty($_GET)) {
+        //     // http_response_code(400);
+        //     // echo "Missing queries. Options:\n";
+        //     // echo "\n?q= | ?c= | ?b | ?ps=x&pe=x | ?sales";
+        //     // echo "\n?sort= | ?asc or ?desc";
+        //     // echo "\n?id= | ?p=";
+        // }
 
         break;
 

@@ -15,34 +15,7 @@
     <!--------------->
     <h2>Gestione dei prodotti</h2>
 
-    <v-btn
-      :to="{ name: 'createProduct' }"
-      color="secondary"
-      dark
-      class="mt-3 mb-6"
-    >
-      Crea nuovo
-      <v-icon class="ml-2">mdi-plus</v-icon>
-    </v-btn>
-
-    <v-row class="ml-4 ml-md-0 mr-sm-n12">
-      <v-spacer class="hidden-sm-and-down" />
-      <!--------------------->
-      <!---- Search bar ----->
-      <!--------------------->
-      <ESearchProducts :redirectRoute="'/admin/prodotti'" />
-      <v-spacer class="hidden-sm-and-down" />
-    </v-row>
-
-    <!----------------------->
-    <!---- Products list ---->
-    <!----------------------->
-    <EProductsList
-      :products="products"
-      :loading="loading"
-      :adminVersion="true"
-      @deleted="(id) => removeFromList(id)"
-    />
+    <EProductCardList :products="products" @change="fetchProducts" />
 
     <!----------------------------------->
     <!---- Products pages navigation ---->
@@ -53,19 +26,36 @@
       :length="numberOfPages"
       total-visible="7"
     />
+
+    <v-btn
+      class="mx-2 text-capitalize textFab"
+      color="secondary"
+      style="bottom: 70px; z-index: 4"
+      rounded
+      fixed
+      dark
+      right
+      bottom
+      :to="{ name: 'createProduct' }"
+    >
+      <v-icon light class="mr-1">mdi-plus</v-icon>Nuovo prodotto
+    </v-btn>
   </div>
 </template>
 
 <script>
+/* eslint-disable */
 import Axios from "axios";
 import adminMixin from "@/mixins/adminMixin";
 
-import EProductsList from "@/components/EProductsList";
-import ESearchProducts from "@/components/ESearchProducts.vue";
+// New
+import EProductCardList from "@/components/productAdmin/EProductCardList.vue";
 
 export default {
   name: "ProductsAdmin",
-  components: { EProductsList, ESearchProducts },
+  components: {
+    EProductCardList
+  },
   mixins: [adminMixin],
   data() {
     return {
@@ -78,7 +68,7 @@ export default {
       // Pages navigation
       numberOfProductsFound: 0,
       productsPerPage: 0,
-      selectedPage: 1,
+      selectedPage: 1
     };
   },
 
@@ -86,7 +76,7 @@ export default {
     // Returns the number of pages (total number of results divided by the number of products per page)
     numberOfPages() {
       return Math.ceil(this.numberOfProductsFound / this.productsPerPage);
-    },
+    }
   },
 
   methods: {
@@ -99,45 +89,24 @@ export default {
 
       Axios.get(process.env.VUE_APP_API_URL + `products.php` + salesString, {
         // Add the filters (query string params)
-        params: this.filtersEmpty ? {} : this.$route.query,
+        params: this.filtersEmpty ? {} : this.$route.query
       })
-        .then((response) => {
-          // Parse the response from the server
-          /*
-          Response format:
-          {
-            totalResults: 123,
-            productsPerPage: 16,
-            data: [
-              // Products list
-            ]
-          }
-          */
-
+        .then(response => {
           this.products = response.data.data ? response.data.data : [];
           this.numberOfProductsFound = response.data.totalResults;
           this.productsPerPage = response.data.productsPerPage;
         })
-        .catch((error) => {
+        .catch(error => {
           console.error(error);
         });
 
       this.loading = false;
-    },
-
-    /**
-     * Remove a product from the list of products
-     */
-    removeFromList(id) {
-      this.products = this.products.filter((product) => product.id !== id);
-    },
+    }
   },
-
   watch: {
     $route() {
       this.fetchProducts();
     },
-
     selectedPage(value) {
       // Empty the products list
       //in that way the page automatically scrolls up and you see the loading effect
@@ -149,10 +118,13 @@ export default {
         path: "/prodotti",
         query: {
           ...this.$route.query,
-          p: value,
-        },
+          p: value
+        }
       });
-    },
+    }
   },
+  created() {
+    this.fetchProducts();
+  }
 };
 </script>

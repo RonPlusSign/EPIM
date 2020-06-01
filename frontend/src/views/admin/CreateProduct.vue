@@ -14,17 +14,17 @@
     <!------- "Edit product" component ------->
     <!--- Without parameters = new product --->
     <!---------------------------------------->
-    <EEditProduct />
+    <ENewProduct />
   </div>
 </template>
 
 <script>
 import adminMixin from "@/mixins/adminMixin";
-import EEditProduct from "@/components/admin/EEditProduct.vue";
+import ENewProduct from "@/components/productAdmin/ENewProduct.vue";
 
 export default {
   name: "CreateProduct",
   mixins: [adminMixin],
-  components: { EEditProduct }
+  components: { ENewProduct }
 };
 </script>
