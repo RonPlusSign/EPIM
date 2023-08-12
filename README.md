@@ -4,6 +4,8 @@
 
 Web app of an e-commerce website, with user registation, login, admin, products and orders management.
 
+> *Note: this repo is meant as a school project and its not meant to be used in any production environment.*
+
 ---
 
 ### Folder Structure (self-explanatory)
